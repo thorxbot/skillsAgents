@@ -1,0 +1,58 @@
+{
+  "meta.identity": {
+    "title": "App identity",
+    "summary": "App {name}, bundle ID {bundle_id}, version {version} (build {build}).",
+    "remediation": "If unresolved, make sure the input is a complete .app / IPA with an intact Info.plist."
+  },
+  "meta.distribution": {
+    "title": "Distribution type",
+    "summary": "Distribution type: {type}. Competing hypotheses: {alternatives_text}.",
+    "remediation": "Inferred only from embedded.mobileprovision, SC_Info and iTunesMetadata.plist; a re-signed package may differ from its original channel."
+  },
+  "meta.permissions": {
+    "title": "Privacy permission declarations",
+    "summary": "{count} usage descriptions declared, {high_count} of high sensitivity: {high_keys}.",
+    "remediation": "Review high-sensitivity permissions against the app's purpose and check the stated reasons."
+  },
+  "meta.fairplay_container": {
+    "title": "App Store FairPlay container",
+    "summary": "{count} FairPlay-related files in SC_Info ({nested_units} nested units also carry SC_Info). This only shows the package came from App Store delivery; whether the binary is encrypted is decided by the Mach-O cryptid.",
+    "remediation": "To analyse the binary, check cryptid; if it is encrypted, a decrypted IPA must be provided."
+  },
+  "meta.signature_integrity": {
+    "title": "Code-signature resource seal check",
+    "summary": "{checked} files checked: {missing} missing, {modified} modified, {extra} extra. A consistent seal does not prove authenticity (re-signed packages carry a fresh seal).",
+    "remediation": "Missing or modified files mean the package was changed after signing (repackaging / injection)."
+  },
+  "meta.distribution.type.appstore": "App Store",
+  "meta.distribution.type.adhoc": "Ad Hoc (registered devices)",
+  "meta.distribution.type.enterprise": "Enterprise (In-House)",
+  "meta.distribution.type.development": "Development",
+  "meta.distribution.type.unsigned_or_repackaged": "Unsigned or repackaged",
+  "meta.distribution.type.unknown": "Unknown",
+  "meta.permission.level.high": "High sensitivity",
+  "meta.permission.level.medium": "Medium sensitivity",
+  "meta.permission.level.low": "Low sensitivity",
+  "meta.name.source.InfoPlist.strings:CFBundleDisplayName": "Localized display name (InfoPlist.strings)",
+  "meta.name.source.InfoPlist.strings:CFBundleName": "Localized bundle name (InfoPlist.strings)",
+  "meta.name.source.Info.plist:CFBundleDisplayName": "Info.plist display name",
+  "meta.name.source.Info.plist:CFBundleName": "Info.plist bundle name",
+  "meta.name.source.iTunesMetadata.plist:itemName": "App Store item name",
+  "meta.name.source.iTunesMetadata.plist:bundleDisplayName": "App Store display name",
+  "meta.name.source.CFBundleExecutable": "Executable name",
+  "meta.name.source.input_filename": "Input file name",
+  "meta.device.iphone": "iPhone / iPod touch",
+  "meta.device.ipad": "iPad",
+  "meta.device.tv": "Apple TV",
+  "meta.device.watch": "Apple Watch",
+  "meta.device.mac": "Mac (Catalyst)",
+  "meta.device.vision": "Apple Vision",
+  "meta.extension.kind.appex": "App extension",
+  "meta.extension.kind.watch": "Watch app",
+  "meta.extension.kind.app_clip": "App Clip",
+  "meta.redacted": "<redacted>",
+  "meta.redaction.notice": "Purchaser information was redacted ({count} fields); use --no-redact to keep it.",
+  "meta.integrity.kind.modified": "modified",
+  "meta.integrity.kind.missing": "missing",
+  "meta.integrity.kind.extra": "extra"
+}

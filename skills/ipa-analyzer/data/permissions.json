@@ -1,0 +1,171 @@
+{
+  "_comment": "Maps *UsageDescription Info.plist keys to meaning and sensitivity. Key names follow Apple's Information Property List Key Reference (Protected resources); entries marked iOS 17+/14+ etc. were written from memory (UNVERIFIED against the live docs). The 'level' column is this tool's own heuristic (high = camera/mic/always-location/contacts/photos/health/tracking), not an Apple classification. Keys that are not listed are reported with known=false and level=medium.",
+  "version": 1,
+  "permissions": {
+    "NSCameraUsageDescription": {
+      "level": "high",
+      "meaning_zh": "访问相机(拍照 / 录像 / 扫码)",
+      "meaning_en": "Access the camera (photo, video, scanning)"
+    },
+    "NSMicrophoneUsageDescription": {
+      "level": "high",
+      "meaning_zh": "访问麦克风(录音 / 语音通话)",
+      "meaning_en": "Access the microphone (recording, voice calls)"
+    },
+    "NSLocationAlwaysAndWhenInUseUsageDescription": {
+      "level": "high",
+      "meaning_zh": "始终(含后台)访问位置",
+      "meaning_en": "Access location at all times, including in the background"
+    },
+    "NSLocationAlwaysUsageDescription": {
+      "level": "high",
+      "meaning_zh": "始终访问位置(iOS 11 起已被 AlwaysAndWhenInUse 取代)",
+      "meaning_en": "Access location at all times (deprecated since iOS 11 in favor of AlwaysAndWhenInUse)"
+    },
+    "NSLocationWhenInUseUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "使用期间访问位置",
+      "meaning_en": "Access location while the app is in use"
+    },
+    "NSLocationUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问位置(旧键,主要见于 macOS / 旧版 iOS)",
+      "meaning_en": "Access location (legacy key, mostly macOS / old iOS)"
+    },
+    "NSContactsUsageDescription": {
+      "level": "high",
+      "meaning_zh": "读取 / 修改通讯录",
+      "meaning_en": "Read or modify the address book contacts"
+    },
+    "NSCalendarsUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问日历事件",
+      "meaning_en": "Access calendar events"
+    },
+    "NSCalendarsFullAccessUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "完整访问日历事件(iOS 17+)",
+      "meaning_en": "Full access to calendar events (iOS 17+)"
+    },
+    "NSCalendarsWriteOnlyAccessUsageDescription": {
+      "level": "low",
+      "meaning_zh": "仅写入日历事件(iOS 17+)",
+      "meaning_en": "Write-only access to calendar events (iOS 17+)"
+    },
+    "NSRemindersUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问提醒事项",
+      "meaning_en": "Access reminders"
+    },
+    "NSRemindersFullAccessUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "完整访问提醒事项(iOS 17+)",
+      "meaning_en": "Full access to reminders (iOS 17+)"
+    },
+    "NSPhotoLibraryUsageDescription": {
+      "level": "high",
+      "meaning_zh": "读取相册",
+      "meaning_en": "Read the photo library"
+    },
+    "NSPhotoLibraryAddUsageDescription": {
+      "level": "low",
+      "meaning_zh": "仅向相册写入照片 / 视频",
+      "meaning_en": "Add photos or videos to the photo library (write-only)"
+    },
+    "NSHealthShareUsageDescription": {
+      "level": "high",
+      "meaning_zh": "读取健康数据(HealthKit)",
+      "meaning_en": "Read health data (HealthKit)"
+    },
+    "NSHealthUpdateUsageDescription": {
+      "level": "high",
+      "meaning_zh": "写入健康数据(HealthKit)",
+      "meaning_en": "Write health data (HealthKit)"
+    },
+    "NSHealthClinicalHealthRecordsShareUsageDescription": {
+      "level": "high",
+      "meaning_zh": "读取临床健康记录",
+      "meaning_en": "Read clinical health records"
+    },
+    "NSHomeKitUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问家庭(HomeKit)配件",
+      "meaning_en": "Access HomeKit accessories"
+    },
+    "NSFaceIDUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "使用 Face ID 进行身份验证",
+      "meaning_en": "Authenticate with Face ID"
+    },
+    "NSSpeechRecognitionUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "使用语音识别(音频可能发送至 Apple)",
+      "meaning_en": "Use speech recognition (audio may be sent to Apple)"
+    },
+    "NSBluetoothAlwaysUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "使用蓝牙连接外设(iOS 13+)",
+      "meaning_en": "Use Bluetooth to connect to peripherals (iOS 13+)"
+    },
+    "NSBluetoothPeripheralUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "蓝牙外设共享(iOS 13 起已弃用)",
+      "meaning_en": "Share data with Bluetooth peripherals (deprecated since iOS 13)"
+    },
+    "NSLocalNetworkUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问本地网络设备(iOS 14+)",
+      "meaning_en": "Access devices on the local network (iOS 14+)"
+    },
+    "NSMotionUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问运动与健身(陀螺仪 / 计步等)传感器数据",
+      "meaning_en": "Access motion and fitness sensor data"
+    },
+    "NSAppleMusicUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问媒体资料库(Apple Music)",
+      "meaning_en": "Access the media library (Apple Music)"
+    },
+    "NSSiriUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "与 Siri 集成并接收 Siri 请求",
+      "meaning_en": "Integrate with Siri and receive Siri requests"
+    },
+    "NSUserTrackingUsageDescription": {
+      "level": "high",
+      "meaning_zh": "跨 App / 网站追踪用户(App Tracking Transparency, iOS 14.5+)",
+      "meaning_en": "Track the user across apps and websites (App Tracking Transparency, iOS 14.5+)"
+    },
+    "NSVideoSubscriberAccountUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问电视服务提供商账号",
+      "meaning_en": "Access the TV provider account"
+    },
+    "NSNearbyInteractionUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "使用近场交互(Nearby Interaction / 超宽带)",
+      "meaning_en": "Use Nearby Interaction (ultra-wideband)"
+    },
+    "NSNearbyInteractionAllowOnceUsageDescription": {
+      "level": "low",
+      "meaning_zh": "单次允许近场交互",
+      "meaning_en": "Allow Nearby Interaction once"
+    },
+    "NSGKFriendListUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "访问 Game Center 好友列表",
+      "meaning_en": "Access the Game Center friend list"
+    },
+    "NSFocusStatusUsageDescription": {
+      "level": "low",
+      "meaning_zh": "读取专注模式状态(iOS 15+)",
+      "meaning_en": "Read the Focus status (iOS 15+)"
+    },
+    "NFCReaderUsageDescription": {
+      "level": "medium",
+      "meaning_zh": "读取 NFC 标签",
+      "meaning_en": "Read NFC tags"
+    }
+  }
+}

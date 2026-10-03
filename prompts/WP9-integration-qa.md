@@ -28,7 +28,7 @@
 5. **性能与健壮性**:生成 ≈1 GB 稀疏 / 低成本构造的 IPA(例如大量 stored 的零填充文件,注意磁盘与 CI 时间,标 `slow`),断言耗时 / 内存目标(`01` §4);异常输入模糊测试(随机截断 / 位翻转若干夹具,断言不崩溃不卡死,超时保护)。
 6. **SKILL.md 定稿**(`02-ARCHITECTURE.md` §9):frontmatter(`name: ipa-analyzer`,`description` 含触发词);正文流程精炼(≤150 行):doctor → analyze → 读摘要 → unknown 库查证回写 → FairPlay 提示 → 脱敏提醒 → 常用命令速查 → 按需读 `references/`。**写给 Agent 看的指令要可执行、无歧义**(明确哪些情况必须问用户:下载工具 / 安装 .NET)。
 7. **README.md**(中文):简介、能力矩阵、安装(skill 方式 + pip 方式)、示例命令与示例报告片段(来自合成夹具)、环境要求(三平台)、常见问题(FairPlay、dotnet、离线、metadata 版本不支持)、合规声明、局限。
-8. **真实样本 e2e(可选)**:若设置了 `IPA_SAMPLES_DIR`,遍历运行并生成 `docs/ACCEPTANCE.md` 的"真实样本"一节(不提交样本、不提交含敏感信息的报告;报告片段需脱敏)。没有样本则明确写"未验证"。
+8. **真实样本 e2e**:用户已提供 4 个真实 IPA(目录与初筛结果见 `docs/05-REAL-SAMPLES-AND-HTP.md`,默认 `IPA_SAMPLES_DIR=/Users/thor/Desktop/worker/code/python/ipa-gsa-probe/download/ipa`)。必须对四个都完整跑一遍 CLI,记录:耗时、峰值内存、各阶段状态、每个主程序 cryptid、引擎判定(重点看 SeaWorld/ISBN 的 engine.detect/custom 与画像)、Unity 包的 metadata/AssetBundle/热更新结论、il2cpp 是否被前置检查拦截(cryptid!=0 ⇒ E_BINARY_FAIRPLAY)。若主程序已解密且 metadata 正常,则真实跑一次 Il2CppDumper 并核对 dump 摘要。报告片段脱敏后写入 `docs/ACCEPTANCE.md`;**不提交样本、不提交完整报告**。原条款:若设置了 `IPA_SAMPLES_DIR`,遍历运行并生成 `docs/ACCEPTANCE.md` 的"真实样本"一节(不提交样本、不提交含敏感信息的报告;报告片段需脱敏)。没有样本则明确写"未验证"。
 9. **验收记录 `docs/ACCEPTANCE.md`**:对照 `01-REQUIREMENTS.md` §5 的 7 条 DoD 与 §2 每个 F-* 条目的 P0 项,逐条 ✅ / ⚠️ / ❌ + 证据(测试名 / 命令输出);汇总 UNVERIFIED;列出已知局限与建议的下一步(P1/P2)。
 
 ## 验收标准

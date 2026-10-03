@@ -1,0 +1,1244 @@
+{
+  "schema_version": "1.0",
+  "tool": {
+    "name": "ipa-analyzer",
+    "version": ""
+  },
+  "generated_at": "",
+  "input": {
+    "kind": "ipa",
+    "path": "/home/[user]/work/CocosLua.ipa",
+    "sha256": "06bd7a95b8958097ece3cbfb587e86a4766247c746ac233ac918b371afad51c3",
+    "size": 120000000
+  },
+  "app": {
+    "background_modes": [],
+    "build": "20",
+    "bundle_id": "com.example.cocoslua",
+    "capabilities": [
+      "arm64",
+      "metal"
+    ],
+    "devices": [
+      "iPhone"
+    ],
+    "distribution": {
+      "confidence": 0.5,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "embedded.mobileprovision",
+          "detail": "get-task-allow=true; device [REDACTED-UDID]; [REDACTED-UDID]"
+        }
+      ],
+      "type": "development",
+      "verdict": "suspected"
+    },
+    "executable": "CocosLua",
+    "extensions": [],
+    "fairplay_container": {
+      "files": [
+        "SC_Info/CocosLua.sinf"
+      ],
+      "sc_info_present": true
+    },
+    "min_os": "11.0",
+    "names": [
+      {
+        "lang": "",
+        "source": "CFBundleName",
+        "value": "Cocos Lua"
+      }
+    ],
+    "provision": {
+      "app_id_prefix": "ZZZZZ99999",
+      "creation_date": "2025-01-01",
+      "device_count": 2,
+      "expiration_date": "2026-01-01",
+      "name": "Dev profile",
+      "present": true,
+      "provisions_all_devices": false,
+      "team_id": "ZZZZZ99999",
+      "team_name": "Example Ltd"
+    },
+    "sdk": {
+      "compiler": "com.apple.compilers.llvm.clang.1_0",
+      "name": "iphoneos",
+      "platform_version": "17.0",
+      "xcode": "1500"
+    },
+    "selected_name": "Cocos Lua",
+    "signature_integrity": {
+      "checked": 812,
+      "examples": [],
+      "extra": 0,
+      "missing": 0,
+      "modified": 0
+    },
+    "version": "2.0"
+  },
+  "classification": {
+    "category": "game",
+    "confidence": 0.9,
+    "evidence": [
+      {
+        "kind": "heuristic",
+        "ref": "engine=cocos",
+        "detail": ""
+      }
+    ],
+    "scores": {
+      "game": 1.2
+    },
+    "subcategory": "casual"
+  },
+  "structure": {
+    "binaries": [
+      {
+        "dylibs": [
+          {
+            "kind": "system",
+            "load_kind": "load",
+            "path": "/usr/lib/libz.1.dylib",
+            "weak": false
+          }
+        ],
+        "is_fat": false,
+        "kind": "execute",
+        "parse_warnings": [],
+        "path": "Payload/CocosLua.app/CocosLua",
+        "rel": "CocosLua",
+        "role": "main",
+        "rpaths": [
+          "@executable_path/Frameworks"
+        ],
+        "size": 12000000,
+        "slices": [
+          {
+            "arch": "arm64",
+            "cryptid": 1,
+            "cryptsize": 4096,
+            "encrypted": true,
+            "entitlements_keys": [
+              "application-identifier"
+            ],
+            "filetype": "execute",
+            "has_cpp": true,
+            "has_objc": true,
+            "has_swift": false,
+            "is_pie": true,
+            "min_os": "12.0",
+            "platform": "ios",
+            "sdk": "17.0",
+            "signed": true,
+            "stripped": true,
+            "team_id": "ABCDE12345",
+            "uuid": "11111111-2222-3333-4444-555555555555"
+          }
+        ]
+      }
+    ],
+    "engine": {
+      "candidates": [
+        {
+          "confidence": 0.8,
+          "confirmed": true,
+          "evidence": [
+            {
+              "kind": "string",
+              "ref": "cocos2d::Director",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "family": "cocos",
+          "id": "cocos",
+          "kind": "game_engine",
+          "name": "Cocos2d-x",
+          "signals_matched": [
+            "string:cocos2d::"
+          ]
+        }
+      ],
+      "primary": {
+        "confidence": 0.8,
+        "confirmed": true,
+        "evidence": [
+          {
+            "kind": "string",
+            "ref": "cocos2d::Director",
+            "detail": ""
+          }
+        ],
+        "extra": {},
+        "family": "cocos",
+        "id": "cocos",
+        "kind": "game_engine",
+        "name": "Cocos2d-x",
+        "signals_matched": [
+          "string:cocos2d::"
+        ]
+      }
+    },
+    "languages": [
+      {
+        "confidence": 0.8,
+        "evidence": [],
+        "lang": "cpp"
+      },
+      {
+        "confidence": 0.8,
+        "evidence": [],
+        "lang": "lua"
+      }
+    ],
+    "macho_summary": {
+      "all_encrypted": true,
+      "any_encrypted": true,
+      "archs": [
+        "arm64"
+      ],
+      "languages_hint": [
+        "objc",
+        "cpp",
+        "csharp"
+      ],
+      "main_binary": "Payload/CocosLua.app/CocosLua",
+      "min_os": "12.0"
+    },
+    "nested_units": [
+      {
+        "file_count": 100,
+        "kind": "framework",
+        "name": "UnityFramework",
+        "path": "Payload/DemoGame.app/Frameworks/UnityFramework.framework",
+        "rel": "Frameworks/UnityFramework.framework",
+        "size": 97000000
+      },
+      {
+        "file_count": 6,
+        "kind": "appex",
+        "name": "Share",
+        "path": "Payload/DemoGame.app/PlugIns/Share.appex",
+        "rel": "PlugIns/Share.appex",
+        "size": 300000
+      }
+    ],
+    "tree": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "count": 2500,
+              "name": "Raw",
+              "size": 400000000
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [],
+                      "count": 1,
+                      "name": "global-metadata.dat",
+                      "size": 60000000
+                    }
+                  ],
+                  "count": 1,
+                  "name": "Metadata",
+                  "size": 60000000
+                }
+              ],
+              "count": 40,
+              "name": "Managed",
+              "size": 120000000
+            },
+            {
+              "children": [],
+              "count": 300,
+              "name": "Resources",
+              "size": 80000000
+            }
+          ],
+          "count": 2900,
+          "name": "Data",
+          "size": 612000000
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "count": 100,
+              "name": "UnityFramework.framework",
+              "size": 97000000
+            }
+          ],
+          "count": 120,
+          "name": "Frameworks",
+          "size": 98000000
+        },
+        {
+          "children": [],
+          "count": 1,
+          "name": "DemoGame",
+          "size": 12000000
+        },
+        {
+          "children": [],
+          "count": 1,
+          "name": "Assets.car",
+          "size": 8000000
+        },
+        {
+          "children": [],
+          "count": 3,
+          "name": "zh-Hans.lproj",
+          "size": 40000
+        }
+      ],
+      "count": 3120,
+      "name": "DemoGame.app",
+      "size": 734003200
+    }
+  },
+  "resources": {
+    "archives": [],
+    "by_category": [
+      {
+        "category": "assetbundle",
+        "count": 410,
+        "percent": 54.5,
+        "size": 400000000
+      },
+      {
+        "category": "engine_data",
+        "count": 120,
+        "percent": 20.4,
+        "size": 150000000
+      },
+      {
+        "category": "framework",
+        "count": 100,
+        "percent": 13.2,
+        "size": 97000000
+      },
+      {
+        "category": "image",
+        "count": 900,
+        "percent": 8.2,
+        "size": 60000000
+      },
+      {
+        "category": "other",
+        "count": 1589,
+        "percent": 2.1,
+        "size": 15003200
+      },
+      {
+        "category": "executable",
+        "count": 1,
+        "percent": 1.6,
+        "size": 12000000
+      }
+    ],
+    "by_ext": [
+      {
+        "count": 410,
+        "ext": ".bundle",
+        "size": 400000000
+      },
+      {
+        "count": 3,
+        "ext": ".dat",
+        "size": 61000000
+      },
+      {
+        "count": 800,
+        "ext": ".png",
+        "size": 40000000
+      },
+      {
+        "count": 5,
+        "ext": "",
+        "size": 120000
+      }
+    ],
+    "files_total": 3120,
+    "files_truncated": true,
+    "inventory_file": "inventory.json",
+    "localizations": [
+      "Base",
+      "en",
+      "zh-Hans"
+    ],
+    "structure_hints": {
+      "has": {
+        "Assets_car": true,
+        "Data": true,
+        "Frameworks": true,
+        "PlugIns": true,
+        "SC_Info": false,
+        "Watch": false,
+        "_CodeSignature": true,
+        "embedded_mobileprovision": false,
+        "iTunesMetadata_plist": true
+      },
+      "top_level_dirs": [
+        "Data",
+        "Frameworks"
+      ]
+    },
+    "top_files": [
+      {
+        "category": "assetbundle",
+        "path": "Payload/DemoGame.app/Data/Raw/aa/big|odd`name.bundle",
+        "size": 90000000
+      },
+      {
+        "category": "engine_data",
+        "path": "Payload/DemoGame.app/Data/Managed/Metadata/global-metadata.dat",
+        "size": 60000000
+      }
+    ]
+  },
+  "libraries": [
+    {
+      "category": "ads",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/AppLovinSDK.framework",
+          "detail": ""
+        }
+      ],
+      "id": "applovin",
+      "kind": "framework",
+      "name": "AppLovinSDK",
+      "purpose_en": "Ad mediation",
+      "purpose_zh": "广告聚合",
+      "tags": [
+        "ads",
+        "tracking"
+      ],
+      "vendor": "AppLovin"
+    },
+    {
+      "category": "payment",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/StoreKit.framework",
+          "detail": ""
+        }
+      ],
+      "id": "storekit",
+      "kind": "system",
+      "name": "StoreKit",
+      "purpose_en": "In-app purchase",
+      "purpose_zh": "应用内购买",
+      "tags": [],
+      "vendor": "Apple"
+    }
+  ],
+  "protection": {
+    "antidebug": {
+      "hits": []
+    },
+    "codesign": {
+      "entitlements_keys": [],
+      "get_task_allow": true,
+      "signature_type": "development",
+      "signed": true,
+      "team_id": "ZZZZZ99999"
+    },
+    "fairplay": {
+      "encrypted_binaries": [
+        "Payload/CocosLua.app/CocosLua"
+      ],
+      "main_encrypted": true,
+      "sc_info_present": true,
+      "scope": "all",
+      "total_binaries": 1,
+      "verdict": "yes"
+    },
+    "findings": [
+      {
+        "id": "meta.fairplay_container",
+        "verdict": "yes",
+        "confidence": 0.9,
+        "title": "SC_Info present",
+        "summary": "",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "file",
+            "ref": "SC_Info/CocosLua.sinf",
+            "detail": ""
+          }
+        ],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "engine.script.encrypted",
+        "verdict": "suspected",
+        "confidence": 0.7,
+        "title": "Lua scripts look XXTEA-encrypted",
+        "summary": "180 of 184 scripts lack a valid Lua header; bytecode is not encryption but these are not bytecode either",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "symbol",
+            "ref": "xxtea_decrypt",
+            "detail": ""
+          }
+        ],
+        "remediation": "Look for the sign/key setup in the engine init code.",
+        "tags": [
+          "engine:cocos"
+        ]
+      },
+      {
+        "id": "protect.fairplay",
+        "verdict": "yes",
+        "confidence": 0.98,
+        "title": "FairPlay-encrypted",
+        "summary": "cryptid=1 in every binary",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "macho",
+            "ref": "Payload/CocosLua.app/CocosLua",
+            "detail": "cryptid=1"
+          }
+        ],
+        "remediation": "Provide an already-decrypted IPA to analyse the binary.",
+        "tags": []
+      }
+    ],
+    "hardening": {},
+    "jailbreak_detect": {
+      "hits": []
+    },
+    "obfuscation": {},
+    "packer": {}
+  },
+  "engine_details": {
+    "_checkers": {
+      "cocos": {
+        "duration_s": 0.3,
+        "error": null,
+        "reason": null,
+        "status": "ok"
+      },
+      "egret": {
+        "duration_s": 0.0,
+        "error": null,
+        "reason": "not applicable",
+        "status": "skipped"
+      }
+    },
+    "cocos": {
+      "bundles": [],
+      "resources": {
+        "csb": 40,
+        "encrypted_suspected": 0,
+        "plist_atlas": 12
+      },
+      "scripts": {
+        "bytecode": 0,
+        "counts": {
+          ".lua": 4,
+          ".luac": 180
+        },
+        "lua": {
+          "bytecode": {
+            "arch_bits": {},
+            "by_version": {},
+            "invalid": 180,
+            "stripped_count": 0
+          },
+          "consistency": {
+            "notes": [],
+            "ok": true
+          },
+          "custom_lua_suspected": true,
+          "dialect_hints": [],
+          "files": {
+            "bytecode": 0,
+            "compressed": 0,
+            "encrypted_suspected": 180,
+            "plain": 4,
+            "total": 184
+          },
+          "runtime_versions": [
+            {
+              "confidence": 0.5,
+              "flavor": "luajit",
+              "source": "native_string",
+              "version": "2.1"
+            }
+          ]
+        },
+        "plain": 4,
+        "samples": [
+          "src/app/MyApp.luac",
+          "src/main.lua"
+        ],
+        "suspected_encrypted": 180
+      },
+      "variant": "cocos2d-x-lua",
+      "version_hint": "3.x",
+      "xxtea_hint": {
+        "key_extracted": false,
+        "sign_prefix": "XXTEA",
+        "symbol_found": true
+      }
+    },
+    "detect": {
+      "candidates": [
+        {
+          "confidence": 0.8,
+          "confirmed": true,
+          "evidence": [
+            {
+              "kind": "string",
+              "ref": "cocos2d::Director",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "family": "cocos",
+          "id": "cocos",
+          "kind": "game_engine",
+          "name": "Cocos2d-x",
+          "signals_matched": [
+            "string:cocos2d::"
+          ]
+        }
+      ],
+      "custom": {
+        "conditions": {},
+        "confidence": 0.1,
+        "deviations": [],
+        "evidence": [],
+        "next_steps": [],
+        "open_source_base": [],
+        "profile_ref": "engine.fingerprint",
+        "verdict": "no"
+      },
+      "extra": {},
+      "is_game_engine": true,
+      "languages": [
+        {
+          "confidence": 0.8,
+          "evidence": [],
+          "lang": "cpp"
+        },
+        {
+          "confidence": 0.8,
+          "evidence": [],
+          "lang": "lua"
+        }
+      ],
+      "primary": {
+        "confidence": 0.8,
+        "confirmed": true,
+        "evidence": [
+          {
+            "kind": "string",
+            "ref": "cocos2d::Director",
+            "detail": ""
+          }
+        ],
+        "extra": {},
+        "family": "cocos",
+        "id": "cocos",
+        "kind": "game_engine",
+        "name": "Cocos2d-x",
+        "signals_matched": [
+          "string:cocos2d::"
+        ]
+      },
+      "wrapper": {
+        "embedded": [
+          {
+            "confidence": 0.7,
+            "id": "lua",
+            "name": "Lua"
+          }
+        ],
+        "host": {
+          "confidence": 0.8,
+          "id": "cocos",
+          "name": "Cocos2d-x"
+        }
+      }
+    },
+    "fingerprint": {
+      "animation": [],
+      "asset_formats": [],
+      "audio": [],
+      "containers": [],
+      "host": {},
+      "network": [],
+      "physics": [],
+      "render": {
+        "gles": {
+          "confidence": 0.8,
+          "evidence": [],
+          "extra": {},
+          "id": "gles",
+          "name": "OpenGL ES"
+        }
+      },
+      "script_vms": [
+        {
+          "confidence": 0.5,
+          "evidence": [],
+          "extra": {},
+          "id": "luajit",
+          "name": "LuaJIT"
+        }
+      ],
+      "shader_formats": [],
+      "summary_text": ""
+    }
+  },
+  "privacy": {
+    "ats": {
+      "allows_arbitrary_loads": true,
+      "exception_domains": [
+        "cdn.example.com"
+      ]
+    },
+    "permissions": [
+      {
+        "description": "Scan codes",
+        "key": "NSCameraUsageDescription",
+        "level": "medium",
+        "localized": {
+          "en": "Scan codes",
+          "zh-Hans": "用于扫码"
+        },
+        "meaning_en": "Camera access",
+        "meaning_zh": "访问相机"
+      },
+      {
+        "description": "Always location",
+        "key": "NSLocationAlwaysUsageDescription",
+        "level": "high",
+        "localized": {
+          "en": "Always location"
+        },
+        "meaning_en": "Always-on location",
+        "meaning_zh": "始终访问位置"
+      }
+    ],
+    "query_schemes": [
+      "alipay",
+      "weixin"
+    ],
+    "trackers": [
+      {
+        "id": "applovin",
+        "name": "AppLovinSDK",
+        "tags": [
+          "ads",
+          "tracking"
+        ]
+      }
+    ],
+    "url_schemes": [
+      "demogame",
+      "fb123456"
+    ]
+  },
+  "stages": [
+    {
+      "name": "ingest",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "inventory",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "meta",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "meta.identity",
+        "meta.distribution",
+        "meta.fairplay_container"
+      ]
+    },
+    {
+      "name": "macho",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "macho.summary"
+      ]
+    },
+    {
+      "name": "engine.fingerprint",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "engine.fingerprint"
+      ]
+    },
+    {
+      "name": "engine.detect",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "engine.primary",
+        "engine.wrapper"
+      ]
+    },
+    {
+      "name": "engine.other",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "engine.script.encrypted",
+        "engine.cocos.variant"
+      ]
+    },
+    {
+      "name": "engine.unity",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "unity not detected",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.unity.hotfix",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency engine.unity skipped",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "libs",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "libs.summary"
+      ]
+    },
+    {
+      "name": "protect",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "protect.fairplay"
+      ]
+    },
+    {
+      "name": "classify",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "classify.category"
+      ]
+    },
+    {
+      "name": "report",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "meta.identity",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "App identity resolved",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "meta.distribution",
+      "verdict": "suspected",
+      "confidence": 0.5,
+      "title": "Distribution: development",
+      "summary": "",
+      "params": {
+        "type": "development"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "meta.fairplay_container",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "SC_Info present",
+      "summary": "",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "SC_Info/CocosLua.sinf",
+          "detail": ""
+        }
+      ],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "macho.summary",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "1 Mach-O binary parsed",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.fingerprint",
+      "verdict": "yes",
+      "confidence": 0.6,
+      "title": "Engine capability profile built",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.primary",
+      "verdict": "yes",
+      "confidence": 0.8,
+      "title": "Primary engine: Cocos2d-x",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.wrapper",
+      "verdict": "suspected",
+      "confidence": 0.5,
+      "title": "Cocos2d-x host with embedded Lua",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.script.encrypted",
+      "verdict": "suspected",
+      "confidence": 0.7,
+      "title": "Lua scripts look XXTEA-encrypted",
+      "summary": "180 of 184 scripts lack a valid Lua header; bytecode is not encryption but these are not bytecode either",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "symbol",
+          "ref": "xxtea_decrypt",
+          "detail": ""
+        }
+      ],
+      "remediation": "Look for the sign/key setup in the engine init code.",
+      "tags": [
+        "engine:cocos"
+      ]
+    },
+    {
+      "id": "engine.cocos.variant",
+      "verdict": "yes",
+      "confidence": 0.8,
+      "title": "Cocos2d-x Lua",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": [
+        "engine:cocos"
+      ]
+    },
+    {
+      "id": "libs.summary",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "2 libraries identified",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "protect.fairplay",
+      "verdict": "yes",
+      "confidence": 0.98,
+      "title": "FairPlay-encrypted",
+      "summary": "cryptid=1 in every binary",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "macho",
+          "ref": "Payload/CocosLua.app/CocosLua",
+          "detail": "cryptid=1"
+        }
+      ],
+      "remediation": "Provide an already-decrypted IPA to analyse the binary.",
+      "tags": []
+    },
+    {
+      "id": "classify.category",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Category: game",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    }
+  ],
+  "warnings": [
+    "inventory.json was not provided by the inventory stage; wrote the (possibly truncated) file list"
+  ],
+  "redaction": {
+    "applied": true,
+    "counts": {
+      "home_path": 1,
+      "udid": 2
+    },
+    "fields": [
+      "home_path",
+      "itunes.apple-id",
+      "udid"
+    ]
+  },
+  "summary": {
+    "build": "20",
+    "bundle_id": "com.example.cocoslua",
+    "category": {
+      "confidence": 0.9,
+      "id": "game",
+      "subcategory": "casual"
+    },
+    "dump": {
+      "error_code": null,
+      "ok": null,
+      "reasons": [],
+      "state": "not_unity",
+      "verdict": "n/a"
+    },
+    "engine": {
+      "candidates": [],
+      "custom": {
+        "confidence": 0.1,
+        "verdict": "no"
+      },
+      "is_game_engine": true,
+      "known": true,
+      "primary": {
+        "confidence": 0.8,
+        "confirmed": true,
+        "id": "cocos",
+        "name": "Cocos2d-x"
+      },
+      "wrapper_embedded": [
+        "lua"
+      ],
+      "wrapper_host": "cocos"
+    },
+    "fairplay": {
+      "confidence": 0.98,
+      "encrypted": 1,
+      "scope": "all",
+      "total": 1,
+      "verdict": "yes"
+    },
+    "languages": [
+      {
+        "confidence": 0.8,
+        "lang": "cpp"
+      },
+      {
+        "confidence": 0.8,
+        "lang": "lua"
+      }
+    ],
+    "libs": {
+      "by_category": {
+        "ads": 1,
+        "payment": 1
+      },
+      "privacy_tags": {
+        "ads": [
+          "applovin"
+        ],
+        "analytics": [],
+        "social": [],
+        "tracking": [
+          "applovin"
+        ]
+      },
+      "unknown": []
+    },
+    "name": "Cocos Lua",
+    "problem_stages": [
+      {
+        "name": "engine.unity",
+        "reason": "unity not detected",
+        "status": "skipped"
+      },
+      {
+        "name": "engine.unity.hotfix",
+        "reason": "dependency engine.unity skipped",
+        "status": "skipped"
+      }
+    ],
+    "protections": [
+      {
+        "confidence": 0.7,
+        "id": "engine.script.encrypted",
+        "verdict": "suspected"
+      }
+    ],
+    "risks": [
+      {
+        "key": "fairplay_encrypted",
+        "params": {
+          "scope": "all",
+          "verdict": "yes"
+        }
+      },
+      {
+        "key": "script_protection",
+        "params": {
+          "which": [
+            "engine"
+          ]
+        }
+      },
+      {
+        "key": "trackers",
+        "params": {
+          "count": 1
+        }
+      },
+      {
+        "key": "high_permissions",
+        "params": {
+          "count": 1
+        }
+      }
+    ],
+    "signing": {
+      "distribution": "development",
+      "distribution_confidence": 0.5,
+      "distribution_verdict": "suspected",
+      "signature_type": "development",
+      "signed": true,
+      "team_id": "ZZZZZ99999"
+    },
+    "unity": null,
+    "unity_state": "not_unity",
+    "version": "2.0"
+  },
+  "artifacts": {
+    "inventory.json": "inventory.json",
+    "report.json": "report.json",
+    "report.md": "report.md"
+  },
+  "config": {
+    "assume_yes": false,
+    "engines_user_dir": null,
+    "extract": [],
+    "formats": [
+      "md",
+      "json"
+    ],
+    "il2cpp": {
+      "backend_order": [],
+      "dotnet_path": null,
+      "enabled": true,
+      "force_dump": false,
+      "timeout_s": 900,
+      "tool_path": null
+    },
+    "keep_workdir": false,
+    "lang": "en",
+    "libs_user_path": null,
+    "limits": {
+      "max_file_size": 2147483648,
+      "max_files": 200000,
+      "max_ratio": 200.0,
+      "max_total_extract": 8589934592
+    },
+    "offline": false,
+    "output_dir": "",
+    "redact": true,
+    "signature_integrity": true,
+    "skip": [],
+    "stages": null,
+    "unity": {
+      "bundle_deep_sample": 200,
+      "hotfix_scan_bundles": 100,
+      "hotfix_scan_bytes_per_bundle": 67108864
+    },
+    "verbose": 0
+  }
+}

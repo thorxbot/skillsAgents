@@ -1,8 +1,9 @@
-"""IL2CPP dump contract: request/result types, error codes, backend Protocol (frozen).
+"""IL2CPP dump: frozen contract (request/result types, error codes, backend Protocol) plus the WP6 toolchain.
 
-WP6 implements ``tools.py``, ``dotnet.py``, ``runner.py``, ``backends.py`` and ``summarize.py`` and
-replaces ``run_il2cpp_dump`` by re-exporting the real implementation from ``runner.py`` while
-keeping this signature.
+Submodules: ``tools`` (tool supply + ``tools`` CLI), ``dotnet`` (runtime discovery/installation),
+``backends`` (Il2CppDumper / Cpp2IL / Il2CppInspectorRedux adapters), ``runner`` (non-interactive
+supervised runs, ``run_il2cpp_dump``), ``summarize`` (streaming ``dump.cs`` summary), ``errors``.
+The contract classes below are defined first so the submodules can import them from the package.
 """
 from __future__ import annotations
 
@@ -14,7 +15,7 @@ from typing import Any, Dict, List, Optional, Protocol, runtime_checkable
 from ..config import Config
 
 __all__ = ["Il2CppErrorCode", "Il2CppRunRequest", "Il2CppRunResult", "ProvisionResult", "Il2CppBackend",
-           "run_il2cpp_dump"]
+           "run_il2cpp_dump", "ToolManager", "ResolvedTool", "summarize_dump", "DumpSummary", "select_backends"]
 
 
 class Il2CppErrorCode(str, Enum):
@@ -65,6 +66,12 @@ class ProvisionResult:
     version: str = ""
     error_code: Optional[Il2CppErrorCode] = None
     message: str = ""
+    # --- additive optional fields (WP6) ---
+    env: Dict[str, str] = field(default_factory=dict)      # environment to launch the backend with
+    tool_dir: Optional[Path] = None                        # tool-owned directory (copied per run when it holds config.json)
+    kind: str = ""                                         # dotnet_dll | dotnet_apphost | native | python
+    source: str = ""                                       # explicit | env | path | cache | download
+    warnings: List[str] = field(default_factory=list)
 
 
 @runtime_checkable
@@ -78,6 +85,8 @@ class Il2CppBackend(Protocol):
     def run(self, req: Il2CppRunRequest, provisioned: ProvisionResult, cfg: Config) -> Il2CppRunResult: ...
 
 
-def run_il2cpp_dump(req: Il2CppRunRequest, tools: Any, cfg: Config) -> Il2CppRunResult:
-    """Run the backend chain for ``req`` (implemented by WP6 in ``runner.py``)."""
-    raise NotImplementedError("run_il2cpp_dump is provided by WP6 (il2cpp/runner.py)")
+# The real implementation lives in runner.py (imported last: the submodules import the names above).
+from .runner import run_il2cpp_dump  # noqa: E402
+from .tools import ToolManager, ResolvedTool  # noqa: E402
+from .summarize import summarize_dump, DumpSummary  # noqa: E402
+from .backends import select_backends  # noqa: E402

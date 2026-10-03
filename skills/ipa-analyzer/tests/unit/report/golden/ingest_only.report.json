@@ -1,0 +1,328 @@
+{
+  "schema_version": "1.0",
+  "tool": {
+    "name": "ipa-analyzer",
+    "version": ""
+  },
+  "generated_at": "",
+  "input": {
+    "kind": "zip",
+    "path": "C:\\Users\\[user]\\Desktop\\broken.zip",
+    "sha256": "f526795c95399cea27c055c842c3d6ab018ed0fa4f66f701c28ab22dec28237b",
+    "size": 1024
+  },
+  "app": {},
+  "classification": {},
+  "structure": {
+    "binaries": [],
+    "engine": {
+      "candidates": [],
+      "primary": null
+    },
+    "languages": [],
+    "nested_units": [],
+    "tree": null
+  },
+  "resources": {
+    "archives": [],
+    "by_category": [],
+    "by_ext": [],
+    "localizations": [],
+    "top_files": []
+  },
+  "libraries": [],
+  "protection": {
+    "findings": []
+  },
+  "engine_details": {},
+  "privacy": {
+    "ats": {},
+    "permissions": [],
+    "query_schemes": [],
+    "trackers": [],
+    "url_schemes": []
+  },
+  "stages": [
+    {
+      "name": "ingest",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [
+        "no Info.plist found"
+      ],
+      "finding_ids": []
+    },
+    {
+      "name": "inventory",
+      "status": "failed",
+      "duration_s": 0,
+      "error": "OSError: [Errno 5] Input/output error",
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "meta",
+      "status": "failed",
+      "duration_s": 0,
+      "error": "plistlib.InvalidFileException: Invalid file",
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "macho",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency inventory failed",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.fingerprint",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency inventory failed",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.detect",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency inventory failed",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.other",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency engine.detect skipped",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.unity",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency engine.detect skipped",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.unity.hotfix",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency engine.unity skipped",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "libs",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency inventory failed",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "protect",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "dependency inventory failed",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "classify",
+      "status": "skipped",
+      "duration_s": 0,
+      "error": null,
+      "reason": "not selected by --stages",
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "report",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    }
+  ],
+  "findings": [],
+  "warnings": [
+    "[ingest] no Info.plist found"
+  ],
+  "redaction": {
+    "applied": true,
+    "counts": {
+      "home_path": 1
+    },
+    "fields": [
+      "home_path"
+    ]
+  },
+  "summary": {
+    "build": null,
+    "bundle_id": null,
+    "category": null,
+    "dump": {
+      "error_code": null,
+      "ok": null,
+      "reasons": [],
+      "state": "unknown",
+      "verdict": "unknown"
+    },
+    "engine": {
+      "candidates": [],
+      "custom": null,
+      "is_game_engine": null,
+      "known": false,
+      "primary": null,
+      "wrapper_embedded": [],
+      "wrapper_host": null
+    },
+    "fairplay": null,
+    "languages": [],
+    "libs": null,
+    "name": null,
+    "problem_stages": [
+      {
+        "name": "inventory",
+        "reason": "OSError: [Errno 5] Input/output error",
+        "status": "failed"
+      },
+      {
+        "name": "meta",
+        "reason": "plistlib.InvalidFileException: Invalid file",
+        "status": "failed"
+      },
+      {
+        "name": "macho",
+        "reason": "dependency inventory failed",
+        "status": "skipped"
+      },
+      {
+        "name": "engine.fingerprint",
+        "reason": "dependency inventory failed",
+        "status": "skipped"
+      },
+      {
+        "name": "engine.detect",
+        "reason": "dependency inventory failed",
+        "status": "skipped"
+      },
+      {
+        "name": "engine.other",
+        "reason": "dependency engine.detect skipped",
+        "status": "skipped"
+      },
+      {
+        "name": "engine.unity",
+        "reason": "dependency engine.detect skipped",
+        "status": "skipped"
+      },
+      {
+        "name": "engine.unity.hotfix",
+        "reason": "dependency engine.unity skipped",
+        "status": "skipped"
+      },
+      {
+        "name": "libs",
+        "reason": "dependency inventory failed",
+        "status": "skipped"
+      },
+      {
+        "name": "protect",
+        "reason": "dependency inventory failed",
+        "status": "skipped"
+      },
+      {
+        "name": "classify",
+        "reason": "not selected by --stages",
+        "status": "skipped"
+      }
+    ],
+    "protections": [],
+    "risks": [
+      {
+        "key": "stage_failed",
+        "params": {
+          "stages": [
+            "inventory",
+            "meta"
+          ]
+        }
+      }
+    ],
+    "signing": {
+      "distribution": null,
+      "distribution_confidence": null,
+      "distribution_verdict": null,
+      "signature_type": null,
+      "signed": null,
+      "team_id": null
+    },
+    "unity": null,
+    "unity_state": "unknown",
+    "version": null
+  },
+  "artifacts": {
+    "report.json": "report.json",
+    "report.md": "report.md"
+  },
+  "config": {
+    "assume_yes": false,
+    "engines_user_dir": null,
+    "extract": [],
+    "formats": [
+      "md",
+      "json"
+    ],
+    "il2cpp": {
+      "backend_order": [],
+      "dotnet_path": null,
+      "enabled": true,
+      "force_dump": false,
+      "timeout_s": 900,
+      "tool_path": null
+    },
+    "keep_workdir": false,
+    "lang": "en",
+    "libs_user_path": null,
+    "limits": {
+      "max_file_size": 2147483648,
+      "max_files": 200000,
+      "max_ratio": 200.0,
+      "max_total_extract": 8589934592
+    },
+    "offline": false,
+    "output_dir": "",
+    "redact": true,
+    "signature_integrity": true,
+    "skip": [],
+    "stages": [
+      "ingest"
+    ],
+    "unity": {
+      "bundle_deep_sample": 200,
+      "hotfix_scan_bundles": 100,
+      "hotfix_scan_bytes_per_bundle": 67108864
+    },
+    "verbose": 0
+  }
+}

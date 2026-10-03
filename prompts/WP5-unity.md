@@ -50,6 +50,12 @@
 - ✅ 版本多来源冲突有单测。
 - ✅ 单测通过。
 
+## 补充(Htp 块级加密 + 真实样本)
+先读 `docs/05-REAL-SAMPLES-AND-HTP.md`。
+- AssetBundle 分类新增 **`block_encrypted_suspected`**(头部标准 + BlocksInfo 可解 + 第一个 LZ4/LZ4HC 数据块解压失败),证据里记录块前 256 字节内跨块重复出现的固定字节序列(疑似 marker)。`by_class` 同步加此键(契约新增可选键,允许;请在 `references/unity-assetbundle.md` 写明)。**不实现解密。**
+- 用 `unity_builder` 补一个夹具:UnityFS 头 + 可解 BlocksInfo + 数据块是"前 256 字节内含固定 marker + 其后高熵"的 LZ4 块,断言归类为 `block_encrypted_suspected`;同时保证"正常 LZ4 块"不会被误判。
+- 真实样本(只读,见该文档):`GoodCoffee`(2368 个 bundle)与 `JiangNan`(Unity,metadata 在)是 Unity 真实样本。完成后请对它们的 metadata 与采样 bundle 各跑一次判定并在回报中给出结果(版本号、metadata 版本、判定、bundle 分类计数)。不要把样本内容复制进仓库。
+
 ## 诚信要求
 - 本阶段所有"加密"结论都是**启发式**:报告措辞与置信度必须体现;没把握的绝不输出 `no`。
 - 不尝试解密 metadata / bundle,不实现任何破解;可记录"疑似 XOR 单字节密钥"作为**证据**,不用于自动还原整个文件。

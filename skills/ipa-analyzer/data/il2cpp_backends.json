@@ -1,0 +1,653 @@
+{
+ "schema_version": 1,
+ "researched_on": "2026-10-03",
+ "notes": [
+  "All facts below were checked on 2026-10-03 against the upstream repositories / release pages named in 'sources'.",
+  "Items tagged UNVERIFIED could not be exercised on this machine (macOS arm64, .NET 8.0.25 runtime, no real IPA).",
+  "SHA256 'computed-locally' = hashed from bytes downloaded during research; 'github-api-digest' = taken from the GitHub release API 'digest' field (one of them was cross-checked against a local download)."
+ ],
+ "default_order": [
+  "il2cppdumper",
+  "cpp2il",
+  "redux"
+ ],
+ "fallback_on": [
+  "E_METADATA_VERSION_UNSUPPORTED",
+  "E_REGISTRATION_NOT_FOUND",
+  "E_DOTNET_MISSING",
+  "E_TOOL_DOWNLOAD_FAILED",
+  "E_UNKNOWN"
+ ],
+ "download": {
+  "allowed_hosts": [
+   "github.com",
+   "release-assets.githubusercontent.com",
+   "objects.githubusercontent.com",
+   "dot.net",
+   "builds.dotnet.microsoft.com",
+   "aka.ms"
+  ],
+  "max_bytes": 209715200,
+  "timeout_s": 60,
+  "retries": 3,
+  "note": "github.com release URLs 302 to release-assets.githubusercontent.com (observed 2026-10-03); dot.net/v1/dotnet-install.* 301 to builds.dotnet.microsoft.com; aka.ms/dotnet/* 301 to builds.dotnet.microsoft.com."
+ },
+ "dotnet": {
+  "install_script": {
+   "sh_url": "https://dot.net/v1/dotnet-install.sh",
+   "ps1_url": "https://dot.net/v1/dotnet-install.ps1",
+   "sha256": null,
+   "note": "Microsoft's script changes over time so it is not pinned; it is fetched over HTTPS from the allow-listed host only. Observed sizes 2026-10-03: sh 63563 B, ps1 76676 B. The script needs curl or wget on POSIX."
+  },
+  "default_install_channel": "8.0",
+  "roll_forward": "Major",
+  "roll_forward_verified": "VERIFIED 2026-10-03 on Microsoft.NETCore.App 8.0.25 (arm64 macOS): Il2CppDumper net6 and net7 builds fail with exit code 150 ('You must install or update .NET') without DOTNET_ROLL_FORWARD and run with DOTNET_ROLL_FORWARD=Major and =LatestMajor. Roll-forward to .NET 10 is UNVERIFIED (no 10.x runtime available).",
+  "missing_framework_exit_code": 150,
+  "missing_framework_markers": [
+   "You must install or update .NET",
+   "A fatal error occurred. The required library",
+   "Framework: 'Microsoft.NETCore.App'"
+  ]
+ },
+ "backends": {
+  "il2cppdumper": {
+   "display_name": "Il2CppDumper",
+   "role": "primary",
+   "maturity": "stable",
+   "repo": "https://github.com/Perfare/Il2CppDumper",
+   "license": "MIT",
+   "env_var": "IL2CPPDUMPER_PATH",
+   "executable_names": [
+    "Il2CppDumper.dll",
+    "Il2CppDumper.exe",
+    "Il2CppDumper"
+   ],
+   "version": "6.7.46",
+   "tag": "v6.7.46",
+   "released": "2024-07-06",
+   "upstream_state": "Latest release is v6.7.46 (2024-07-06); last push to master 2024-08-18; master is unreleased and retargets net6/net8.",
+   "assets": [
+    {
+     "filename": "Il2CppDumper-net6-v6.7.46.zip",
+     "url": "https://github.com/Perfare/Il2CppDumper/releases/download/v6.7.46/Il2CppDumper-net6-v6.7.46.zip",
+     "size": 406027,
+     "sha256": "db9bbbc538e33abfb057c7757ae5d6c1f16a05fdc0d13af8a5a67ea31faaba0c",
+     "sha256_source": "computed-locally",
+     "id": "net6",
+     "archive": "zip",
+     "kind": "dotnet_dll",
+     "platforms": [
+      "any"
+     ],
+     "tfm": "net6.0",
+     "min_dotnet": 6,
+     "entry": "Il2CppDumper.dll"
+    },
+    {
+     "filename": "Il2CppDumper-net7-v6.7.46.zip",
+     "url": "https://github.com/Perfare/Il2CppDumper/releases/download/v6.7.46/Il2CppDumper-net7-v6.7.46.zip",
+     "size": 408192,
+     "sha256": "c7f365347ce6bd816cdf774830e44ac46aea59c391c94f388605667394d6aba2",
+     "sha256_source": "computed-locally",
+     "id": "net7",
+     "archive": "zip",
+     "kind": "dotnet_dll",
+     "platforms": [
+      "any"
+     ],
+     "tfm": "net7.0",
+     "min_dotnet": 7,
+     "entry": "Il2CppDumper.dll"
+    },
+    {
+     "filename": "Il2CppDumper-win-v6.7.46.zip",
+     "url": "https://github.com/Perfare/Il2CppDumper/releases/download/v6.7.46/Il2CppDumper-win-v6.7.46.zip",
+     "size": 11215992,
+     "sha256": "f5fc60dfc5c034c1ff3fc651514416ebd47658a63493207734537fd25fa2dea2",
+     "sha256_source": "computed-locally",
+     "id": "win_selfcontained",
+     "archive": "zip",
+     "kind": "native",
+     "platforms": [
+      "windows"
+     ],
+     "tfm": "net6.0 (self-contained single file, UNVERIFIED)",
+     "min_dotnet": 0,
+     "entry": "Il2CppDumper.exe"
+    }
+   ],
+   "asset_selection": {
+    "default": "net6",
+    "windows_without_dotnet": "win_selfcontained"
+   },
+   "dotnet": {
+    "min_major": 6,
+    "roll_forward": "Major",
+    "install_channel": "8.0"
+   },
+   "metadata_versions": {
+    "min": 16,
+    "max": 31,
+    "note": "Metadata.cs rejects version <16 or >31 with 'ERROR: Metadata file supplied is not a supported version[N].'; v31 added in v6.7.46 (commit 'support v31'); README feature list says Unity 5.3 - 2022.2 (outdated vs source). Metadata >=35 (Unity 6000.3+) is unsupported."
+   },
+   "requires_unity_version": false,
+   "mach_o": {
+    "fat": "prompts 'Select Platform: 1.64bit ...' via Console.ReadKey (throws when stdin is redirected) -> always pass a thin Mach-O",
+    "thin_64": true,
+    "thin_32": true
+   },
+   "cli": {
+    "argv": "<tool-entry> <executable-file> <global-metadata> <output-directory>",
+    "notes": [
+     "Arguments are classified by content: a file starting with 0xFAB11BAF is the metadata, any other file is the binary, an existing directory is the output dir.",
+     "The output directory MUST already exist, otherwise outputs go to AppDomain.BaseDirectory (the tool directory).",
+     "config.json is read from AppDomain.CurrentDomain.BaseDirectory (the tool directory), NOT from the cwd -> run a private copy of the tool directory with a generated config.json.",
+     "Process exit code is 0 even when the dump failed (errors are only printed to stdout) -> success must be decided from output files and stdout markers.",
+     "Without 'RequireAnyKey: false' the tool ends with 'Press any key to exit...' and Console.ReadKey throws InvalidOperationException (exit code 134 / SIGABRT) when stdin is redirected (observed)."
+    ],
+    "help_argv": [
+     "--help"
+    ],
+    "help_output": "usage: Il2CppDumper <executable-file> <global-metadata> <output-directory>",
+    "help_exit_code": 0
+   },
+   "config": {
+    "file": "config.json",
+    "defaults_in_source": {
+     "DumpMethod": true,
+     "DumpField": true,
+     "DumpProperty": false,
+     "DumpAttribute": false,
+     "DumpFieldOffset": true,
+     "DumpMethodOffset": true,
+     "DumpTypeDefIndex": true,
+     "GenerateDummyDll": true,
+     "GenerateStruct": true,
+     "DummyDllAddToken": true,
+     "RequireAnyKey": true,
+     "ForceIl2CppVersion": false,
+     "ForceVersion": 24.3,
+     "ForceDump": false,
+     "NoRedirectedPointer": false
+    },
+    "defaults_in_shipped_config_json": {
+     "DumpMethod": true,
+     "DumpField": true,
+     "DumpProperty": true,
+     "DumpAttribute": true,
+     "DumpFieldOffset": true,
+     "DumpMethodOffset": true,
+     "DumpTypeDefIndex": true,
+     "GenerateDummyDll": true,
+     "GenerateStruct": true,
+     "DummyDllAddToken": true,
+     "RequireAnyKey": true,
+     "ForceIl2CppVersion": false,
+     "ForceVersion": 16,
+     "ForceDump": false,
+     "NoRedirectedPointer": false
+    },
+    "applied": {
+     "DumpMethod": true,
+     "DumpField": true,
+     "DumpProperty": true,
+     "DumpAttribute": false,
+     "DumpFieldOffset": true,
+     "DumpMethodOffset": true,
+     "DumpTypeDefIndex": true,
+     "GenerateDummyDll": true,
+     "GenerateStruct": true,
+     "DummyDllAddToken": true,
+     "RequireAnyKey": false,
+     "ForceIl2CppVersion": false,
+     "ForceVersion": 16,
+     "ForceDump": false,
+     "NoRedirectedPointer": false
+    },
+    "applied_note": "DumpAttribute is false to keep dump.cs smaller (attribute dumping is the slowest part and is not needed for the summary); everything else keeps the shipped defaults except RequireAnyKey. ForceDump is only set when the request asks for it and only influences Mach-O by marking the file IsDumped.",
+    "field_semantics": {
+     "RequireAnyKey": "Program.cs: after Main finishes 'Press any key to exit...' + Console.ReadKey(true). Must be false for non-interactive use.",
+     "ForceIl2CppVersion/ForceVersion": "Use ForceVersion to choose the il2cpp BINARY parser (not the metadata parser).",
+     "ForceDump": "Treat the file as a memory dump (skips CheckDump). On ELF this triggers the 'Input il2cpp dump address' prompt; on Mach-O it only sets IsDumped.",
+     "NoRedirectedPointer": "Only used together with ELF dump reload."
+    },
+    "source": "https://github.com/Perfare/Il2CppDumper/blob/v6.7.46/Il2CppDumper/Config.cs and Program.cs (tag v6.7.46 identical to master for Program.cs, Metadata.cs, Il2Cpp.cs)"
+   },
+   "interactive_prompts": [
+    {
+     "pattern": "Press any key to exit",
+     "when": "RequireAnyKey=true",
+     "answerable": false,
+     "meaning": "config.json not applied / RequireAnyKey not disabled"
+    },
+    {
+     "pattern": "Select Platform:",
+     "when": "fat Mach-O input",
+     "answerable": false,
+     "meaning": "fat binary was passed (Console.ReadKey cannot be fed through a pipe)"
+    },
+    {
+     "pattern": "Input CodeRegistration:",
+     "when": "auto search failed ('ERROR: Can't use auto mode to process file, try manual mode.')",
+     "answerable": false,
+     "meaning": "registration structures not found"
+    },
+    {
+     "pattern": "Input MetadataRegistration:",
+     "when": "same as above (second prompt)",
+     "answerable": false,
+     "meaning": "registration structures not found"
+    },
+    {
+     "pattern": "Input il2cpp dump address",
+     "when": "ELF + (ForceDump or CheckDump)",
+     "answerable": false,
+     "meaning": "treated as memory dump (ELF only; not reachable for Mach-O)"
+    }
+   ],
+   "error_patterns": [
+    {
+     "pattern": "Metadata file supplied is not valid metadata file",
+     "code": "E_METADATA_ENCRYPTED"
+    },
+    {
+     "pattern": "Metadata file not found or encrypted",
+     "code": "E_METADATA_ENCRYPTED"
+    },
+    {
+     "pattern": "not a supported version\\[(?P<ver>[0-9.]+)\\]",
+     "code": "E_METADATA_VERSION_UNSUPPORTED"
+    },
+    {
+     "pattern": "Can't use auto mode to process file",
+     "code": "E_REGISTRATION_NOT_FOUND"
+    },
+    {
+     "pattern": "Input (?:Code|Metadata)Registration",
+     "code": "E_REGISTRATION_NOT_FOUND"
+    },
+    {
+     "pattern": "This file may be protected",
+     "code": "E_REGISTRATION_NOT_FOUND"
+    },
+    {
+     "pattern": "ERROR: An error occurred while processing",
+     "code": "E_REGISTRATION_NOT_FOUND"
+    },
+    {
+     "pattern": "il2cpp file not supported",
+     "code": "E_UNKNOWN"
+    },
+    {
+     "pattern": "OutOfMemoryException",
+     "code": "E_UNKNOWN"
+    }
+   ],
+   "success_markers": [
+    "Done!",
+    "Generate dummy dll...",
+    "Dumping..."
+   ],
+   "outputs": {
+    "required": [
+     "dump.cs"
+    ],
+    "optional": [
+     "script.json",
+     "il2cpp.h",
+     "stringliteral.json",
+     "DummyDll/"
+    ],
+    "not_written": "ida.py / ghidra.py / *.py helper scripts stay in the tool directory and are NOT written to the output dir (observed in the release zip + Program.cs).",
+    "dump_cs_format": "Il2CppDecompiler.cs: header lines '// Image N: <name> - <typeStart>', then per type a blank line, '// Namespace: <ns>', optional [attributes], '<modifiers> class|struct|enum|interface <Name>[ : bases] // TypeDefIndex: N', '{', optional '\\t// Fields' / '\\t// Properties' / '\\t// Methods' sections."
+   },
+   "verified_runs": "VERIFIED 2026-10-03 (macOS arm64, net6 asset on .NET 8.0.25, DOTNET_ROLL_FORWARD=Major): --help prints usage and exits 0; no-args prints usage; valid-magic synthetic metadata + junk Mach-O -> 'ERROR: An error occurred while processing.' (exit 0); wrong-magic metadata -> 'ERROR: Metadata file not found or encrypted.' (exit 0). A successful dump was NOT run (no real IPA).",
+   "sources": [
+    "https://api.github.com/repos/Perfare/Il2CppDumper/releases",
+    "https://raw.githubusercontent.com/Perfare/Il2CppDumper/v6.7.46/Il2CppDumper/Program.cs",
+    "https://raw.githubusercontent.com/Perfare/Il2CppDumper/v6.7.46/Il2CppDumper/Config.cs",
+    "https://raw.githubusercontent.com/Perfare/Il2CppDumper/v6.7.46/Il2CppDumper/Il2Cpp/Metadata.cs",
+    "https://github.com/Perfare/Il2CppDumper/blob/master/README.md"
+   ]
+  },
+  "cpp2il": {
+   "display_name": "Cpp2IL",
+   "role": "fallback",
+   "maturity": "experimental",
+   "repo": "https://github.com/SamboyCoding/Cpp2IL",
+   "license": "MIT",
+   "env_var": "CPP2IL_PATH",
+   "executable_names": [
+    "Cpp2IL",
+    "Cpp2IL.exe"
+   ],
+   "version": "2022.1.0-pre-release.21",
+   "tag": "2022.1.0-pre-release.21",
+   "released": "2026-02-22",
+   "prerelease": true,
+   "assets": [
+    {
+     "filename": "Cpp2IL-2022.1.0-pre-release.21-OSX-ARM64",
+     "url": "https://github.com/SamboyCoding/Cpp2IL/releases/download/2022.1.0-pre-release.21/Cpp2IL-2022.1.0-pre-release.21-OSX-ARM64",
+     "size": 15719263,
+     "sha256": "6670ddb93f28d4e7f329251d2597d2abbc6ba23e46382f7ca7b5e437ec93606a",
+     "sha256_source": "computed-locally+matches-github-api-digest",
+     "id": "osx-arm64",
+     "archive": "none",
+     "kind": "native",
+     "platforms": [
+      "darwin-arm64"
+     ],
+     "entry": "Cpp2IL"
+    },
+    {
+     "filename": "Cpp2IL-2022.1.0-pre-release.21-OSX",
+     "url": "https://github.com/SamboyCoding/Cpp2IL/releases/download/2022.1.0-pre-release.21/Cpp2IL-2022.1.0-pre-release.21-OSX",
+     "size": 16522622,
+     "sha256": "15faab020698512807f792aef32a89fe529d41d2cc03955dd3516f0519fe8f72",
+     "sha256_source": "github-api-digest",
+     "id": "osx-x64",
+     "archive": "none",
+     "kind": "native",
+     "platforms": [
+      "darwin-x86_64"
+     ],
+     "entry": "Cpp2IL"
+    },
+    {
+     "filename": "Cpp2IL-2022.1.0-pre-release.21-Linux",
+     "url": "https://github.com/SamboyCoding/Cpp2IL/releases/download/2022.1.0-pre-release.21/Cpp2IL-2022.1.0-pre-release.21-Linux",
+     "size": 17257994,
+     "sha256": "526998e593c52c029c5a6215c5c6c9f9d963706bfc409fc9ff80a95c4c500349",
+     "sha256_source": "github-api-digest",
+     "id": "linux-x64",
+     "archive": "none",
+     "kind": "native",
+     "platforms": [
+      "linux-x86_64"
+     ],
+     "entry": "Cpp2IL"
+    },
+    {
+     "filename": "Cpp2IL-2022.1.0-pre-release.21-Linux-ARM64",
+     "url": "https://github.com/SamboyCoding/Cpp2IL/releases/download/2022.1.0-pre-release.21/Cpp2IL-2022.1.0-pre-release.21-Linux-ARM64",
+     "size": 16608573,
+     "sha256": "2d8e76b11f52fd85440ec60abf87d5c3455ea54f5104e0af51da15ba4440871b",
+     "sha256_source": "github-api-digest",
+     "id": "linux-arm64",
+     "archive": "none",
+     "kind": "native",
+     "platforms": [
+      "linux-aarch64"
+     ],
+     "entry": "Cpp2IL"
+    },
+    {
+     "filename": "Cpp2IL-2022.1.0-pre-release.21-Windows.exe",
+     "url": "https://github.com/SamboyCoding/Cpp2IL/releases/download/2022.1.0-pre-release.21/Cpp2IL-2022.1.0-pre-release.21-Windows.exe",
+     "size": 15137811,
+     "sha256": "663fb432433b4371fd1ee0ebc321a8fff2a9aac5ac4230c843f9e03ddee4e04c",
+     "sha256_source": "github-api-digest",
+     "id": "win-x64",
+     "archive": "none",
+     "kind": "native",
+     "platforms": [
+      "windows-x86_64"
+     ],
+     "entry": "Cpp2IL.exe"
+    },
+    {
+     "filename": "Cpp2IL-2022.1.0-pre-release.21-Windows-ARM64.exe",
+     "url": "https://github.com/SamboyCoding/Cpp2IL/releases/download/2022.1.0-pre-release.21/Cpp2IL-2022.1.0-pre-release.21-Windows-ARM64.exe",
+     "size": 15585309,
+     "sha256": "8986f219b5992f9290cb13e1f49431756cbd8865f1cf1f5a38ba61acc27cc1fb",
+     "sha256_source": "github-api-digest",
+     "id": "win-arm64",
+     "archive": "none",
+     "kind": "native",
+     "platforms": [
+      "windows-arm64"
+     ],
+     "entry": "Cpp2IL.exe"
+    }
+   ],
+   "dotnet": {
+    "min_major": 0
+   },
+   "metadata_versions": {
+    "min": 23,
+    "max": 108,
+    "note": "Il2CppMetadata.ReadFrom: 'We support 23-108' (development branch source, 2026-10-03)."
+   },
+   "requires_unity_version": true,
+   "requires_unity_version_note": "--force-binary-path, --force-metadata-path and --force-unity-version must be given together (CommandLineArgs.AreForceOptionsValid); without all three it needs --game-path of a game folder/APK/IPA (the IPA handler only finds Frameworks/UnityFramework.framework/UnityFramework).",
+   "mach_o": {
+    "fat": "MachOUniversalFile exists in LibCpp2IL; thin input is still passed (UNVERIFIED for fat)",
+    "thin_64": true
+   },
+   "cli": {
+    "argv": [
+     "--force-binary-path",
+     "{binary}",
+     "--force-metadata-path",
+     "{metadata}",
+     "--force-unity-version",
+     "{unity_version}",
+     "--output-as",
+     "{format}",
+     "--output-to",
+     "{out}"
+    ],
+    "output_formats_verified": [
+     "dummydll",
+     "dll_default",
+     "dll_empty",
+     "dll_throw_null",
+     "dll_il_recovery",
+     "diffable-cs",
+     "isil",
+     "attributeanalyzer",
+     "attributeinjector",
+     "callanalyzer",
+     "nativemethoddetector",
+     "stablenamer",
+     "deobfmap",
+     "wasmmappings",
+     "wasm_name_section"
+    ],
+    "formats_used": [
+     "diffable-cs",
+     "dummydll"
+    ],
+    "env": {
+     "NO_COLOR": "true"
+    },
+    "notes": [
+     "Single-file native builds, no .NET install needed (observed: running the OSX-ARM64 file printed its --help).",
+     "On macOS arm64 the downloaded file is killed with SIGKILL (exit 137) until it is ad-hoc signed: 'codesign -s - --force <file>' (VERIFIED 2026-10-03).",
+     "Each --output-as value is a separate run; 'diffable-cs' writes <out>/DiffableCs/<Assembly>/<Namespace dirs>/<Type>.cs (no dump.cs equivalent).",
+     "Fatal init errors end with 'Waiting for you to press enter - feel free to copy the error...' and Console.ReadLine(): the process blocks if stdin stays open.",
+     "Process exit code: SoftException -> -1 (255); init failure paths return -1 after the ReadLine."
+    ]
+   },
+   "interactive_prompts": [
+    {
+     "pattern": "Waiting for you to press enter",
+     "when": "LibCpp2ILInitializationException / DllSaveException",
+     "answerable": true,
+     "answer": "\n",
+     "meaning": "initialisation failed (see preceding stack trace)"
+    }
+   ],
+   "error_patterns": [
+    {
+     "pattern": "Unsupported metadata version found",
+     "code": "E_METADATA_VERSION_UNSUPPORTED"
+    },
+    {
+     "pattern": "(?:Could not find|Failed to find).{0,40}(?:CodeRegistration|MetadataRegistration)|[Ss]earching for code registration.{0,80}(?:fail|not found)",
+     "code": "E_REGISTRATION_NOT_FOUND"
+    },
+    {
+     "pattern": "Unhandled exception|LibCpp2ILInitializationException|ArgumentOutOfRangeException",
+     "code": "E_METADATA_ENCRYPTED",
+     "when_metadata_looks_garbled": true
+    },
+    {
+     "pattern": "Execution Failed",
+     "code": "E_UNKNOWN"
+    }
+   ],
+   "verified_runs": "VERIFIED 2026-10-03: --help, --list-output-formats, --list-processors work; a synthetic zero-filled metadata (header magic ok, version 24) with --force-* options ended in ArgumentOutOfRangeException inside Il2CppMetadata + the press-enter prompt. A real dump was NOT run.",
+   "sources": [
+    "https://api.github.com/repos/SamboyCoding/Cpp2IL/releases",
+    "https://raw.githubusercontent.com/SamboyCoding/Cpp2IL/development/Cpp2IL/CommandLineArgs.cs",
+    "https://raw.githubusercontent.com/SamboyCoding/Cpp2IL/development/Cpp2IL/Program.cs",
+    "https://raw.githubusercontent.com/SamboyCoding/Cpp2IL/development/LibCpp2IL/Metadata/Il2CppMetadata.cs"
+   ]
+  },
+  "redux": {
+   "display_name": "Il2CppInspectorRedux",
+   "role": "fallback",
+   "maturity": "experimental",
+   "repo": "https://github.com/LukeFZ/Il2CppInspectorRedux",
+   "license": "AGPL-3.0 (invoked as a separate downloaded process only; nothing is linked or redistributed)",
+   "env_var": "IL2CPPINSPECTOR_PATH",
+   "executable_names": [
+    "Il2CppInspector.Redux.CLI",
+    "Il2CppInspector.Redux.CLI.exe"
+   ],
+   "version": "2026.2",
+   "tag": "2026.2",
+   "released": "2026-06-07",
+   "assets": [
+    {
+     "filename": "Il2CppInspectorRedux.CLI-osx-arm64.zip",
+     "url": "https://github.com/LukeFZ/Il2CppInspectorRedux/releases/download/2026.2/Il2CppInspectorRedux.CLI-osx-arm64.zip",
+     "size": 2346152,
+     "sha256": "e754e8d265b808f864d38d8005e3068119fe745a4a247c509d5ca22da553d139",
+     "sha256_source": "computed-locally+matches-github-api-digest",
+     "id": "osx-arm64",
+     "archive": "zip",
+     "kind": "dotnet_apphost",
+     "platforms": [
+      "darwin-arm64"
+     ],
+     "min_dotnet": 10,
+     "entry": "Il2CppInspector.Redux.CLI"
+    },
+    {
+     "filename": "Il2CppInspectorRedux.CLI-osx-x64.zip",
+     "url": "https://github.com/LukeFZ/Il2CppInspectorRedux/releases/download/2026.2/Il2CppInspectorRedux.CLI-osx-x64.zip",
+     "size": 2345338,
+     "sha256": "a86cf2b53e63cb6fd3f158df5b988ba008c2fb65bfad5e32b0a4cb30e535f9fa",
+     "sha256_source": "github-api-digest",
+     "id": "osx-x64",
+     "archive": "zip",
+     "kind": "dotnet_apphost",
+     "platforms": [
+      "darwin-x86_64"
+     ],
+     "min_dotnet": 10,
+     "entry": "Il2CppInspector.Redux.CLI"
+    },
+    {
+     "filename": "Il2CppInspectorRedux.CLI-linux-x64.zip",
+     "url": "https://github.com/LukeFZ/Il2CppInspectorRedux/releases/download/2026.2/Il2CppInspectorRedux.CLI-linux-x64.zip",
+     "size": 2287039,
+     "sha256": "10429eb06f007a5e011f680e83109eca2a7a1cef4d946f37bf2adf439280f269",
+     "sha256_source": "github-api-digest",
+     "id": "linux-x64",
+     "archive": "zip",
+     "kind": "dotnet_apphost",
+     "platforms": [
+      "linux-x86_64"
+     ],
+     "min_dotnet": 10,
+     "entry": "Il2CppInspector.Redux.CLI"
+    },
+    {
+     "filename": "Il2CppInspectorRedux.CLI-linux-arm64.zip",
+     "url": "https://github.com/LukeFZ/Il2CppInspectorRedux/releases/download/2026.2/Il2CppInspectorRedux.CLI-linux-arm64.zip",
+     "size": 2287564,
+     "sha256": "21d80bd9be303ace0493f89e964b9b9aba9c9caa098e22de27d82a53fef44733",
+     "sha256_source": "github-api-digest",
+     "id": "linux-arm64",
+     "archive": "zip",
+     "kind": "dotnet_apphost",
+     "platforms": [
+      "linux-aarch64"
+     ],
+     "min_dotnet": 10,
+     "entry": "Il2CppInspector.Redux.CLI"
+    },
+    {
+     "filename": "Il2CppInspectorRedux.CLI-win-x64.zip",
+     "url": "https://github.com/LukeFZ/Il2CppInspectorRedux/releases/download/2026.2/Il2CppInspectorRedux.CLI-win-x64.zip",
+     "size": 2325491,
+     "sha256": "65c697bf79e03f1d530f98db5efd77b88831109cb7e91513bf132e56571358ef",
+     "sha256_source": "github-api-digest",
+     "id": "win-x64",
+     "archive": "zip",
+     "kind": "dotnet_apphost",
+     "platforms": [
+      "windows-x86_64"
+     ],
+     "min_dotnet": 10,
+     "entry": "Il2CppInspector.Redux.CLI.exe",
+     "entry_unverified": true
+    }
+   ],
+   "dotnet": {
+    "min_major": 10,
+    "roll_forward": "Major",
+    "install_channel": "10.0",
+    "note": "VERIFIED 2026-10-03: the osx-arm64 CLI aborts with 'You must install or update .NET ... Framework Microsoft.NETCore.App 10.0.0' on a machine that only has 8.0.25 (it is a framework-dependent single file)."
+   },
+   "metadata_versions": {
+    "min": 16,
+    "max": 110,
+    "note": "README version table: 5.3.0 (v16) ... 2022.3.33-6000.2.x (v31/31.1), 6000.3.0a2 (v35), v38, v39, v104-v108, v110 all 'Working'. Unsupported: 15 and older."
+   },
+   "requires_unity_version": false,
+   "mach_o": {
+    "fat": "README: supports Mach-O and Universal Binary (fat) (UNVERIFIED in practice)",
+    "thin_64": true
+   },
+   "cli": {
+    "argv": [
+     "process",
+     "{metadata}",
+     "{binary}",
+     "-o",
+     "{out}",
+     "-s",
+     "-d"
+    ],
+    "notes": [
+     "Spectre.Console.Cli command 'process <InputPath>...' with -o|--output, -s|--output-csharp-stub (-> <out>/cs), -d|--output-dummy-dlls (-> <out>/dll), -m|--output-disassembler-metadata, --layout, --unity-version, --image-base. At least one output format is required.",
+     "Starts an in-process ASP.NET/SignalR server on a loopback port (Program.cs); exits with code 1 on 'FAILED to load IL2CPP data from the given inputs.'.",
+     "On macOS arm64 the unsigned download needs 'codesign -s - --force' (same as Cpp2IL).",
+     "Output file names under cs/ and dll/ are UNVERIFIED (no run possible without a .NET 10 runtime)."
+    ]
+   },
+   "interactive_prompts": [],
+   "error_patterns": [
+    {
+     "pattern": "FAILED to load IL2CPP data",
+     "code": "E_METADATA_ENCRYPTED"
+    },
+    {
+     "pattern": "(?i)unsupported.{0,40}(?:metadata|version)",
+     "code": "E_METADATA_VERSION_UNSUPPORTED"
+    }
+   ],
+   "verified_runs": "Only the 'requires .NET 10' failure above was observed.",
+   "sources": [
+    "https://api.github.com/repos/LukeFZ/Il2CppInspectorRedux/releases",
+    "https://raw.githubusercontent.com/LukeFZ/Il2CppInspectorRedux/master/README.md",
+    "https://raw.githubusercontent.com/LukeFZ/Il2CppInspectorRedux/master/Il2CppInspector.Redux.CLI/Commands/ProcessCommand.cs"
+   ]
+  }
+ }
+}

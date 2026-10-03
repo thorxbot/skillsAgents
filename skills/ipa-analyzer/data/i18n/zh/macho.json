@@ -1,0 +1,31 @@
+{
+  "macho.summary": {
+    "title": "Mach-O 二进制分析",
+    "summary": "共解析 {parsed}/{total} 个 Mach-O 文件;主程序:{main};架构:{archs};含 FairPlay 加密的二进制:{encrypted_binaries} 个。",
+    "remediation": "若存在 FairPlay 加密的二进制,其代码无法直接静态分析,需要用户自行提供已解密的 IPA;本工具不会尝试解密。"
+  },
+  "macho.role.main": "主程序",
+  "macho.role.framework": "Framework",
+  "macho.role.dylib": "动态库",
+  "macho.role.appex": "App 扩展",
+  "macho.role.watch": "Watch 应用",
+  "macho.role.other": "其他",
+  "macho.kind.execute": "可执行文件",
+  "macho.kind.dylib": "动态库",
+  "macho.kind.bundle": "Bundle",
+  "macho.symbol_level.none": "无符号表",
+  "macho.symbol_level.stripped_all": "符号已全部剥离",
+  "macho.symbol_level.stripped_local": "已剥离局部符号(保留导出符号)",
+  "macho.symbol_level.debug": "含调试符号",
+  "macho.symbol_level.full": "符号完整(未剥离)",
+  "macho.signature.none": "无签名",
+  "macho.signature.adhoc": "临时(ad-hoc)签名",
+  "macho.signature.linker": "链接器自动签名",
+  "macho.signature.cms": "证书签名",
+  "macho.signature.unknown": "签名无法解析",
+  "macho.language.objc": "Objective-C",
+  "macho.language.swift": "Swift",
+  "macho.language.cpp": "C++",
+  "macho.encrypted.yes": "已加密(FairPlay)",
+  "macho.encrypted.no": "未加密"
+}

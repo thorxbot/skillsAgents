@@ -1,0 +1,596 @@
+{
+ "version": 1,
+ "description": "File classification rules for the inventory stage (WP1). Evaluation order: path_rules -> Mach-O role -> authoritative magic -> name_rules -> ext_categories -> fallback_magic -> generic_magic -> 'other'. Magic wins over the extension; weak magic (confidence < 0.6) never overrides.",
+ "categories": [
+  "executable",
+  "framework",
+  "plugin",
+  "dylib",
+  "assets_car",
+  "ui_layout",
+  "localization",
+  "plist",
+  "image",
+  "audio",
+  "video",
+  "font",
+  "database",
+  "script",
+  "shader",
+  "model_3d",
+  "engine_data",
+  "assetbundle",
+  "packed_archive",
+  "signing",
+  "config",
+  "text",
+  "other"
+ ],
+ "path_rules": [
+  {
+   "id": "signing.code_signature",
+   "regex": "(^|/)_CodeSignature/",
+   "category": "signing"
+  },
+  {
+   "id": "signing.sc_info",
+   "regex": "(^|/)SC_Info/",
+   "category": "signing"
+  },
+  {
+   "id": "signing.provision",
+   "regex": "(^|/)embedded\\.mobileprovision$",
+   "category": "signing"
+  },
+  {
+   "id": "signing.itunes_metadata",
+   "regex": "^iTunesMetadata\\.plist$",
+   "category": "signing",
+   "scope": "outside"
+  },
+  {
+   "id": "signing.itunes_artwork",
+   "regex": "^iTunesArtwork(@\\dx)?(\\.[A-Za-z0-9]+)?$",
+   "category": "signing",
+   "scope": "outside"
+  },
+  {
+   "id": "assets.car",
+   "regex": "(^|/)Assets\\.car$",
+   "category": "assets_car"
+  },
+  {
+   "id": "ui.compiled_dir",
+   "regex": "(^|/)[^/]+\\.(storyboardc|nib)/",
+   "category": "ui_layout"
+  },
+  {
+   "id": "l10n.strings",
+   "regex": "\\.lproj/[^/]+\\.(strings|stringsdict)$",
+   "category": "localization"
+  }
+ ],
+ "macho_rules": [
+  {
+   "id": "macho.dylib",
+   "ext": ".dylib",
+   "category": "dylib"
+  },
+  {
+   "id": "macho.framework",
+   "regex": "\\.framework/",
+   "category": "framework"
+  },
+  {
+   "id": "macho.plugin",
+   "regex": "(^|/)(PlugIns|Watch|AppClips)/|\\.appex/",
+   "category": "plugin"
+  }
+ ],
+ "macho_default": "executable",
+ "magic_categories": {
+  "image": [
+   "png",
+   "jpeg",
+   "gif",
+   "tiff",
+   "icns",
+   "ktx",
+   "ktx2",
+   "pvr",
+   "dds",
+   "astc",
+   "ccz",
+   "webp",
+   "heic",
+   "avif",
+   "bmp",
+   "ico",
+   "cur"
+  ],
+  "audio": [
+   "mp3",
+   "aac_adts",
+   "ogg",
+   "flac",
+   "caf",
+   "aiff",
+   "wav",
+   "amr",
+   "midi",
+   "m4a",
+   "fsb",
+   "wwise_bank",
+   "wwise_pck",
+   "fmod_bank"
+  ],
+  "video": [
+   "mov",
+   "mp4",
+   "3gp",
+   "avi",
+   "flv",
+   "mpeg_ps"
+  ],
+  "font": [
+   "ttf",
+   "otf",
+   "ttc",
+   "woff",
+   "woff2"
+  ],
+  "database": [
+   "sqlite"
+  ],
+  "assetbundle": [
+   "unityfs",
+   "unityweb",
+   "unityraw",
+   "unityarchive"
+  ],
+  "packed_archive": [
+   "zip",
+   "gzip",
+   "bzip2",
+   "xz",
+   "7z",
+   "zstd",
+   "lz4_frame",
+   "rar",
+   "gdpc",
+   "ue_pak"
+  ],
+  "script": [
+   "lua_bytecode",
+   "hermes_bytecode"
+  ],
+  "ui_layout": [
+   "nib_archive"
+  ],
+  "assets_car": [
+   "bomstore"
+  ],
+  "shader": [
+   "metallib"
+  ],
+  "engine_data": [
+   "uasset",
+   "moc3",
+   "il2cpp_metadata"
+  ],
+  "executable": [
+   "elf",
+   "pe",
+   "java_class",
+   "dex"
+  ]
+ },
+ "fallback_magic_categories": {
+  "video": [
+   "matroska",
+   "asf"
+  ],
+  "image": [
+   "riff"
+  ],
+  "other": [
+   "wasm",
+   "pdf"
+  ]
+ },
+ "generic_magic_categories": {
+  "plist": [
+   "bplist",
+   "plist_xml"
+  ],
+  "config": [
+   "json",
+   "xml"
+  ],
+  "text": [
+   "text",
+   "html"
+  ],
+  "script": [
+   "shebang"
+  ]
+ },
+ "name_rules": [
+  {
+   "id": "unity.global_metadata",
+   "regex": "(^|/)global-metadata\\.dat$",
+   "category": "engine_data"
+  },
+  {
+   "id": "unity.serialized",
+   "regex": "(^|/)(globalgamemanagers|mainData|level\\d+|unity default resources|unity_builtin_extra|boot\\.config|app\\.info)$",
+   "category": "engine_data"
+  },
+  {
+   "id": "unity.sharedassets",
+   "regex": "(^|/)sharedassets\\d+\\.assets(\\.resS)?$",
+   "category": "engine_data"
+  },
+  {
+   "id": "doc.licence",
+   "regex": "(^|/)(LICENSE|LICENCE|NOTICE|README|COPYING|AUTHORS)$",
+   "category": "text"
+  },
+  {
+   "id": "cfg.pkginfo",
+   "regex": "(^|/)PkgInfo$",
+   "category": "config"
+  }
+ ],
+ "ext_categories": {
+  "image": [
+   ".png",
+   ".jpg",
+   ".jpeg",
+   ".jfif",
+   ".jp2",
+   ".gif",
+   ".webp",
+   ".heic",
+   ".heif",
+   ".avif",
+   ".tif",
+   ".tiff",
+   ".bmp",
+   ".dib",
+   ".ico",
+   ".icns",
+   ".svg",
+   ".pvr",
+   ".ktx",
+   ".ktx2",
+   ".astc",
+   ".dds",
+   ".tga",
+   ".exr",
+   ".hdr",
+   ".psd",
+   ".ccz",
+   ".basis",
+   ".pkm",
+   ".etc1"
+  ],
+  "audio": [
+   ".mp3",
+   ".m4a",
+   ".m4r",
+   ".aac",
+   ".wav",
+   ".caf",
+   ".aif",
+   ".aiff",
+   ".aifc",
+   ".ogg",
+   ".oga",
+   ".opus",
+   ".flac",
+   ".wma",
+   ".amr",
+   ".mid",
+   ".midi",
+   ".bank",
+   ".fsb",
+   ".bnk",
+   ".wem",
+   ".xm",
+   ".mod",
+   ".it",
+   ".s3m",
+   ".ac3",
+   ".mka",
+   ".sf2",
+   ".awb",
+   ".acb",
+   ".hca"
+  ],
+  "video": [
+   ".mp4",
+   ".m4v",
+   ".mov",
+   ".3gp",
+   ".3g2",
+   ".avi",
+   ".mkv",
+   ".webm",
+   ".flv",
+   ".ogv",
+   ".wmv",
+   ".mpg",
+   ".mpeg",
+   ".usm",
+   ".bik"
+  ],
+  "font": [
+   ".ttf",
+   ".otf",
+   ".ttc",
+   ".woff",
+   ".woff2",
+   ".fon",
+   ".dfont",
+   ".pfb",
+   ".eot"
+  ],
+  "database": [
+   ".db",
+   ".db3",
+   ".sqlite",
+   ".sqlite3",
+   ".sqlitedb",
+   ".realm",
+   ".mdb",
+   ".lmdb",
+   ".mom",
+   ".momd",
+   ".omo",
+   ".cdm"
+  ],
+  "script": [
+   ".lua",
+   ".luac",
+   ".luab",
+   ".luajit",
+   ".lc",
+   ".js",
+   ".jsc",
+   ".mjs",
+   ".cjs",
+   ".jsbundle",
+   ".hbc",
+   ".py",
+   ".pyc",
+   ".pyo",
+   ".rb",
+   ".pl",
+   ".sh",
+   ".gd",
+   ".gdc",
+   ".nut",
+   ".wren"
+  ],
+  "shader": [
+   ".metal",
+   ".metallib",
+   ".air",
+   ".glsl",
+   ".vsh",
+   ".fsh",
+   ".vert",
+   ".frag",
+   ".geom",
+   ".tesc",
+   ".tese",
+   ".comp",
+   ".hlsl",
+   ".spv",
+   ".shader",
+   ".cginc",
+   ".fx",
+   ".wgsl",
+   ".usf",
+   ".ush",
+   ".cg",
+   ".psh"
+  ],
+  "model_3d": [
+   ".obj",
+   ".fbx",
+   ".dae",
+   ".scn",
+   ".usdz",
+   ".usd",
+   ".usda",
+   ".usdc",
+   ".gltf",
+   ".glb",
+   ".3ds",
+   ".blend",
+   ".stl",
+   ".ply",
+   ".md2",
+   ".md3",
+   ".md5mesh",
+   ".md5anim",
+   ".mdl",
+   ".mesh",
+   ".smd",
+   ".b3d",
+   ".lwo",
+   ".ms3d",
+   ".pmx",
+   ".pmd",
+   ".vrm",
+   ".mtl",
+   ".abc",
+   ".reality"
+  ],
+  "packed_archive": [
+   ".pak",
+   ".obb",
+   ".pck",
+   ".zip",
+   ".jar",
+   ".tar",
+   ".gz",
+   ".tgz",
+   ".bz2",
+   ".xz",
+   ".7z",
+   ".rar",
+   ".lz4",
+   ".zst",
+   ".utoc",
+   ".ucas",
+   ".npk",
+   ".mpq",
+   ".zpk",
+   ".arc",
+   ".vfs",
+   ".wad",
+   ".bsa",
+   ".pkg",
+   ".vpk",
+   ".lzma",
+   ".cab",
+   ".ipa",
+   ".apk"
+  ],
+  "assetbundle": [
+   ".unity3d",
+   ".assetbundle",
+   ".ab",
+   ".bundle",
+   ".u3d"
+  ],
+  "engine_data": [
+   ".assets",
+   ".ress",
+   ".resource",
+   ".bytes",
+   ".cconb",
+   ".csb",
+   ".exportjson",
+   ".prefab",
+   ".anim",
+   ".controller",
+   ".unity",
+   ".asset",
+   ".mat",
+   ".fnt",
+   ".tmx",
+   ".tsx",
+   ".tmj",
+   ".skel",
+   ".atlas",
+   ".moc",
+   ".moc3",
+   ".xnb",
+   ".uasset",
+   ".umap",
+   ".uexp",
+   ".ubulk",
+   ".locres",
+   ".tres",
+   ".tscn",
+   ".res",
+   ".import",
+   ".lvl",
+   ".sks"
+  ],
+  "plist": [
+   ".plist",
+   ".entitlements",
+   ".xcprivacy"
+  ],
+  "config": [
+   ".json",
+   ".jsonc",
+   ".json5",
+   ".xml",
+   ".ini",
+   ".cfg",
+   ".conf",
+   ".yaml",
+   ".yml",
+   ".toml",
+   ".csv",
+   ".tsv",
+   ".properties",
+   ".xcconfig",
+   ".env",
+   ".manifest"
+  ],
+  "text": [
+   ".txt",
+   ".md",
+   ".markdown",
+   ".rtf",
+   ".html",
+   ".htm",
+   ".css",
+   ".log",
+   ".license",
+   ".licenses",
+   ".readme",
+   ".tex",
+   ".srt",
+   ".vtt",
+   ".lrc",
+   ".rst",
+   ".pdf",
+   ".h",
+   ".c",
+   ".cc",
+   ".cpp",
+   ".m",
+   ".mm",
+   ".swift"
+  ],
+  "ui_layout": [
+   ".nib",
+   ".storyboardc",
+   ".storyboard",
+   ".xib"
+  ],
+  "localization": [
+   ".strings",
+   ".stringsdict",
+   ".xliff",
+   ".po",
+   ".mo"
+  ],
+  "signing": [
+   ".mobileprovision",
+   ".sinf",
+   ".supf",
+   ".supp",
+   ".cer",
+   ".p12",
+   ".pem",
+   ".der",
+   ".crt",
+   ".xcent"
+  ],
+  "executable": [
+   ".dll",
+   ".exe",
+   ".so",
+   ".o",
+   ".a",
+   ".dex",
+   ".class",
+   ".wasm"
+  ],
+  "dylib": [
+   ".dylib"
+  ],
+  "assets_car": [
+   ".car"
+  ]
+ }
+}

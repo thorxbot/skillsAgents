@@ -1,0 +1,31 @@
+{
+  "macho.summary": {
+    "title": "Mach-O binaries analysed",
+    "summary": "Parsed {parsed} of {total} Mach-O file(s); main binary: {main}; architectures: {archs}; binaries with FairPlay encryption: {encrypted_binaries}.",
+    "remediation": "FairPlay-encrypted binaries cannot be analysed statically; ask the owner for a decrypted IPA. This tool never decrypts."
+  },
+  "macho.role.main": "Main executable",
+  "macho.role.framework": "Framework",
+  "macho.role.dylib": "Dynamic library",
+  "macho.role.appex": "App extension",
+  "macho.role.watch": "Watch app",
+  "macho.role.other": "Other",
+  "macho.kind.execute": "Executable",
+  "macho.kind.dylib": "Dynamic library",
+  "macho.kind.bundle": "Bundle",
+  "macho.symbol_level.none": "No symbol table",
+  "macho.symbol_level.stripped_all": "Symbols fully stripped",
+  "macho.symbol_level.stripped_local": "Local symbols stripped (exports kept)",
+  "macho.symbol_level.debug": "Contains debug symbols",
+  "macho.symbol_level.full": "Full symbols (not stripped)",
+  "macho.signature.none": "Unsigned",
+  "macho.signature.adhoc": "Ad-hoc signature",
+  "macho.signature.linker": "Linker-signed",
+  "macho.signature.cms": "Certificate-signed",
+  "macho.signature.unknown": "Signature could not be parsed",
+  "macho.language.objc": "Objective-C",
+  "macho.language.swift": "Swift",
+  "macho.language.cpp": "C++",
+  "macho.encrypted.yes": "Encrypted (FairPlay)",
+  "macho.encrypted.no": "Not encrypted"
+}

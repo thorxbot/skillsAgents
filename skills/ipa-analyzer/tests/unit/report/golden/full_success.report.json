@@ -1,0 +1,2390 @@
+{
+  "schema_version": "1.0",
+  "tool": {
+    "name": "ipa-analyzer",
+    "version": ""
+  },
+  "generated_at": "",
+  "input": {
+    "kind": "ipa",
+    "path": "/Users/[user]/Downloads/DemoGame.ipa",
+    "sha256": "86ab76c1de9865d8260029313693538eb165a682f34e9eecd266355513b86c97",
+    "size": 734003200
+  },
+  "app": {
+    "background_modes": [
+      "audio",
+      "remote-notification"
+    ],
+    "build": "456",
+    "bundle_id": "com.example.demogame",
+    "capabilities": [
+      "arm64",
+      "metal"
+    ],
+    "devices": [
+      "iPad",
+      "iPhone"
+    ],
+    "distribution": {
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "iTunesMetadata.plist",
+          "detail": "present"
+        },
+        {
+          "kind": "file",
+          "ref": "SC_Info",
+          "detail": "absent: decrypted dump"
+        }
+      ],
+      "type": "appstore",
+      "verdict": "yes"
+    },
+    "executable": "DemoGame",
+    "extensions": [
+      {
+        "bundle_id": "com.example.demogame.share",
+        "kind": "appex",
+        "path": "Payload/DemoGame.app/PlugIns/Share.appex",
+        "point": "com.apple.share-services"
+      }
+    ],
+    "fairplay_container": {
+      "files": [],
+      "sc_info_present": false
+    },
+    "min_os": "12.0",
+    "names": [
+      {
+        "lang": "zh-Hans",
+        "source": "InfoPlist.strings",
+        "value": "示例游戏"
+      },
+      {
+        "lang": "",
+        "source": "CFBundleDisplayName",
+        "value": "DemoGame"
+      }
+    ],
+    "provision": {
+      "present": false
+    },
+    "sdk": {
+      "compiler": "com.apple.compilers.llvm.clang.1_0",
+      "name": "iphoneos",
+      "platform_version": "17.0",
+      "xcode": "1500"
+    },
+    "selected_name": "示例游戏",
+    "signature_integrity": {
+      "checked": 812,
+      "examples": [],
+      "extra": 0,
+      "missing": 0,
+      "modified": 0
+    },
+    "version": "1.2.3"
+  },
+  "classification": {
+    "category": "game",
+    "confidence": 0.95,
+    "evidence": [
+      {
+        "kind": "plist_key",
+        "ref": "LSApplicationCategoryType",
+        "detail": "public.app-category.games"
+      },
+      {
+        "kind": "heuristic",
+        "ref": "engine=unity",
+        "detail": ""
+      }
+    ],
+    "runner_up": {
+      "category": "utility",
+      "score": 0.1
+    },
+    "scores": {
+      "game": 1.4,
+      "utility": 0.1
+    },
+    "subcategory": null
+  },
+  "structure": {
+    "binaries": [
+      {
+        "dylibs": [
+          {
+            "kind": "system",
+            "load_kind": "load",
+            "path": "/usr/lib/libz.1.dylib",
+            "weak": false
+          }
+        ],
+        "is_fat": false,
+        "kind": "execute",
+        "parse_warnings": [],
+        "path": "Payload/DemoGame.app/DemoGame",
+        "rel": "DemoGame",
+        "role": "main",
+        "rpaths": [
+          "@executable_path/Frameworks"
+        ],
+        "size": 12000000,
+        "slices": [
+          {
+            "arch": "arm64",
+            "cryptid": 0,
+            "cryptsize": 0,
+            "encrypted": false,
+            "entitlements_keys": [
+              "application-identifier"
+            ],
+            "filetype": "execute",
+            "has_cpp": true,
+            "has_objc": true,
+            "has_swift": false,
+            "is_pie": true,
+            "min_os": "12.0",
+            "platform": "ios",
+            "sdk": "17.0",
+            "signed": true,
+            "stripped": true,
+            "team_id": "ABCDE12345",
+            "uuid": "11111111-2222-3333-4444-555555555555"
+          }
+        ]
+      },
+      {
+        "dylibs": [],
+        "is_fat": false,
+        "kind": "dylib",
+        "parse_warnings": [
+          "LC_DYLD_CHAINED_FIXUPS not parsed"
+        ],
+        "path": "Payload/DemoGame.app/Frameworks/UnityFramework.framework/UnityFramework",
+        "rel": "Frameworks/UnityFramework.framework/UnityFramework",
+        "role": "framework",
+        "rpaths": [],
+        "size": 97000000,
+        "slices": [
+          {
+            "arch": "arm64",
+            "cryptid": 0,
+            "cryptsize": 0,
+            "encrypted": false,
+            "entitlements_keys": [
+              "application-identifier"
+            ],
+            "filetype": "dylib",
+            "has_cpp": true,
+            "has_objc": true,
+            "has_swift": true,
+            "is_pie": true,
+            "min_os": "12.0",
+            "platform": "ios",
+            "sdk": "17.0",
+            "signed": true,
+            "stripped": true,
+            "team_id": "ABCDE12345",
+            "uuid": "11111111-2222-3333-4444-555555555555"
+          }
+        ]
+      }
+    ],
+    "engine": {
+      "candidates": [
+        {
+          "confidence": 0.97,
+          "confirmed": true,
+          "evidence": [
+            {
+              "kind": "file",
+              "ref": "Frameworks/UnityFramework.framework",
+              "detail": "framework present"
+            },
+            {
+              "kind": "string",
+              "ref": "il2cpp_init",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "family": "unity",
+          "id": "unity",
+          "kind": "game_engine",
+          "name": "Unity",
+          "signals_matched": [
+            "file:UnityFramework",
+            "string:il2cpp_"
+          ]
+        }
+      ],
+      "primary": {
+        "confidence": 0.97,
+        "confirmed": true,
+        "evidence": [
+          {
+            "kind": "file",
+            "ref": "Frameworks/UnityFramework.framework",
+            "detail": "framework present"
+          },
+          {
+            "kind": "string",
+            "ref": "il2cpp_init",
+            "detail": ""
+          }
+        ],
+        "extra": {},
+        "family": "unity",
+        "id": "unity",
+        "kind": "game_engine",
+        "name": "Unity",
+        "signals_matched": [
+          "file:UnityFramework",
+          "string:il2cpp_"
+        ]
+      }
+    },
+    "languages": [
+      {
+        "confidence": 0.9,
+        "evidence": [
+          {
+            "kind": "heuristic",
+            "ref": "il2cpp",
+            "detail": ""
+          }
+        ],
+        "lang": "csharp"
+      },
+      {
+        "confidence": 0.6,
+        "evidence": [],
+        "lang": "lua"
+      },
+      {
+        "confidence": 0.8,
+        "evidence": [],
+        "lang": "objc"
+      }
+    ],
+    "macho_summary": {
+      "all_encrypted": false,
+      "any_encrypted": false,
+      "archs": [
+        "arm64"
+      ],
+      "languages_hint": [
+        "objc",
+        "cpp",
+        "csharp"
+      ],
+      "main_binary": "Payload/DemoGame.app/DemoGame",
+      "min_os": "12.0"
+    },
+    "nested_units": [
+      {
+        "file_count": 100,
+        "kind": "framework",
+        "name": "UnityFramework",
+        "path": "Payload/DemoGame.app/Frameworks/UnityFramework.framework",
+        "rel": "Frameworks/UnityFramework.framework",
+        "size": 97000000
+      },
+      {
+        "file_count": 6,
+        "kind": "appex",
+        "name": "Share",
+        "path": "Payload/DemoGame.app/PlugIns/Share.appex",
+        "rel": "PlugIns/Share.appex",
+        "size": 300000
+      }
+    ],
+    "tree": {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
+              "count": 2500,
+              "name": "Raw",
+              "size": 400000000
+            },
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [],
+                      "count": 1,
+                      "name": "global-metadata.dat",
+                      "size": 60000000
+                    }
+                  ],
+                  "count": 1,
+                  "name": "Metadata",
+                  "size": 60000000
+                }
+              ],
+              "count": 40,
+              "name": "Managed",
+              "size": 120000000
+            },
+            {
+              "children": [],
+              "count": 300,
+              "name": "Resources",
+              "size": 80000000
+            }
+          ],
+          "count": 2900,
+          "name": "Data",
+          "size": 612000000
+        },
+        {
+          "children": [
+            {
+              "children": [],
+              "count": 100,
+              "name": "UnityFramework.framework",
+              "size": 97000000
+            }
+          ],
+          "count": 120,
+          "name": "Frameworks",
+          "size": 98000000
+        },
+        {
+          "children": [],
+          "count": 1,
+          "name": "DemoGame",
+          "size": 12000000
+        },
+        {
+          "children": [],
+          "count": 1,
+          "name": "Assets.car",
+          "size": 8000000
+        },
+        {
+          "children": [],
+          "count": 3,
+          "name": "zh-Hans.lproj",
+          "size": 40000
+        }
+      ],
+      "count": 3120,
+      "name": "DemoGame.app",
+      "size": 734003200
+    }
+  },
+  "resources": {
+    "archives": [],
+    "by_category": [
+      {
+        "category": "assetbundle",
+        "count": 410,
+        "percent": 54.5,
+        "size": 400000000
+      },
+      {
+        "category": "engine_data",
+        "count": 120,
+        "percent": 20.4,
+        "size": 150000000
+      },
+      {
+        "category": "framework",
+        "count": 100,
+        "percent": 13.2,
+        "size": 97000000
+      },
+      {
+        "category": "image",
+        "count": 900,
+        "percent": 8.2,
+        "size": 60000000
+      },
+      {
+        "category": "other",
+        "count": 1589,
+        "percent": 2.1,
+        "size": 15003200
+      },
+      {
+        "category": "executable",
+        "count": 1,
+        "percent": 1.6,
+        "size": 12000000
+      }
+    ],
+    "by_ext": [
+      {
+        "count": 410,
+        "ext": ".bundle",
+        "size": 400000000
+      },
+      {
+        "count": 3,
+        "ext": ".dat",
+        "size": 61000000
+      },
+      {
+        "count": 800,
+        "ext": ".png",
+        "size": 40000000
+      },
+      {
+        "count": 5,
+        "ext": "",
+        "size": 120000
+      }
+    ],
+    "files_total": 3120,
+    "files_truncated": true,
+    "inventory_file": "inventory.json",
+    "localizations": [
+      "Base",
+      "en",
+      "zh-Hans"
+    ],
+    "structure_hints": {
+      "has": {
+        "Assets_car": true,
+        "Data": true,
+        "Frameworks": true,
+        "PlugIns": true,
+        "SC_Info": false,
+        "Watch": false,
+        "_CodeSignature": true,
+        "embedded_mobileprovision": false,
+        "iTunesMetadata_plist": true
+      },
+      "top_level_dirs": [
+        "Data",
+        "Frameworks"
+      ]
+    },
+    "top_files": [
+      {
+        "category": "assetbundle",
+        "path": "Payload/DemoGame.app/Data/Raw/aa/big|odd`name.bundle",
+        "size": 90000000
+      },
+      {
+        "category": "engine_data",
+        "path": "Payload/DemoGame.app/Data/Managed/Metadata/global-metadata.dat",
+        "size": 60000000
+      }
+    ]
+  },
+  "libraries": [
+    {
+      "category": "ads",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/AppLovinSDK.framework",
+          "detail": ""
+        }
+      ],
+      "id": "applovin",
+      "kind": "framework",
+      "name": "AppLovinSDK",
+      "purpose_en": "Ad mediation",
+      "purpose_zh": "广告聚合",
+      "tags": [
+        "ads",
+        "tracking"
+      ],
+      "vendor": "AppLovin"
+    },
+    {
+      "category": "analytics",
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/FirebaseAnalytics.framework",
+          "detail": ""
+        }
+      ],
+      "id": "firebase",
+      "kind": "framework",
+      "name": "FirebaseAnalytics",
+      "purpose_en": "Analytics",
+      "purpose_zh": "统计分析",
+      "tags": [
+        "analytics"
+      ],
+      "vendor": "Google"
+    },
+    {
+      "category": "engine",
+      "confidence": 0.99,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/UnityFramework.framework",
+          "detail": ""
+        }
+      ],
+      "id": "unityframework",
+      "kind": "framework",
+      "name": "UnityFramework",
+      "purpose_en": "Unity runtime",
+      "purpose_zh": "Unity 运行时",
+      "tags": [],
+      "vendor": "Unity"
+    },
+    {
+      "category": "other",
+      "confidence": 0.4,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/libX|Y.framework",
+          "detail": ""
+        }
+      ],
+      "id": "weird",
+      "kind": "bundled_dylib",
+      "name": "libX|Y",
+      "purpose_en": "",
+      "purpose_zh": "",
+      "tags": [],
+      "vendor": null
+    },
+    {
+      "category": "payment",
+      "confidence": 0.95,
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/StoreKit.framework",
+          "detail": ""
+        }
+      ],
+      "id": "storekit",
+      "kind": "system",
+      "name": "StoreKit",
+      "purpose_en": "In-app purchase",
+      "purpose_zh": "应用内购买",
+      "tags": [],
+      "vendor": "Apple"
+    }
+  ],
+  "protection": {
+    "antidebug": {
+      "hits": [
+        {
+          "kind": "symbol",
+          "ref": "ptrace"
+        }
+      ]
+    },
+    "codesign": {
+      "entitlements_keys": [
+        "application-identifier",
+        "aps-environment"
+      ],
+      "get_task_allow": false,
+      "signature_type": "apple_distribution",
+      "signed": true,
+      "team_id": "ABCDE12345"
+    },
+    "fairplay": {
+      "encrypted_binaries": [],
+      "main_encrypted": false,
+      "sc_info_present": false,
+      "scope": "none",
+      "total_binaries": 2,
+      "verdict": "no"
+    },
+    "findings": [
+      {
+        "id": "meta.signature_integrity",
+        "verdict": "no",
+        "confidence": 0.8,
+        "title": "Signature resources intact",
+        "summary": "812 files checked",
+        "params": {},
+        "evidence": [],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "unity.metadata.encrypted",
+        "verdict": "no",
+        "confidence": 0.85,
+        "title": "metadata looks intact",
+        "summary": "magic, header and string region are consistent",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "string",
+            "ref": "mscorlib",
+            "detail": "in string region"
+          }
+        ],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "unity.binary.fairplay",
+        "verdict": "no",
+        "confidence": 0.9,
+        "title": "UnityFramework is not FairPlay-encrypted",
+        "summary": "",
+        "params": {},
+        "evidence": [],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "unity.assetbundle.encryption",
+        "verdict": "suspected",
+        "confidence": 0.55,
+        "title": "A few AssetBundles look encrypted",
+        "summary": "8 of 410 bundles are high-entropy without a known header (compressed is not encrypted)",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "file",
+            "ref": "Data/Raw/x/a.bin",
+            "detail": "entropy 7.99"
+          },
+          {
+            "kind": "file",
+            "ref": "Data/Raw/x/b.bin",
+            "detail": "entropy 7.98"
+          }
+        ],
+        "remediation": "Check the loader for a custom decrypt hook.",
+        "tags": []
+      },
+      {
+        "id": "unity.hotfix.script_protection",
+        "verdict": "suspected",
+        "confidence": 0.5,
+        "title": "C# hot assembly may be encrypted",
+        "summary": "one blob has no PE header",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "heuristic",
+            "ref": "Blob",
+            "detail": "high entropy, no PE header"
+          }
+        ],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "protect.fairplay",
+        "verdict": "no",
+        "confidence": 0.9,
+        "title": "No FairPlay encryption",
+        "summary": "all 2 binaries have cryptid=0",
+        "params": {},
+        "evidence": [],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "protect.codesign",
+        "verdict": "yes",
+        "confidence": 0.9,
+        "title": "Signed",
+        "summary": "",
+        "params": {
+          "team_id": "ABCDE12345"
+        },
+        "evidence": [],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "protect.stripped",
+        "verdict": "yes",
+        "confidence": 0.8,
+        "title": "Symbols stripped",
+        "summary": "",
+        "params": {},
+        "evidence": [],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "protect.antidebug",
+        "verdict": "suspected",
+        "confidence": 0.45,
+        "title": "Anti-debug traits",
+        "summary": "",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "symbol",
+            "ref": "ptrace",
+            "detail": ""
+          }
+        ],
+        "remediation": "",
+        "tags": []
+      },
+      {
+        "id": "protect.jailbreak_detect",
+        "verdict": "suspected",
+        "confidence": 0.4,
+        "title": "Jailbreak-detection traits",
+        "summary": "",
+        "params": {},
+        "evidence": [
+          {
+            "kind": "string",
+            "ref": "/Applications/Cydia.app",
+            "detail": ""
+          }
+        ],
+        "remediation": "",
+        "tags": []
+      }
+    ],
+    "hardening": {
+      "all": {
+        "arc": true,
+        "pie": true,
+        "stack_canary": false,
+        "stripped": true
+      },
+      "main": {
+        "arc": true,
+        "pie": true,
+        "stack_canary": true,
+        "stripped": true
+      }
+    },
+    "jailbreak_detect": {
+      "hits": [
+        {
+          "kind": "string",
+          "ref": "/Applications/Cydia.app"
+        }
+      ]
+    },
+    "obfuscation": {},
+    "packer": {}
+  },
+  "engine_details": {
+    "_checkers": {
+      "cocos": {
+        "duration_s": 0.0,
+        "error": null,
+        "reason": "not applicable",
+        "status": "skipped"
+      },
+      "generic_scripts": {
+        "duration_s": 0.12,
+        "error": null,
+        "reason": null,
+        "status": "ok"
+      }
+    },
+    "detect": {
+      "candidates": [
+        {
+          "confidence": 0.97,
+          "confirmed": true,
+          "evidence": [
+            {
+              "kind": "file",
+              "ref": "Frameworks/UnityFramework.framework",
+              "detail": "framework present"
+            },
+            {
+              "kind": "string",
+              "ref": "il2cpp_init",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "family": "unity",
+          "id": "unity",
+          "kind": "game_engine",
+          "name": "Unity",
+          "signals_matched": [
+            "file:UnityFramework",
+            "string:il2cpp_"
+          ]
+        }
+      ],
+      "custom": {
+        "conditions": {
+          "known_engine_confirmed": true
+        },
+        "confidence": 0.05,
+        "deviations": [],
+        "evidence": [],
+        "next_steps": [],
+        "open_source_base": [],
+        "profile_ref": "engine.fingerprint",
+        "verdict": "no"
+      },
+      "extra": {},
+      "is_game_engine": true,
+      "languages": [
+        {
+          "confidence": 0.9,
+          "evidence": [
+            {
+              "kind": "heuristic",
+              "ref": "il2cpp",
+              "detail": ""
+            }
+          ],
+          "lang": "csharp"
+        },
+        {
+          "confidence": 0.6,
+          "evidence": [],
+          "lang": "lua"
+        },
+        {
+          "confidence": 0.8,
+          "evidence": [],
+          "lang": "objc"
+        }
+      ],
+      "primary": {
+        "confidence": 0.97,
+        "confirmed": true,
+        "evidence": [
+          {
+            "kind": "file",
+            "ref": "Frameworks/UnityFramework.framework",
+            "detail": "framework present"
+          },
+          {
+            "kind": "string",
+            "ref": "il2cpp_init",
+            "detail": ""
+          }
+        ],
+        "extra": {},
+        "family": "unity",
+        "id": "unity",
+        "kind": "game_engine",
+        "name": "Unity",
+        "signals_matched": [
+          "file:UnityFramework",
+          "string:il2cpp_"
+        ]
+      },
+      "wrapper": null
+    },
+    "fingerprint": {
+      "animation": [],
+      "asset_formats": [
+        {
+          "confidence": 0.7,
+          "evidence": [],
+          "extra": {},
+          "id": "astc",
+          "name": "ASTC"
+        }
+      ],
+      "audio": [
+        {
+          "confidence": 0.8,
+          "evidence": [
+            {
+              "kind": "dylib",
+              "ref": "libfmod.dylib",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "id": "fmod",
+          "name": "FMOD"
+        }
+      ],
+      "containers": [],
+      "host": {
+        "cpp_ratio": 0.62,
+        "main_loop_hints": [
+          "CADisplayLink"
+        ],
+        "objc_swift_ratio": 0.2,
+        "thin_uikit_shell": true
+      },
+      "network": [
+        {
+          "confidence": 0.6,
+          "evidence": [],
+          "extra": {},
+          "id": "protobuf",
+          "name": "protobuf"
+        }
+      ],
+      "physics": [
+        {
+          "confidence": 0.5,
+          "evidence": [],
+          "extra": {},
+          "id": "physx",
+          "name": "PhysX"
+        }
+      ],
+      "render": {
+        "metal": {
+          "confidence": 0.95,
+          "evidence": [
+            {
+              "kind": "symbol",
+              "ref": "MTLCreateSystemDefaultDevice",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "id": "metal",
+          "name": "Metal"
+        }
+      },
+      "script_vms": [
+        {
+          "confidence": 0.9,
+          "evidence": [
+            {
+              "kind": "symbol",
+              "ref": "il2cpp_init",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "id": "il2cpp",
+          "name": "IL2CPP"
+        },
+        {
+          "confidence": 0.7,
+          "evidence": [
+            {
+              "kind": "string",
+              "ref": "luaL_newstate",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "id": "luajit",
+          "name": "LuaJIT"
+        }
+      ],
+      "shader_formats": [
+        {
+          "confidence": 0.6,
+          "evidence": [
+            {
+              "kind": "file",
+              "ref": "default.metallib",
+              "detail": ""
+            }
+          ],
+          "extra": {},
+          "id": "metallib",
+          "name": "metallib"
+        }
+      ],
+      "summary_text": "Metal renderer, IL2CPP and LuaJIT script VMs, FMOD audio."
+    },
+    "generic_scripts": {
+      "scripts": {
+        "lua": 121
+      }
+    },
+    "unity": {
+      "backend": "il2cpp",
+      "binary": {
+        "encrypted": false,
+        "path": "Payload/DemoGame.app/Frameworks/UnityFramework.framework/UnityFramework",
+        "slice": "arm64"
+      },
+      "bundles": {
+        "addressables": {
+          "catalog_found": true
+        },
+        "by_class": {
+          "high_entropy_unknown": 8,
+          "offset_prefix": 0,
+          "other": 2,
+          "standard": 400,
+          "unknown": 0,
+          "xor_simple": 0
+        },
+        "compression": {
+          "lz4": 380,
+          "lzma": 20
+        },
+        "paths_sample": [
+          "Payload/DemoGame.app/Data/Raw/aa/b000.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b001.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b002.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b003.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b004.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b005.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b006.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b007.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b008.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b009.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b010.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b011.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b012.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b013.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b014.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b015.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b016.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b017.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b018.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b019.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b020.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b021.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b022.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b023.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b024.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b025.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b026.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b027.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b028.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b029.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b030.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b031.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b032.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b033.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b034.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b035.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b036.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b037.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b038.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b039.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b040.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b041.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b042.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b043.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b044.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b045.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b046.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b047.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b048.bundle",
+          "Payload/DemoGame.app/Data/Raw/aa/b049.bundle"
+        ],
+        "paths_sample_file": "details/unity-bundle-paths.json",
+        "paths_sample_total": 120,
+        "sampled": 200,
+        "samples": {
+          "high_entropy_unknown": [
+            "Data/Raw/x/a.bin",
+            "Data/Raw/x/b.bin"
+          ],
+          "standard": [
+            "Data/Raw/aa/ui.bundle"
+          ]
+        },
+        "total": 410,
+        "unity_versions": {
+          "2021.3.21f1": 410
+        }
+      },
+      "dump": {
+        "artifacts": {
+          "dump.cs": "il2cpp/dump.cs",
+          "script.json": "il2cpp/script.json"
+        },
+        "backend": "Il2CppDumper",
+        "backend_version": "6.7.40",
+        "cached": false,
+        "duration_s": 12.3,
+        "error_code": null,
+        "namespaces": [
+          "Game.Module000",
+          "Game.Module001",
+          "Game.Module002",
+          "Game.Module003",
+          "Game.Module004",
+          "Game.Module005",
+          "Game.Module006",
+          "Game.Module007",
+          "Game.Module008",
+          "Game.Module009",
+          "Game.Module010",
+          "Game.Module011",
+          "Game.Module012",
+          "Game.Module013",
+          "Game.Module014",
+          "Game.Module015",
+          "Game.Module016",
+          "Game.Module017",
+          "Game.Module018",
+          "Game.Module019",
+          "Game.Module020",
+          "Game.Module021",
+          "Game.Module022",
+          "Game.Module023",
+          "Game.Module024",
+          "Game.Module025",
+          "Game.Module026",
+          "Game.Module027",
+          "Game.Module028",
+          "Game.Module029",
+          "Game.Module030",
+          "Game.Module031",
+          "Game.Module032",
+          "Game.Module033",
+          "Game.Module034",
+          "Game.Module035",
+          "Game.Module036",
+          "Game.Module037",
+          "Game.Module038",
+          "Game.Module039",
+          "Game.Module040",
+          "Game.Module041",
+          "Game.Module042",
+          "Game.Module043",
+          "Game.Module044",
+          "Game.Module045",
+          "Game.Module046",
+          "Game.Module047",
+          "Game.Module048",
+          "Game.Module049",
+          "Game.Module050",
+          "Game.Module051",
+          "Game.Module052",
+          "Game.Module053",
+          "Game.Module054",
+          "Game.Module055",
+          "Game.Module056",
+          "Game.Module057",
+          "Game.Module058",
+          "Game.Module059",
+          "Game.Module060",
+          "Game.Module061",
+          "Game.Module062",
+          "Game.Module063",
+          "Game.Module064",
+          "Game.Module065",
+          "Game.Module066",
+          "Game.Module067",
+          "Game.Module068",
+          "Game.Module069",
+          "Game.Module070",
+          "Game.Module071",
+          "Game.Module072",
+          "Game.Module073",
+          "Game.Module074",
+          "Game.Module075",
+          "Game.Module076",
+          "Game.Module077",
+          "Game.Module078",
+          "Game.Module079",
+          "Game.Module080",
+          "Game.Module081",
+          "Game.Module082",
+          "Game.Module083",
+          "Game.Module084",
+          "Game.Module085",
+          "Game.Module086",
+          "Game.Module087",
+          "Game.Module088",
+          "Game.Module089",
+          "Game.Module090",
+          "Game.Module091",
+          "Game.Module092",
+          "Game.Module093",
+          "Game.Module094",
+          "Game.Module095",
+          "Game.Module096",
+          "Game.Module097",
+          "Game.Module098",
+          "Game.Module099"
+        ],
+        "namespaces_file": "details/unity-namespaces.json",
+        "namespaces_total": 155,
+        "ok": true,
+        "out_dir": "il2cpp",
+        "ran": true,
+        "remediation": "",
+        "summary": {
+          "assemblies": 12,
+          "classes": 4200,
+          "enums": 210,
+          "fields": 21000,
+          "framework_namespaces": [
+            "UnityEngine",
+            "XLua"
+          ],
+          "interfaces": 130,
+          "methods": 38000,
+          "obfuscation": {
+            "non_ascii_ratio": 0.0,
+            "non_standard_ratio": 0.05,
+            "score": 0.12,
+            "short_ratio": 0.1
+          },
+          "string_literals": 9800
+        }
+      },
+      "hotfix": {
+        "csharp": {
+          "assemblies": [
+            {
+              "asm_refs": [
+                "mscorlib",
+                "UnityEngine.CoreModule",
+                "Assembly-CSharp",
+                "netstandard",
+                "System.Core",
+                "X"
+              ],
+              "clr": "v4.0.30319",
+              "format": "pe_cli",
+              "kind": "hot",
+              "name": "HotUpdate",
+              "path": "Data/Raw/hot/hot.bundle",
+              "size": 1800000,
+              "source": "bundle"
+            },
+            {
+              "asm_refs": [],
+              "clr": "v4.0.30319",
+              "format": "pe_cli",
+              "kind": "aot_meta",
+              "name": "mscorlib",
+              "path": "Data/Raw/aot/mscorlib.dll.bytes",
+              "size": 900000,
+              "source": "loose"
+            },
+            {
+              "asm_refs": [],
+              "clr": null,
+              "format": "encrypted_suspected",
+              "kind": "unknown",
+              "name": "Blob",
+              "size": 40000,
+              "source": "bundle"
+            }
+          ]
+        },
+        "frameworks": [
+          {
+            "confidence": 0.85,
+            "evidence": [
+              {
+                "kind": "string",
+                "ref": "LuaInterface.LuaState",
+                "detail": "metadata string table"
+              }
+            ],
+            "id": "tolua",
+            "kind": "lua",
+            "name": "ToLua",
+            "version_hint": null
+          },
+          {
+            "confidence": 0.9,
+            "evidence": [
+              {
+                "kind": "string",
+                "ref": "HybridCLR.RuntimeApi",
+                "detail": ""
+              }
+            ],
+            "id": "hybridclr",
+            "kind": "csharp",
+            "name": "HybridCLR",
+            "version_hint": "4.x"
+          },
+          {
+            "confidence": 0.8,
+            "evidence": [
+              {
+                "kind": "file",
+                "ref": "aa/catalog.json",
+                "detail": ""
+              }
+            ],
+            "id": "addressables",
+            "kind": "resource",
+            "name": "Addressables",
+            "version_hint": null
+          }
+        ],
+        "js": {
+          "backends": [],
+          "files": {
+            "bytecode": 0,
+            "encrypted_suspected": 0,
+            "plain": 0,
+            "total": 0
+          },
+          "formats": []
+        },
+        "lua": {
+          "bytecode": {
+            "arch_bits": {
+              "32": 0,
+              "64": 98
+            },
+            "by_version": {
+              "5.1": 0,
+              "luajit_2.1": 98
+            },
+            "invalid": 1,
+            "stripped_count": 90
+          },
+          "consistency": {
+            "notes": [
+              "bytecode is LuaJIT 2.1 but the native runtime string says PUC-Lua 5.1"
+            ],
+            "ok": false
+          },
+          "custom_lua_suspected": false,
+          "dialect_hints": [
+            "5.1-style (setfenv)"
+          ],
+          "files": {
+            "bytecode": 98,
+            "compressed": 0,
+            "encrypted_suspected": 3,
+            "plain": 20,
+            "total": 121
+          },
+          "runtime_versions": [
+            {
+              "confidence": 0.6,
+              "flavor": "puc",
+              "source": "native_string",
+              "version": "5.1"
+            }
+          ]
+        },
+        "resource_update": {
+          "catalogs": [
+            "aa/catalog.json"
+          ],
+          "frameworks": [
+            {
+              "id": "addressables",
+              "name": "Addressables"
+            }
+          ],
+          "hosts": [
+            "cdn.example.com"
+          ],
+          "manifests": []
+        },
+        "script_protection": {
+          "csharp": "suspected",
+          "js": "n/a",
+          "lua": "no"
+        },
+        "storage": {
+          "in_bundles": 150,
+          "in_serialized": 2,
+          "loose": 40,
+          "scanned": {
+            "bundles_sampled": 100,
+            "total": 410
+          }
+        },
+        "summary_text": "ToLua + HybridCLR + Addressables; Lua is LuaJIT 2.1 bytecode."
+      },
+      "metadata": {
+        "entropy": 5.1,
+        "evidence": [
+          {
+            "kind": "string",
+            "ref": "mscorlib",
+            "detail": "found in string region"
+          }
+        ],
+        "header_ok": true,
+        "path": "Payload/DemoGame.app/Data/Managed/Metadata/global-metadata.dat",
+        "present": true,
+        "string_region": {
+          "offset": 1024,
+          "size": 2048000
+        },
+        "string_region_ok": true,
+        "verdict": "no",
+        "version": 29
+      },
+      "mono": {
+        "assemblies": [],
+        "evidence": [],
+        "verdict": "n/a"
+      },
+      "precheck": {
+        "error_code": null,
+        "ready": true,
+        "reasons": []
+      },
+      "version": {
+        "conflicts": [],
+        "sources": [
+          {
+            "ref": "Data/globalgamemanagers",
+            "source": "globalgamemanagers",
+            "value": "2021.3.21f1"
+          },
+          {
+            "ref": "Data/Raw/aa/ui.bundle",
+            "source": "unityfs_header",
+            "value": "2021.3.21f1"
+          }
+        ],
+        "value": "2021.3.21f1"
+      }
+    }
+  },
+  "privacy": {
+    "ats": {
+      "allows_arbitrary_loads": true,
+      "exception_domains": [
+        "cdn.example.com"
+      ]
+    },
+    "permissions": [
+      {
+        "description": "Scan codes",
+        "key": "NSCameraUsageDescription",
+        "level": "medium",
+        "localized": {
+          "en": "Scan codes",
+          "zh-Hans": "用于扫码"
+        },
+        "meaning_en": "Camera access",
+        "meaning_zh": "访问相机"
+      },
+      {
+        "description": "Always location",
+        "key": "NSLocationAlwaysUsageDescription",
+        "level": "high",
+        "localized": {
+          "en": "Always location"
+        },
+        "meaning_en": "Always-on location",
+        "meaning_zh": "始终访问位置"
+      }
+    ],
+    "query_schemes": [
+      "alipay",
+      "weixin"
+    ],
+    "trackers": [
+      {
+        "id": "applovin",
+        "name": "AppLovinSDK",
+        "tags": [
+          "ads",
+          "tracking"
+        ]
+      },
+      {
+        "id": "firebase",
+        "name": "FirebaseAnalytics",
+        "tags": [
+          "analytics"
+        ]
+      }
+    ],
+    "url_schemes": [
+      "demogame",
+      "fb123456"
+    ]
+  },
+  "stages": [
+    {
+      "name": "ingest",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "inventory",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "meta",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "meta.identity",
+        "meta.distribution",
+        "meta.permissions",
+        "meta.signature_integrity"
+      ]
+    },
+    {
+      "name": "macho",
+      "status": "partial",
+      "duration_s": 0,
+      "error": null,
+      "reason": "1 binary had parse warnings",
+      "warnings": [
+        "UnityFramework: LC_DYLD_CHAINED_FIXUPS not parsed"
+      ],
+      "finding_ids": [
+        "macho.summary"
+      ]
+    },
+    {
+      "name": "engine.fingerprint",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "engine.fingerprint",
+        "engine.container.unknown"
+      ]
+    },
+    {
+      "name": "engine.detect",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "engine.primary",
+        "engine.language",
+        "engine.custom"
+      ]
+    },
+    {
+      "name": "engine.other",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    },
+    {
+      "name": "engine.unity",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "unity.detected",
+        "unity.version",
+        "unity.backend",
+        "unity.metadata.present",
+        "unity.metadata.encrypted",
+        "unity.binary.fairplay",
+        "unity.il2cpp.precheck",
+        "unity.il2cpp.dump",
+        "unity.il2cpp.names_obfuscated",
+        "unity.assetbundle.encryption"
+      ]
+    },
+    {
+      "name": "engine.unity.hotfix",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "unity.hotfix.framework",
+        "unity.hotfix.lua",
+        "unity.hotfix.lua_version",
+        "unity.hotfix.csharp_dll",
+        "unity.hotfix.resource_update",
+        "unity.hotfix.script_protection"
+      ]
+    },
+    {
+      "name": "libs",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "libs.summary",
+        "libs.unknown"
+      ]
+    },
+    {
+      "name": "protect",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "protect.fairplay",
+        "protect.codesign",
+        "protect.stripped",
+        "protect.antidebug",
+        "protect.jailbreak_detect"
+      ]
+    },
+    {
+      "name": "classify",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": [
+        "classify.category"
+      ]
+    },
+    {
+      "name": "report",
+      "status": "ok",
+      "duration_s": 0,
+      "error": null,
+      "reason": null,
+      "warnings": [],
+      "finding_ids": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "meta.identity",
+      "verdict": "yes",
+      "confidence": 0.95,
+      "title": "App identity resolved",
+      "summary": "bundle com.example.demogame",
+      "params": {
+        "bundle_id": "com.example.demogame",
+        "version": "1.2.3"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "meta.distribution",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Distribution: appstore",
+      "summary": "",
+      "params": {
+        "type": "appstore"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "meta.permissions",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "2 permission declarations",
+      "summary": "",
+      "params": {
+        "count": 2
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "meta.signature_integrity",
+      "verdict": "no",
+      "confidence": 0.8,
+      "title": "Signature resources intact",
+      "summary": "812 files checked",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "macho.summary",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "2 Mach-O binaries parsed",
+      "summary": "",
+      "params": {
+        "count": 2
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.fingerprint",
+      "verdict": "yes",
+      "confidence": 0.8,
+      "title": "Engine capability profile built",
+      "summary": "",
+      "params": {
+        "render": "metal"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.container.unknown",
+      "verdict": "n/a",
+      "confidence": 0.5,
+      "title": "No unknown containers",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.primary",
+      "verdict": "yes",
+      "confidence": 0.97,
+      "title": "Primary engine: Unity",
+      "summary": "",
+      "params": {
+        "engine": "Unity"
+      },
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Frameworks/UnityFramework.framework",
+          "detail": ""
+        }
+      ],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.language",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Languages: C#, ObjC, Lua",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "engine.custom",
+      "verdict": "no",
+      "confidence": 0.9,
+      "title": "No in-house engine indicated",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.detected",
+      "verdict": "yes",
+      "confidence": 0.97,
+      "title": "Unity detected",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.version",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Unity 2021.3.21f1",
+      "summary": "",
+      "params": {
+        "sources": [
+          "globalgamemanagers",
+          "unityfs_header"
+        ],
+        "version": "2021.3.21f1"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.backend",
+      "verdict": "yes",
+      "confidence": 0.95,
+      "title": "Scripting backend: il2cpp",
+      "summary": "",
+      "params": {
+        "backend": "il2cpp"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.metadata.present",
+      "verdict": "yes",
+      "confidence": 0.95,
+      "title": "global-metadata.dat present",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.metadata.encrypted",
+      "verdict": "no",
+      "confidence": 0.85,
+      "title": "metadata looks intact",
+      "summary": "magic, header and string region are consistent",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "string",
+          "ref": "mscorlib",
+          "detail": "in string region"
+        }
+      ],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.binary.fairplay",
+      "verdict": "no",
+      "confidence": 0.9,
+      "title": "UnityFramework is not FairPlay-encrypted",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.il2cpp.precheck",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Dump preconditions met",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.il2cpp.dump",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "IL2CPP dump succeeded",
+      "summary": "",
+      "params": {
+        "backend": "Il2CppDumper"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.il2cpp.names_obfuscated",
+      "verdict": "no",
+      "confidence": 0.6,
+      "title": "Identifiers are not obfuscated",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.assetbundle.encryption",
+      "verdict": "suspected",
+      "confidence": 0.55,
+      "title": "A few AssetBundles look encrypted",
+      "summary": "8 of 410 bundles are high-entropy without a known header (compressed is not encrypted)",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "file",
+          "ref": "Data/Raw/x/a.bin",
+          "detail": "entropy 7.99"
+        },
+        {
+          "kind": "file",
+          "ref": "Data/Raw/x/b.bin",
+          "detail": "entropy 7.98"
+        }
+      ],
+      "remediation": "Check the loader for a custom decrypt hook.",
+      "tags": []
+    },
+    {
+      "id": "unity.hotfix.framework",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Hot-update frameworks: ToLua, HybridCLR, Addressables",
+      "summary": "",
+      "params": {
+        "names": [
+          "ToLua",
+          "HybridCLR",
+          "Addressables"
+        ]
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.hotfix.lua",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Lua scripts found",
+      "summary": "",
+      "params": {
+        "total": 121
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.hotfix.lua_version",
+      "verdict": "yes",
+      "confidence": 0.85,
+      "title": "Lua bytecode: LuaJIT 2.1",
+      "summary": "",
+      "params": {
+        "versions": [
+          "luajit_2.1"
+        ]
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.hotfix.csharp_dll",
+      "verdict": "yes",
+      "confidence": 0.8,
+      "title": "C# hot assembly found",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.hotfix.resource_update",
+      "verdict": "yes",
+      "confidence": 0.7,
+      "title": "Resource updates via Addressables",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "unity.hotfix.script_protection",
+      "verdict": "suspected",
+      "confidence": 0.5,
+      "title": "C# hot assembly may be encrypted",
+      "summary": "one blob has no PE header",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "heuristic",
+          "ref": "Blob",
+          "detail": "high entropy, no PE header"
+        }
+      ],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "libs.summary",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "5 libraries identified",
+      "summary": "",
+      "params": {
+        "count": 5
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "libs.unknown",
+      "verdict": "unknown",
+      "confidence": 0.5,
+      "title": "2 libraries unidentified",
+      "summary": "",
+      "params": {
+        "count": 2
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "protect.fairplay",
+      "verdict": "no",
+      "confidence": 0.9,
+      "title": "No FairPlay encryption",
+      "summary": "all 2 binaries have cryptid=0",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "protect.codesign",
+      "verdict": "yes",
+      "confidence": 0.9,
+      "title": "Signed",
+      "summary": "",
+      "params": {
+        "team_id": "ABCDE12345"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "protect.stripped",
+      "verdict": "yes",
+      "confidence": 0.8,
+      "title": "Symbols stripped",
+      "summary": "",
+      "params": {},
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "protect.antidebug",
+      "verdict": "suspected",
+      "confidence": 0.45,
+      "title": "Anti-debug traits",
+      "summary": "",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "symbol",
+          "ref": "ptrace",
+          "detail": ""
+        }
+      ],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "protect.jailbreak_detect",
+      "verdict": "suspected",
+      "confidence": 0.4,
+      "title": "Jailbreak-detection traits",
+      "summary": "",
+      "params": {},
+      "evidence": [
+        {
+          "kind": "string",
+          "ref": "/Applications/Cydia.app",
+          "detail": ""
+        }
+      ],
+      "remediation": "",
+      "tags": []
+    },
+    {
+      "id": "classify.category",
+      "verdict": "yes",
+      "confidence": 0.95,
+      "title": "Category: game",
+      "summary": "",
+      "params": {
+        "category": "game"
+      },
+      "evidence": [],
+      "remediation": "",
+      "tags": []
+    }
+  ],
+  "warnings": [
+    "[macho] UnityFramework: LC_DYLD_CHAINED_FIXUPS not parsed",
+    "inventory.json was not provided by the inventory stage; wrote the (possibly truncated) file list"
+  ],
+  "redaction": {
+    "applied": true,
+    "counts": {
+      "email": 1,
+      "home_path": 1
+    },
+    "fields": [
+      "email",
+      "home_path",
+      "itunes.apple-id"
+    ]
+  },
+  "summary": {
+    "build": "456",
+    "bundle_id": "com.example.demogame",
+    "category": {
+      "confidence": 0.95,
+      "id": "game",
+      "subcategory": null
+    },
+    "dump": {
+      "error_code": null,
+      "ok": true,
+      "reasons": [],
+      "state": "dumped",
+      "verdict": "yes"
+    },
+    "engine": {
+      "candidates": [],
+      "custom": {
+        "confidence": 0.05,
+        "verdict": "no"
+      },
+      "is_game_engine": true,
+      "known": true,
+      "primary": {
+        "confidence": 0.97,
+        "confirmed": true,
+        "id": "unity",
+        "name": "Unity"
+      },
+      "wrapper_embedded": [],
+      "wrapper_host": null
+    },
+    "fairplay": {
+      "confidence": 0.9,
+      "encrypted": 0,
+      "scope": "none",
+      "total": 2,
+      "verdict": "no"
+    },
+    "languages": [
+      {
+        "confidence": 0.9,
+        "lang": "csharp"
+      },
+      {
+        "confidence": 0.8,
+        "lang": "objc"
+      },
+      {
+        "confidence": 0.6,
+        "lang": "lua"
+      }
+    ],
+    "libs": {
+      "by_category": {
+        "ads": 1,
+        "analytics": 1,
+        "engine": 1,
+        "other": 1,
+        "payment": 1
+      },
+      "privacy_tags": {
+        "ads": [
+          "applovin"
+        ],
+        "analytics": [
+          "firebase"
+        ],
+        "social": [],
+        "tracking": [
+          "applovin"
+        ]
+      },
+      "unknown": [
+        {
+          "evidence": [
+            {
+              "kind": "file",
+              "ref": "Frameworks/libmystery.dylib",
+              "detail": "contact [REDACTED-EMAIL]"
+            }
+          ],
+          "hint": "maybe an obfuscator",
+          "kind": "bundled_dylib",
+          "name": "libmystery.dylib"
+        },
+        {
+          "evidence": [],
+          "hint": null,
+          "kind": "framework",
+          "name": "ZZCore"
+        }
+      ]
+    },
+    "name": "示例游戏",
+    "problem_stages": [],
+    "protections": [
+      {
+        "confidence": 0.8,
+        "id": "protect.stripped",
+        "verdict": "yes"
+      },
+      {
+        "confidence": 0.45,
+        "id": "protect.antidebug",
+        "verdict": "suspected"
+      },
+      {
+        "confidence": 0.4,
+        "id": "protect.jailbreak_detect",
+        "verdict": "suspected"
+      },
+      {
+        "confidence": 0.55,
+        "id": "unity.assetbundle.encryption",
+        "verdict": "suspected"
+      },
+      {
+        "confidence": 0.5,
+        "id": "unity.hotfix.script_protection",
+        "verdict": "suspected"
+      }
+    ],
+    "risks": [
+      {
+        "key": "assetbundle_encrypted",
+        "params": {
+          "verdict": "suspected"
+        }
+      },
+      {
+        "key": "script_protection",
+        "params": {
+          "which": [
+            "csharp"
+          ]
+        }
+      },
+      {
+        "key": "antidebug",
+        "params": {
+          "verdict": "suspected"
+        }
+      },
+      {
+        "key": "jailbreak_detect",
+        "params": {
+          "verdict": "suspected"
+        }
+      },
+      {
+        "key": "unknown_libs",
+        "params": {
+          "count": 2
+        }
+      },
+      {
+        "key": "trackers",
+        "params": {
+          "count": 2
+        }
+      },
+      {
+        "key": "high_permissions",
+        "params": {
+          "count": 1
+        }
+      }
+    ],
+    "signing": {
+      "distribution": "appstore",
+      "distribution_confidence": 0.9,
+      "distribution_verdict": "yes",
+      "signature_type": "apple_distribution",
+      "signed": true,
+      "team_id": "ABCDE12345"
+    },
+    "unity": {
+      "assetbundle_verdict": "suspected",
+      "backend": "il2cpp",
+      "detected": true,
+      "has_unity_data": true,
+      "hotfix_frameworks": [
+        "ToLua",
+        "HybridCLR",
+        "Addressables"
+      ],
+      "metadata_verdict": "no",
+      "script_protection": {
+        "csharp": "suspected",
+        "js": "n/a",
+        "lua": "no"
+      },
+      "version": "2021.3.21f1"
+    },
+    "unity_state": "unity",
+    "version": "1.2.3"
+  },
+  "artifacts": {
+    "details/unity-bundle-paths.json": "details/unity-bundle-paths.json",
+    "details/unity-namespaces.json": "details/unity-namespaces.json",
+    "inventory.json": "inventory.json",
+    "report.json": "report.json",
+    "report.md": "report.md"
+  },
+  "config": {
+    "assume_yes": false,
+    "engines_user_dir": null,
+    "extract": [],
+    "formats": [
+      "md",
+      "json"
+    ],
+    "il2cpp": {
+      "backend_order": [],
+      "dotnet_path": null,
+      "enabled": true,
+      "force_dump": false,
+      "timeout_s": 900,
+      "tool_path": null
+    },
+    "keep_workdir": false,
+    "lang": "en",
+    "libs_user_path": null,
+    "limits": {
+      "max_file_size": 2147483648,
+      "max_files": 200000,
+      "max_ratio": 200.0,
+      "max_total_extract": 8589934592
+    },
+    "offline": false,
+    "output_dir": "",
+    "redact": true,
+    "signature_integrity": true,
+    "skip": [],
+    "stages": null,
+    "unity": {
+      "bundle_deep_sample": 200,
+      "hotfix_scan_bundles": 100,
+      "hotfix_scan_bytes_per_bundle": 67108864
+    },
+    "verbose": 0
+  }
+}

@@ -1,9 +1,7 @@
 """Input abstraction: ``ArchiveSource`` Protocol (frozen contract) and ``EntryInfo``.
 
-WP1 supplies the real ``ZipSource`` / ``DirSource`` / ``open_source``; WP0 ships only a minimal
-``ZipSource`` (``minimal_zip.py``) so the skeleton can be smoke-tested. WP1 may rewrite
-``minimal_zip.py`` / add modules and update the lazy re-exports below, but must keep the
-Protocol, ``EntryInfo`` and the exported names stable.
+The real ``ZipSource`` / ``DirSource`` / ``open_source`` live in ``ingest.source`` (WP1);
+``minimal_zip.py`` is kept as a thin alias. The Protocol, ``EntryInfo`` and the exported names are frozen.
 """
 from __future__ import annotations
 
@@ -11,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import BinaryIO, List, Optional, Protocol, runtime_checkable
 
-__all__ = ["EntryInfo", "ArchiveSource", "ZipSource", "open_source"]
+__all__ = ["EntryInfo", "ArchiveSource", "ZipSource", "DirSource", "open_source"]
 
 
 @dataclass(frozen=True)
@@ -56,16 +54,16 @@ class ArchiveSource(Protocol):
         """Release file handles (required on Windows before deleting files)."""
 
 
-def open_source(path: "Path | str") -> ArchiveSource:
-    """Open ``path`` as an ``ArchiveSource`` (WP0: zip files only; WP1 adds directories)."""
-    from .minimal_zip import ZipSource as _Zip
+def open_source(path: "Path | str", **kwargs: object) -> ArchiveSource:
+    """Open ``path`` (zip / ipa file or directory) as an ``ArchiveSource`` (see ``ingest.source``)."""
+    from .source import open_source as _open
 
-    return _Zip(Path(path))
+    return _open(Path(path), **kwargs)  # type: ignore[return-value]
 
 
 def __getattr__(name: str):  # lazy re-export keeps ``import ipa_analyzer.ingest`` cheap
-    if name == "ZipSource":
-        from .minimal_zip import ZipSource
+    if name in ("ZipSource", "DirSource"):
+        from . import source
 
-        return ZipSource
+        return getattr(source, name)
     raise AttributeError(name)

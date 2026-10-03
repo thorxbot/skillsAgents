@@ -1,0 +1,58 @@
+{
+  "meta.identity": {
+    "title": "应用身份",
+    "summary": "应用名 {name},Bundle ID {bundle_id},版本 {version}(build {build})。",
+    "remediation": "若无法解析,请确认输入的是完整 .app / IPA 且 Info.plist 未损坏。"
+  },
+  "meta.distribution": {
+    "title": "分发类型",
+    "summary": "判定分发类型:{type}。竞争假设:{alternatives_text}。",
+    "remediation": "分发类型仅依据 embedded.mobileprovision、SC_Info 与 iTunesMetadata.plist 推断;重签名包可能与原始分发渠道不同。"
+  },
+  "meta.permissions": {
+    "title": "隐私权限声明",
+    "summary": "共声明 {count} 项权限用途说明,其中高敏感 {high_count} 项:{high_keys}。",
+    "remediation": "对照业务需求审查高敏感权限,确认用途描述与实际使用一致。"
+  },
+  "meta.fairplay_container": {
+    "title": "App Store FairPlay 容器",
+    "summary": "SC_Info 中 FairPlay 相关文件 {count} 个(内嵌单元含 SC_Info 的 {nested_units} 个)。该证据仅说明包来自 App Store 下发,二进制是否加密以 Mach-O cryptid 为准。",
+    "remediation": "如需分析二进制,请确认 cryptid;若被加密,需提供已解密的 IPA。"
+  },
+  "meta.signature_integrity": {
+    "title": "代码签名资源封条校验",
+    "summary": "已校验 {checked} 个文件:缺失 {missing},被修改 {modified},额外 {extra}。封条一致不代表来源可信(重签名包会带新的封条)。",
+    "remediation": "存在缺失或被修改的文件说明包在签名后被改动(重打包 / 注入)。"
+  },
+  "meta.distribution.type.appstore": "App Store",
+  "meta.distribution.type.adhoc": "Ad Hoc(限定设备)",
+  "meta.distribution.type.enterprise": "企业签名(In-House)",
+  "meta.distribution.type.development": "开发签名(Development)",
+  "meta.distribution.type.unsigned_or_repackaged": "未签名或重打包",
+  "meta.distribution.type.unknown": "未知",
+  "meta.permission.level.high": "高敏感",
+  "meta.permission.level.medium": "中敏感",
+  "meta.permission.level.low": "低敏感",
+  "meta.name.source.InfoPlist.strings:CFBundleDisplayName": "本地化显示名(InfoPlist.strings)",
+  "meta.name.source.InfoPlist.strings:CFBundleName": "本地化 Bundle 名(InfoPlist.strings)",
+  "meta.name.source.Info.plist:CFBundleDisplayName": "Info.plist 显示名",
+  "meta.name.source.Info.plist:CFBundleName": "Info.plist Bundle 名",
+  "meta.name.source.iTunesMetadata.plist:itemName": "App Store 条目名",
+  "meta.name.source.iTunesMetadata.plist:bundleDisplayName": "App Store 显示名",
+  "meta.name.source.CFBundleExecutable": "可执行文件名",
+  "meta.name.source.input_filename": "输入文件名",
+  "meta.device.iphone": "iPhone / iPod touch",
+  "meta.device.ipad": "iPad",
+  "meta.device.tv": "Apple TV",
+  "meta.device.watch": "Apple Watch",
+  "meta.device.mac": "Mac(Catalyst)",
+  "meta.device.vision": "Apple Vision",
+  "meta.extension.kind.appex": "App 扩展",
+  "meta.extension.kind.watch": "Watch App",
+  "meta.extension.kind.app_clip": "App Clip",
+  "meta.redacted": "<已脱敏>",
+  "meta.redaction.notice": "已脱敏购买者信息({count} 个字段);使用 --no-redact 可保留。",
+  "meta.integrity.kind.modified": "被修改",
+  "meta.integrity.kind.missing": "缺失",
+  "meta.integrity.kind.extra": "额外"
+}
