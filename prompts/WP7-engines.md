@@ -62,3 +62,8 @@
 
 ## 重要:真实样本的二进制全部被 FairPlay 加密
 先读 `docs/05-REAL-SAMPLES-AND-HTP.md` 中"已实测"一节。凡依赖 Mach-O 字符串 / ObjC 类名 / 符号的检测,在 `slice.encrypted=True` 时必须用 `skip_encrypted=True` 并**降级**到文件、目录、metadata 字符串等不依赖加密区间的证据;报告里要有"二进制已加密,基于二进制的检测受限"的说明(`remediation`:提供已解密 IPA)。验收里增加"加密二进制夹具下不产生噪声误报"。
+
+## 真实样本线索(必读 `docs/05-REAL-SAMPLES-AND-HTP.md`)
+- ISBN:`.ccz`(`CCZp`)⇒ 应判 Cocos 家族(cocos2d-x);验收时用真实样本跑 `engine.detect`,记录结果。
+- SeaWorld:~5,400 个文件头为 `NHPK/NHPT/NHPO` 的自定义封装 ⇒ 用于容器画像:统计头 4 字节聚类、去掉头后内容是否为标准格式。不得因此断言厂商。
+- 真实样本二进制被 FairPlay 加密,基于二进制的指纹缺失时必须降级并说明。

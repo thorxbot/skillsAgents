@@ -23,6 +23,11 @@
 - 被加密的只是 Mach-O 代码段(cryptoff/cryptsize 范围);`global-metadata.dat`、AssetBundle、Lua/资源文件是普通文件,**不受 FairPlay 影响**,所以 metadata 判定、AssetBundle 分类、热更新扫描(含 metadata 字符串表扫描)在这四个样本上仍可真实验证。
 - 加密状态下 Mach-O 的 `__cstring`/ObjC 类名等落在加密区间内,读出来是噪声:WP3 已提供 `skip_encrypted=True`;**依赖二进制字符串/类名/符号的检测(libs 的 ObjC 前缀、引擎指纹符号、原生 Lua 版本串)在加密包上会缺失**,必须降级为文件/目录/metadata 线索,并在报告里写明"二进制已加密,基于二进制的检测受限"。
 
+### WP1 在真实样本上的新发现(2026-10-04)
+- **ISBN(pizzabusiness)**:大量 `.ccz` 纹理,魔数 `CCZp`(cocos-engine `ZipUtils.cpp` 中的**加密 ccz**)。⇒ 更像 **Cocos 家族**(cocos2d-x),不是 Unity(WP1 回报里写的 "Unity" 是误标,我的 zip 初筛也没有任何 Unity 特征)。WP7/WP7b 应据此判为 Cocos 并检查脚本/资源保护。
+- **SeaWorld**:约 5,400 个 `.json/.astc/.png` 文件以 `NHPK` / `NHPT` / `NHPO` 开头——**自定义资源封装**,magic 未识别(类别按扩展名)。这是 `engine.container.unknown` / `engine.custom` 的真实线索,但**不要据此断言厂商或引擎名**;WP7 应把它作为"同目录大量扩展名与真实内容不符的自定义文件头"的容器画像样例(头 4 字节聚类 + 其后是否为标准 json/astc/png/压缩流)。
+- 性能:四个包 ingest 0.16–0.51 s、inventory 0.22–3.58 s、峰值 RSS 41–51 MB。
+
 用途:
 - WP9 端到端验收(见 WP9 提示词"真实样本"一节);WP1/WP3/WP6 的性能与健壮性验证。
 - 四个包都带 `SC_Info`,**主程序的 cryptid 需实测**(可能已解密,也可能是加密包)。结果只写进验收记录,不入库。

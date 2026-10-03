@@ -61,3 +61,6 @@
 
 ## 回报额外要求
 - 每个 checker 的"已核实来源"与 UNVERIFIED 清单;哪些变体/引擎你**没有把握可靠检测**并如实说明。
+
+## 真实样本线索
+- ISBN 的 `.ccz` 为加密 ccz(`CCZp`,见 cocos-engine `ZipUtils.cpp`):Cocos checker 需识别 `CCZ!`(未加密)与 `CCZp`(加密)并把计数/样本写入资源保护结果;密钥来源不做提取。
