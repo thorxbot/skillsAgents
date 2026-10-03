@@ -1,0 +1,4 @@
+graft data
+graft schemas
+graft references
+include SKILL.md README.md

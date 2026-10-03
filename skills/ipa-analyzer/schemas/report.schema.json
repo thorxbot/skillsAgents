@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.invalid/ipa-analyzer/report.schema.json",
+  "title": "ipa-analyzer report",
+  "description": "Schema of report.json (schema_version 1.0). Extension points (engine_details, data-like objects) allow additional properties.",
+  "type": "object",
+  "required": [
+    "schema_version", "tool", "generated_at", "input", "app", "classification", "structure", "resources",
+    "libraries", "protection", "engine_details", "privacy", "stages", "findings", "warnings", "redaction"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "tool": {
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": { "name": { "type": "string" }, "version": { "type": "string" } },
+      "additionalProperties": true
+    },
+    "generated_at": { "type": "string" },
+    "input": {
+      "type": "object",
+      "properties": {
+        "path": { "type": ["string", "null"] },
+        "sha256": { "type": ["string", "null"] },
+        "size": { "type": ["integer", "null"], "minimum": 0 },
+        "kind": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "app": {
+      "type": "object",
+      "properties": {
+        "names": { "type": "array", "items": { "type": "object" } },
+        "selected_name": { "type": ["string", "null"] },
+        "bundle_id": { "type": ["string", "null"] },
+        "version": { "type": ["string", "null"] },
+        "build": { "type": ["string", "null"] },
+        "min_os": { "type": ["string", "null"] },
+        "devices": { "type": "array" },
+        "distribution": { "type": ["object", "string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "classification": {
+      "type": "object",
+      "properties": {
+        "category": { "type": ["string", "null"] },
+        "subcategory": { "type": ["string", "null"] },
+        "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "evidence": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
+    "structure": {
+      "type": "object",
+      "properties": {
+        "tree": { "type": ["object", "null"] },
+        "nested_units": { "type": "array", "items": { "type": "object" } },
+        "binaries": { "type": "array", "items": { "type": "object" } },
+        "languages": { "type": "array", "items": { "type": "object" } },
+        "engine": {
+          "type": "object",
+          "properties": {
+            "primary": { "type": ["object", "null"] },
+            "candidates": { "type": "array", "items": { "type": "object" } }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "resources": {
+      "type": "object",
+      "properties": {
+        "by_category": { "type": "array" },
+        "by_ext": { "type": "array" },
+        "top_files": { "type": "array" },
+        "archives": { "type": "array" },
+        "localizations": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
+    "libraries": { "type": "array", "items": { "type": "object" } },
+    "protection": {
+      "type": "object",
+      "required": ["findings"],
+      "properties": { "findings": { "type": "array", "items": { "$ref": "#/definitions/Finding" } } },
+      "additionalProperties": true
+    },
+    "engine_details": {
+      "type": "object",
+      "description": "Extension point: keys are fingerprint, detect, unity (with nested hotfix), and one key per engine checker id.",
+      "additionalProperties": true
+    },
+    "privacy": {
+      "type": "object",
+      "properties": {
+        "permissions": { "type": "array" },
+        "url_schemes": { "type": "array" },
+        "query_schemes": { "type": "array" },
+        "ats": { "type": "object" },
+        "trackers": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
+    "stages": { "type": "array", "items": { "$ref": "#/definitions/StageSummary" } },
+    "findings": { "type": "array", "items": { "$ref": "#/definitions/Finding" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "redaction": {
+      "type": "object",
+      "required": ["applied"],
+      "properties": {
+        "applied": { "type": "boolean" },
+        "fields": { "type": "array" }
+      },
+      "additionalProperties": true
+    },
+    "summary": { "type": "object", "additionalProperties": true },
+    "artifacts": { "type": "object", "additionalProperties": { "type": "string" } },
+    "config": { "type": "object", "additionalProperties": true }
+  },
+  "definitions": {
+    "Evidence": {
+      "type": "object",
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": { "type": "string", "description": "recommended: file | plist_key | macho | string | symbol | heuristic | tool_output" },
+        "ref": { "type": "string" },
+        "detail": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "Finding": {
+      "type": "object",
+      "required": ["id", "verdict", "confidence", "title"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*(\\.[a-z0-9_]+)+$" },
+        "verdict": { "enum": ["yes", "no", "suspected", "unknown", "n/a"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "title": { "type": "string" },
+        "summary": { "type": "string" },
+        "params": { "type": "object", "additionalProperties": true },
+        "evidence": { "type": "array", "items": { "$ref": "#/definitions/Evidence" } },
+        "remediation": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "StageSummary": {
+      "type": "object",
+      "required": ["name", "status", "duration_s"],
+      "properties": {
+        "name": { "type": "string" },
+        "status": { "enum": ["ok", "partial", "skipped", "failed"] },
+        "duration_s": { "type": "number", "minimum": 0 },
+        "error": { "type": ["string", "null"] },
+        "reason": { "type": ["string", "null"] },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "finding_ids": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

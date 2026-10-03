@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ipa-analyzer"
+version = "0.1.0"
+description = "Cross-platform IPA analyzer: structure, resources, libraries, protection, engine detection and Unity IL2CPP dumping."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+full = ["lief"]
+
+[project.scripts]
+ipa-analyze = "ipa_analyzer.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ipa_analyzer = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+addopts = "-ra --import-mode=importlib"
+markers = [
+    "macos_only: runs only on macOS (optional cross-validation against system tools)",
+    "slow: slow test, run with --runslow",
+    "network: needs network access, run with IPA_TEST_NETWORK=1",
+]
