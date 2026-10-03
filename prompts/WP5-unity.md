@@ -50,6 +50,11 @@
 - ✅ 版本多来源冲突有单测。
 - ✅ 单测通过。
 
+## 补充(metadata 版本与 WP6 的实测结论)
+- 真实样本实测:江南 metadata **v31**,GoodCoffee **v39**(WP6 实测)。Il2CppDumper 读不了 v35 及以上;Cpp2IL 接受约 23–108,Il2CppInspectorRedux 声称到 v110(见 `data/il2cpp_backends.json`,以该文件为准)。**因此"版本超出 Il2CppDumper 范围" ≠ "metadata 被加密"**:合法性判断必须用 `il2cpp_backends.json` 的 `metadata_versions` 并集(含各后端),版本号落在已知后端范围内且头部自洽就是正常;只有版本号不在任何后端范围内(例如 >110 或 <16)时才算可疑。`precheck` 要把"版本被哪些后端支持"写进证据,以便 WP6 的 `select_backends` 选择后备后端。
+- `Il2CppRunResult.artifacts` 的值相对 `req.out_dir`,写入 `dump.artifacts` 时要转换为相对 `ctx.out_dir`。
+- 四个真实样本的 `UnityFramework` 都被 FairPlay 加密,dump 将被前置检查拦截(`E_BINARY_FAIRPLAY`),这是预期。
+
 ## 补充(Htp 块级加密 + 真实样本)
 先读 `docs/05-REAL-SAMPLES-AND-HTP.md`。
 - AssetBundle 分类新增 **`block_encrypted_suspected`**(头部标准 + BlocksInfo 可解 + 第一个 LZ4/LZ4HC 数据块解压失败),证据里记录块前 256 字节内跨块重复出现的固定字节序列(疑似 marker)。`by_class` 同步加此键(契约新增可选键,允许;请在 `references/unity-assetbundle.md` 写明)。**不实现解密。**
