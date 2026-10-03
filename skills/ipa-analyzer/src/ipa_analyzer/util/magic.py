@@ -40,11 +40,11 @@ _FIXED: List[Tuple[bytes, str, float]] = [
     (b"icns", "icns", 0.9),
     # Source: Khronos KTX 1.1 / KTX2 file identifiers (the 12-byte identifier starts with these bytes).
     (b"\xabKTX 11\xbb\r\n\x1a\n", "ktx", 0.99), (b"\xabKTX 20\xbb\r\n\x1a\n", "ktx2", 0.99),
-    # Source: PVR v3 header: version field 0x03525650 little-endian ("PVR\x03").
+    # UNVERIFIED (from memory of the PVR v3 header, version field 0x03525650 little-endian).
     (b"PVR\x03", "pvr", 0.85),
     # Source: DDS file magic "DDS ".
     (b"DDS ", "dds", 0.95),
-    # Source: ARM ASTC file header magic 0x5CA1AB13 (little-endian).
+    # UNVERIFIED (from memory): ASTC file header magic 0x5CA1AB13 (little-endian).
     (b"\x13\xab\xa1\x5c", "astc", 0.9),
     # Source: cocos-engine ZipUtils.h CCZHeader.sig "CCZ!".
     # and ZipUtils.cpp: sig[3] == '!' (plain) or 'p' (encrypted CCZ).
@@ -54,7 +54,7 @@ _FIXED: List[Tuple[bytes, str, float]] = [
     (b"#!AMR", "amr", 0.95), (b"MThd", "midi", 0.95),
     # Source: Matroska/WebM EBML header 1A45DFA3; FLV "FLV\x01"; MPEG program stream pack header 000001BA.
     (b"\x1a\x45\xdf\xa3", "matroska", 0.9), (b"FLV\x01", "flv", 0.9), (b"\x00\x00\x01\xba", "mpeg_ps", 0.8),
-    # Source: ASF header object GUID 75B22630-668E-11CF-A6D9-00AA0062CE6C (little-endian field layout).
+    # UNVERIFIED (from memory): ASF header object GUID 75B22630-668E-11CF-A6D9-00AA0062CE6C.
     (b"\x30\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c", "asf", 0.95),
     # Source: OpenType spec: 'OTTO' (CFF), 'ttcf' (collection), Apple 'true'; WOFF 'wOFF', WOFF2 'wOF2'.
     (b"OTTO", "otf", 0.97), (b"ttcf", "ttc", 0.97), (b"true", "ttf", 0.9),

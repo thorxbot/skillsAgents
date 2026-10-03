@@ -22,7 +22,7 @@ Skill 根 = `skills/ipa-analyzer/`;下文路径相对于它,除非写明 `docs/`
 | i18n 文件 | `data/i18n/{zh,en}/<模块>.json`,顶层对象。键分两类:① Finding ID → `{"title": "...", "summary": "...", "remediation": "..."}`;② 其他展示文案,键必须以模块名为前缀(`"inventory.category.executable": "可执行代码"`)。插值语法 `{param}`(`str.format_map`,字面花括号写 `{{ }}`),参数来自 `Finding.params`。zh 必须有,en 缺失回退 Finding 自带英文兜底。 |
 | 资源目录 | 代码里一律 `util.paths.resource_dir("data" \| "schemas" \| "references")` 取目录(源码树 / editable / skill 拷贝 / wheel 都适用);环境变量 `IPA_ANALYZER_DATA_DIR` 可覆盖。 |
 | 用户数据 | `util.paths.user_data_dir()`(`IPA_ANALYZER_HOME` 优先)下放 `libs.user.json`、`engines.user.d/*.json`。缓存 / 工具 / .NET 在 `util.paths.cache_dir()`(`IPA_ANALYZER_HOME` 优先,直接作为缓存根)。 |
-| 阶段互不 import | 阶段模块只允许 import:`models/context/config/errors/registry/ingest(Protocol)/util/*/engines.api/il2cpp(契约)` 与**自己的子包**。读取其他阶段只通过 `ctx.results`。 |
+| 阶段互不 import | 阶段模块只允许 import:`models/context/config/errors/registry/ingest(Protocol)/util/*/engines.api/il2cpp(契约)`、库子包 `macho` 与 `formats`(WP3 / WP3b 产出的纯库,可被任意阶段 import)与**自己的子包**。读取其他阶段只通过 `ctx.results`。 |
 | 日志 | 库代码 `logging.getLogger(__name__)`;不 `print`。 |
 | 警告 | 阶段内非致命问题:放进 `StageResult.warnings`(pipeline 自动加 `[阶段名]` 前缀汇入 `ctx.warnings` / `report.warnings`),不要抛异常。 |
 | 状态语义 | `ok` 全部完成;`partial` 有部分失败但产出了可用结果(须在 `warnings`/`reason` 写明);`skipped` 前置不满足(必须写 `reason`,面向用户的英文兜底);`failed` 阶段自身出错(`error`)。**依赖被 `skipped` 的阶段也会被 skip**,所以"可选上游"必须声明为 `after`,不是 `requires`。 |

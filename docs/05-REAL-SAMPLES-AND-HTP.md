@@ -10,6 +10,19 @@
 | `com.jiawentech.pizzabusiness_5.57.5.ipa` | 418 MB | ISBN.app | **无 Unity 特征**,无 Flutter/Cocos 命名线索;含 `SC_Info`;7197 个文件(引擎待 `engine.fingerprint` 判断) |
 | `com.sheworld.waterworld.chn_1.1.7.ipa` | 221 MB | SeaWorld.app | **无 Unity 特征**;含 `SC_Info`;12858 个文件(引擎待判断;可能是自研/其他引擎,是 `engine.custom` 的真实检验) |
 
+### 已实测(WP3,2026-10-04):四个样本主程序全部仍被 FairPlay 加密
+| 样本 | 主程序 cryptid | 加密的 Mach-O 数 |
+|---|---|---|
+| JiangNan | 1(cryptsize 16384) | 5/5(含 appex) |
+| ISBN | 1(cryptsize 50741248) | 16/16 |
+| SeaWorld | 1(cryptsize 20447232) | 2/2 |
+| GoodCoffee | 1(cryptsize 16384) | 18/19(唯一明文的是空桩 `unity-plugin-library`,cryptid=0 且 cryptsize=0,判定正确) |
+
+**后果**:
+- 真实样本上 **il2cpp dump 必然被前置检查拦截**(`E_BINARY_FAIRPLAY`),这是设计预期;dump 的真实端到端无法用这四个包验证,只能用假 dumper + 合成夹具。需要用户另给一个**已解密**的 Unity IL2CPP IPA 才能验证。
+- 被加密的只是 Mach-O 代码段(cryptoff/cryptsize 范围);`global-metadata.dat`、AssetBundle、Lua/资源文件是普通文件,**不受 FairPlay 影响**,所以 metadata 判定、AssetBundle 分类、热更新扫描(含 metadata 字符串表扫描)在这四个样本上仍可真实验证。
+- 加密状态下 Mach-O 的 `__cstring`/ObjC 类名等落在加密区间内,读出来是噪声:WP3 已提供 `skip_encrypted=True`;**依赖二进制字符串/类名/符号的检测(libs 的 ObjC 前缀、引擎指纹符号、原生 Lua 版本串)在加密包上会缺失**,必须降级为文件/目录/metadata 线索,并在报告里写明"二进制已加密,基于二进制的检测受限"。
+
 用途:
 - WP9 端到端验收(见 WP9 提示词"真实样本"一节);WP1/WP3/WP6 的性能与健壮性验证。
 - 四个包都带 `SC_Info`,**主程序的 cryptid 需实测**(可能已解密,也可能是加密包)。结果只写进验收记录,不入库。
