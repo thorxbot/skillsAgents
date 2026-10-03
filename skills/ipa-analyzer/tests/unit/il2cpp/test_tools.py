@@ -12,7 +12,6 @@ import threading
 import time
 import urllib.request
 import zipfile
-from pathlib import Path
 
 import pytest
 

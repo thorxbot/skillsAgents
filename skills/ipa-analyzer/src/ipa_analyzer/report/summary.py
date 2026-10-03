@@ -342,14 +342,14 @@ def build_summary(report: Mapping[str, Any], results: Optional[Mapping[str, Any]
     fairplay: Optional[Dict[str, Any]] = None
     if fp or fp_find:
         fairplay = {"verdict": fp.get("verdict") or (fp_find or {}).get("verdict") or "unknown",
-                    "scope": fp.get("scope"), "confidence": (fp_find or {}).get("confidence"),
+                    "scope": fp.get("scope"), "confidence": (fp_find or {}).get("confidence"), "source": "protect",
                     "encrypted": len(l_(fp.get("encrypted_binaries"))), "total": fp.get("total_binaries")}
     else:
         ms = d_(g(report, "structure", "macho_summary"))
         if ms.get("any_encrypted") is not None:
             fairplay = {"verdict": "yes" if ms.get("any_encrypted") else "no",
                         "scope": "all" if ms.get("all_encrypted") else ("partial" if ms.get("any_encrypted") else "none"),
-                        "confidence": None, "encrypted": None, "total": None}
+                        "confidence": None, "encrypted": None, "total": None, "source": "macho"}
     protections = []
     for fid in _KEY_PROTECTIONS:
         for f in findings_of(report):
@@ -536,6 +536,8 @@ def exec_rows(report: Mapping[str, Any], summary: Mapping[str, Any], t: Translat
             txt += t("report.exec.scope", scope=t("report.scope." + str(fp["scope"]), str(fp["scope"])))
         if fp.get("encrypted") is not None and fp.get("total"):
             txt += t("report.exec.fp_count", n=fp["encrypted"], total=fp["total"])
+        if fp.get("source") == "macho":
+            txt += t("report.exec.from_macho")
     else:
         txt = need("protect") or t("report.badge.risk.unknown")
     rows.append((t("report.exec.label.fairplay"), txt))

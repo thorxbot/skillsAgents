@@ -2180,6 +2180,7 @@
       "confidence": 0.9,
       "encrypted": 0,
       "scope": "none",
+      "source": "protect",
       "total": 2,
       "verdict": "no"
     },

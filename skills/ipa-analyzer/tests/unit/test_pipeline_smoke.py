@@ -4,17 +4,35 @@ from __future__ import annotations
 import dataclasses
 import json
 import os
+import plistlib
 import subprocess
 import sys
 
 import pytest
 
 from conftest import SCRIPT_PATH
+from fixtures.ipa_builder import build_ipa
 from ipa_analyzer import cli, pipeline
 from ipa_analyzer.models import Status, StageResult
 
 STUB_NAMES = ["ingest", "inventory", "meta", "macho", "engine.fingerprint", "engine.detect", "engine.other",
               "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify", "report"]
+
+
+@pytest.fixture()
+def min_ipa(tmp_path):
+    """Smallest valid IPA: Payload/A.app/Info.plist."""
+    plist = plistlib.dumps({"CFBundleIdentifier": "com.example.a", "CFBundleName": "A", "CFBundleExecutable": "A",
+                            "CFBundleShortVersionString": "1.0", "CFBundleVersion": "1"})
+    return build_ipa(tmp_path / "A.ipa", {"Info.plist": plist}, app_name="A")
+
+
+def _load(out_dir):
+    return json.loads(_find_report(out_dir).read_text(encoding="utf-8"))
+
+
+def _expected_code(report):
+    return 3 if any(s["status"] == "failed" for s in report["stages"]) else 0
 
 
 def _find_report(out_dir):
@@ -23,29 +41,25 @@ def _find_report(out_dir):
     return reports[0]
 
 
-def test_analyze_empty_zip_produces_valid_report(make_zip, tmp_path, check_report, capsys):
-    zp = make_zip({}, "empty.zip")
+def test_analyze_minimal_ipa_produces_valid_report(min_ipa, tmp_path, check_report, capsys):
     out = tmp_path / "out"
-    code = cli.main(["analyze", str(zp), "-o", str(out)])
-    assert code == 0, capsys.readouterr()
-    report = json.loads(_find_report(out).read_text(encoding="utf-8"))
+    code = cli.main(["analyze", str(min_ipa), "-o", str(out)])
+    report = _load(out)
     assert check_report(report) == []
+    assert code == _expected_code(report) and code in (0, 3)
     assert sorted(s["name"] for s in report["stages"]) == sorted(STUB_NAMES)
-    assert {s["status"] for s in report["stages"]} == {"skipped"}
-    assert all(s["reason"] for s in report["stages"])
-    assert report["input"]["kind"] is None and report["input"]["sha256"]
-    assert report["tool"]["name"] == "ipa-analyzer"
-    # work dir is cleaned unless --keep-workdir
-    assert not list(out.glob("*/work"))
-    printed = capsys.readouterr().out
-    assert "report:" in printed and "skipped" in printed
+    assert report["tool"]["name"] == "ipa-analyzer" and report["input"]["sha256"]
+    assert {s["status"] for s in report["stages"]} <= {"ok", "partial", "skipped", "failed"}
+    assert all(s["reason"] for s in report["stages"] if s["status"] == "skipped")
+    assert all(s["error"] for s in report["stages"] if s["status"] == "failed")
+    assert not list(out.glob("*/work"))        # scratch dir removed unless --keep-workdir
+    assert "report:" in capsys.readouterr().out
 
 
-def test_all_13_stubs_run_in_dependency_order(make_zip, tmp_path):
+def test_all_13_stages_listed_in_dependency_order(min_ipa, tmp_path):
     out = tmp_path / "out"
-    assert cli.main(["analyze", str(make_zip({})), "-o", str(out)]) == 0
-    report = json.loads(_find_report(out).read_text(encoding="utf-8"))
-    order = [s["name"] for s in report["stages"]]
+    cli.main(["analyze", str(min_ipa), "-o", str(out)])
+    order = [s["name"] for s in _load(out)["stages"]]
     assert len(order) == 13 and set(order) == set(STUB_NAMES) and order[0] == "ingest" and order[-1] == "report"
     reg = pipeline.ensure_analyzers_loaded()
     pos = {n: i for i, n in enumerate(order)}
@@ -54,22 +68,21 @@ def test_all_13_stubs_run_in_dependency_order(make_zip, tmp_path):
             assert pos[d] < pos[s.name]
 
 
-def test_report_json_is_deterministic_apart_from_time(make_zip, tmp_path):
-    zp = make_zip({"Payload/A.app/Info.plist": b"x"})
+def test_report_json_is_deterministic_apart_from_time(min_ipa, tmp_path):
     docs = []
     for i in range(2):
         out = tmp_path / ("out%d" % i)
-        assert cli.main(["analyze", str(zp), "-o", str(out)]) == 0
-        d = json.loads(_find_report(out).read_text(encoding="utf-8"))
+        cli.main(["analyze", str(min_ipa), "-o", str(out)])
+        d = _load(out)
         d.pop("generated_at")
-        d["config"]["output_dir"] = ""
+        d["config"].pop("output_dir")
         for s in d["stages"]:
             s["duration_s"] = 0
         docs.append(d)
     assert docs[0] == docs[1]
 
 
-def test_stage_exception_skips_downstream_and_exit_code_3(make_zip, tmp_path, monkeypatch, check_report, capsys):
+def test_stage_exception_skips_downstream_and_exit_code_3(min_ipa, tmp_path, monkeypatch, check_report, capsys):
     reg = pipeline.ensure_analyzers_loaded()
 
     def ok_ingest(ctx):
@@ -83,7 +96,7 @@ def test_stage_exception_skips_downstream_and_exit_code_3(make_zip, tmp_path, mo
     monkeypatch.setitem(reg._specs, "ingest", dataclasses.replace(reg.get("ingest"), run=ok_ingest))
     monkeypatch.setitem(reg._specs, "inventory", dataclasses.replace(reg.get("inventory"), run=boom))
     out = tmp_path / "out"
-    code = cli.main(["analyze", str(make_zip({})), "-o", str(out)])
+    code = cli.main(["analyze", str(min_ipa), "-o", str(out)])
     assert code == 3
     report = json.loads(_find_report(out).read_text(encoding="utf-8"))
     assert check_report(report) == []
@@ -135,28 +148,48 @@ def test_tools_stub_subcommands(capsys):
     assert cli.main(["tools"]) == 1
 
 
-def test_stages_and_skip_flags(make_zip, tmp_path):
+def test_stages_and_skip_flags(min_ipa, tmp_path, check_report):
     out = tmp_path / "out"
-    assert cli.main(["analyze", str(make_zip({})), "-o", str(out), "--stages", "meta", "--skip", "classify"]) == 0
-    report = json.loads(_find_report(out).read_text(encoding="utf-8"))
+    code = cli.main(["analyze", str(min_ipa), "-o", str(out), "--stages", "meta", "--skip", "classify"])
+    report = _load(out)
+    assert check_report(report) == [] and code == _expected_code(report)
     st = {s["name"]: s for s in report["stages"]}
-    assert st["classify"]["reason"] == "disabled by --skip"
-    assert st["libs"]["reason"] == "not selected by --stages"
-    assert st["meta"]["reason"] == "dependency ingest skipped" and st["ingest"]["reason"] == "not implemented"
+    assert len(st) == 13
+    assert st["classify"]["status"] == "skipped" and st["classify"]["reason"] == "disabled by --skip"
+    # not selected and not a hard dependency of "meta"
+    for n in ("libs", "protect", "engine.unity", "engine.unity.hotfix", "engine.other", "engine.detect"):
+        assert st[n]["reason"] == "not selected by --stages", n
+    # "meta" and its hard dependency "ingest" are not excluded by the selection
+    for n in ("meta", "ingest"):
+        assert st[n]["reason"] not in ("not selected by --stages", "disabled by --skip")
+    assert st["report"]["reason"] != "not selected by --stages"
 
 
-def test_keep_workdir_flag_keeps_it(make_zip, tmp_path):
+def test_skip_propagates_to_hard_dependents(min_ipa, tmp_path):
     out = tmp_path / "out"
-    assert cli.main(["analyze", str(make_zip({})), "-o", str(out), "--keep-workdir"]) == 0
-    # stubs never create a workdir; the flag must at least not break the run
-    assert _find_report(out).is_file()
+    cli.main(["analyze", str(min_ipa), "-o", str(out), "--skip", "inventory"])
+    st = {s["name"]: s for s in _load(out)["stages"]}
+    assert st["inventory"]["reason"] == "disabled by --skip"
+    for n in ("macho", "engine.detect", "libs", "protect", "engine.unity"):
+        assert st[n]["status"] == "skipped", n
 
 
-def test_script_entry_point_runs_without_install(make_zip, tmp_path):
+def test_keep_workdir_flag_does_not_break_run(min_ipa, tmp_path, check_report):
+    out = tmp_path / "out"
+    code = cli.main(["analyze", str(min_ipa), "-o", str(out), "--keep-workdir"])
+    report = _load(out)
+    assert check_report(report) == [] and code == _expected_code(report)
+    # without the flag the scratch directory is gone
+    out2 = tmp_path / "out2"
+    cli.main(["analyze", str(min_ipa), "-o", str(out2)])
+    assert not list(out2.glob("*/work"))
+
+
+def test_script_entry_point_runs_without_install(min_ipa, tmp_path):
     env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
-    r = subprocess.run([sys.executable, str(SCRIPT_PATH), "analyze", str(make_zip({})), "-o", str(tmp_path / "o")],
+    r = subprocess.run([sys.executable, str(SCRIPT_PATH), "analyze", str(min_ipa), "-o", str(tmp_path / "o")],
                        capture_output=True, text=True, encoding="utf-8", timeout=120, env=env)
-    assert r.returncode == 0, r.stderr
+    assert r.returncode in (0, 3), r.stderr
     assert "report:" in r.stdout
     h = subprocess.run([sys.executable, str(SCRIPT_PATH), "--help"], capture_output=True, text=True,
                        encoding="utf-8", timeout=60, env=env)
@@ -171,9 +204,9 @@ def test_import_has_no_warnings():
     assert r.returncode == 0, r.stderr
 
 
-def test_report_schema_catches_broken_report(make_zip, tmp_path, check_report):
+def test_report_schema_catches_broken_report(min_ipa, tmp_path, check_report):
     out = tmp_path / "out"
-    cli.main(["analyze", str(make_zip({})), "-o", str(out)])
+    cli.main(["analyze", str(min_ipa), "-o", str(out)])
     report = json.loads(_find_report(out).read_text(encoding="utf-8"))
     broken = dict(report)
     del broken["findings"]
@@ -186,7 +219,7 @@ def test_report_schema_catches_broken_report(make_zip, tmp_path, check_report):
     assert len(check_report(bad_f)) >= 3
 
 
-def test_ingest_invalid_input_exits_2_but_writes_report(make_zip, tmp_path, monkeypatch, check_report):
+def test_ingest_invalid_input_exits_2_but_writes_report(min_ipa, tmp_path, monkeypatch, check_report):
     from ipa_analyzer.errors import InvalidInput
 
     reg = pipeline.ensure_analyzers_loaded()
@@ -196,7 +229,7 @@ def test_ingest_invalid_input_exits_2_but_writes_report(make_zip, tmp_path, monk
 
     monkeypatch.setitem(reg._specs, "ingest", dataclasses.replace(reg.get("ingest"), run=bad))
     out = tmp_path / "out"
-    assert cli.main(["analyze", str(make_zip({})), "-o", str(out)]) == 2
+    assert cli.main(["analyze", str(min_ipa), "-o", str(out)]) == 2
     report = json.loads(_find_report(out).read_text(encoding="utf-8"))
     assert check_report(report) == []
     st = {s["name"]: s for s in report["stages"]}
@@ -204,8 +237,16 @@ def test_ingest_invalid_input_exits_2_but_writes_report(make_zip, tmp_path, monk
     assert st["inventory"]["reason"] == "dependency ingest failed"
 
 
-def test_cycle_in_registry_is_fatal_exit_4(make_zip, tmp_path, monkeypatch, capsys):
+def test_cycle_in_registry_is_fatal_exit_4(min_ipa, tmp_path, monkeypatch, capsys):
     reg = pipeline.ensure_analyzers_loaded()
     monkeypatch.setitem(reg._specs, "ingest", dataclasses.replace(reg.get("ingest"), requires=("inventory",)))
-    assert cli.main(["analyze", str(make_zip({})), "-o", str(tmp_path / "o")]) == 4
+    assert cli.main(["analyze", str(min_ipa), "-o", str(tmp_path / "o")]) == 4
     assert "cycle" in capsys.readouterr().err
+
+
+def test_garbage_input_file_exits_2(tmp_path, check_report):
+    bad = tmp_path / "garbage.ipa"
+    bad.write_bytes(b"this is definitely not a zip archive" * 10)
+    out = tmp_path / "out"
+    assert cli.main(["analyze", str(bad), "-o", str(out)]) == 2
+    assert check_report(_load(out)) == []

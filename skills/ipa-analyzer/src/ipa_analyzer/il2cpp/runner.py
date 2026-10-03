@@ -31,7 +31,7 @@ from ..config import Config
 from ..util import paths as _paths
 from ..util import procs as _procs
 from . import Il2CppErrorCode, Il2CppRunRequest, Il2CppRunResult
-from .errors import (classify_output, redact_lines, redact_text, remediation_for, tail_lines)
+from .errors import redact_lines, redact_text, remediation_for, tail_lines
 
 log = logging.getLogger(__name__)
 

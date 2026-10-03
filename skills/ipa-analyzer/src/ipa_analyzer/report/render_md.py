@@ -420,20 +420,21 @@ class _R:
         pairs.append((t("report.basic.background_modes"), app.get("background_modes")))
         pairs.append((t("report.basic.capabilities"), app.get("capabilities")))
         out += self.kv(pairs)
+        sub = iter(range(1, 10))
         names = [n for n in l_(app.get("names")) if isinstance(n, dict)]
         if names:
-            out += [self.H(3, "2.1", "names"), ""]
+            out += [self.H(3, "2.%d" % next(sub), "names"), ""]
             out += self.table([t("report.col.name"), t("report.col.source"), t("report.col.lang")],
                               [(n.get("value"), n.get("source"), n.get("lang")) for n in names])
         exts = [e for e in l_(app.get("extensions")) if isinstance(e, dict)]
         if exts:
-            out += [self.H(3, "2.2", "extensions"), ""]
+            out += [self.H(3, "2.%d" % next(sub), "extensions"), ""]
             out += self.table([t("report.col.path"), t("report.col.kind"), "Bundle ID", t("report.col.point")],
                               [(Md(str(code(e.get("path")))), e.get("kind"), e.get("bundle_id"), e.get("point"))
                                for e in exts])
         ev = l_(dist.get("evidence")) if dist else []
         if ev:
-            out += [self.H(3, "2.3", "dist_evidence"), ""]
+            out += [self.H(3, "2.%d" % next(sub), "dist_evidence"), ""]
             out += self.table([t("report.col.kind"), t("report.col.ref"), t("report.col.detail")],
                               [(e.get("kind"), Md(str(code(e.get("ref"), 80))), clip(e.get("detail"), 100))
                                for e in ev if isinstance(e, dict)])

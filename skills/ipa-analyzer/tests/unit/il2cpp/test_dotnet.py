@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from ipa_analyzer.il2cpp import Il2CppErrorCode as E
 from ipa_analyzer.il2cpp import dotnet as D
 from ipa_analyzer.il2cpp.errors import ToolDownloadError

@@ -16,7 +16,6 @@ import logging
 import os
 import shutil
 import time
-import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
@@ -26,7 +25,7 @@ from . import (Il2CppBackend, Il2CppErrorCode, Il2CppRunRequest, Il2CppRunResult
 from . import dotnet as _dotnet
 from .errors import classify_output, remediation_for, redact_text, tail_lines
 from .runner import PromptRule, SupervisedResult, finish_log, new_stage_dir, run_supervised
-from .tools import ResolvedTool, ToolManager, ToolSpec, load_catalog
+from .tools import ToolManager, load_catalog
 
 log = logging.getLogger(__name__)
 

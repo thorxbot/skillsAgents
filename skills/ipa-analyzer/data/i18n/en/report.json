@@ -162,6 +162,7 @@
   "report.exec.none_found": "none found",
   "report.exec.scope": " (scope: {scope})",
   "report.exec.fp_count": ", {n}/{total} binaries encrypted",
+  "report.exec.from_macho": " (from the macho stage only; protect did not run)",
   "report.exec.signed": "signed",
   "report.exec.unsigned": "unsigned",
   "report.exec.colon": ": ",

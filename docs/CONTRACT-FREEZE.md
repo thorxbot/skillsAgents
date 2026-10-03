@@ -401,3 +401,10 @@ class MetaStage:
 8. `IPA_ANALYZER_HOME` 同时作为缓存根与用户数据目录(`libs.user.json`、`engines.user.d/`)。
 9. 测试文件超出提示词列出的 `tests/conftest.py` + `tests/unit/test_pipeline_smoke.py`:util / models / registry / context / engines.api 的单测同在 `tests/unit/test_*.py`(要求"每个 util 都要有单测")。
 10. 打包:`setup.py` 的 `build_py` 钩子把 `data/ schemas/ references/` 拷进 wheel 的 `ipa_analyzer/_data|_schemas|_references`(包外目录无法用 package-data 表达);源码树 / editable 直接读 Skill 根目录。
+
+## 13. Wave 1 追加裁决(总监,2026-10-04)
+1. **大表外置(WP8)**:`report.json` 中 `engine_details.unity.dump.namespaces`(>100 项)与 `bundles.paths_sample`(>50 项)会被截断内联,完整内容写入 `details/*.json`,原处加 `*_total` 与 `*_file`。消费者(含 WP5/WP5b)读取这些字段时必须容忍"仅有 total/file、无完整列表"。`ctx.results` 内部形状不变(仍是完整列表)。
+2. **`libs.unknown` 等放置**:`libs.unknown / by_category / privacy_tags` 放在 `report.summary.libs`;`protect` 各键合入 `protection.*`;不新增顶层 `libraries_unknown`(顶层 `additionalProperties:false` 保持)。
+3. **`inventory.files` 可能被截断**(>20000 条):需要全表的阶段用 `filetypes.load_inventory_files(inv, ctx.out_dir)`。新增 Finding `inventory.summary`;`inventory` 新增可选字段 `total_size/entropy_info/read_errors/split`。
+4. **库子包导入**:阶段可 import `macho`、`formats`;`report_stage` 对 `pipeline` 做运行时延迟导入,允许。
+5. **加密二进制降级**:`slice.encrypted=True` 时,依赖二进制内容的检测必须用 `skip_encrypted=True` 并降级,见 `docs/05-REAL-SAMPLES-AND-HTP.md`。

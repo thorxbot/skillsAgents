@@ -162,6 +162,7 @@
   "report.exec.none_found": "未发现",
   "report.exec.scope": "(范围:{scope})",
   "report.exec.fp_count": ",{n}/{total} 个二进制加密",
+  "report.exec.from_macho": "(仅据 macho 阶段;protect 阶段未汇总)",
   "report.exec.signed": "已签名",
   "report.exec.unsigned": "未签名",
   "report.exec.colon": ":",

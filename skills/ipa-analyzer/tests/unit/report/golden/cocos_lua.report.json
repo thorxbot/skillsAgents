@@ -1107,6 +1107,7 @@
       "confidence": 0.98,
       "encrypted": 1,
       "scope": "all",
+      "source": "protect",
       "total": 1,
       "verdict": "yes"
     },
