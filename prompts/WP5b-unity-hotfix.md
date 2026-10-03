@@ -42,3 +42,6 @@
 ## 诚信要求
 - `hotfix.json` 每条规则带 `sources`;**未核实的框架特征(xLua 内嵌 Lua 版本、YooAsset 清单名、IFix 补丁扩展名、puerts 的 JS 存放形式、各框架版本标记)一律标 `unverified` 并降权**,回报里单列。
 - 压缩 ≠ 加密、字节码 ≠ 加密、采样 ≠ 全量;高熵只是 `suspected`。不做解密、不提取密钥、不还原脚本。
+
+## 重要:真实样本的二进制全部被 FairPlay 加密
+先读 `docs/05-REAL-SAMPLES-AND-HTP.md` 中"已实测"一节。凡依赖 Mach-O 字符串 / ObjC 类名 / 符号的检测,在 `slice.encrypted=True` 时必须用 `skip_encrypted=True` 并**降级**到文件、目录、metadata 字符串等不依赖加密区间的证据;报告里要有"二进制已加密,基于二进制的检测受限"的说明(`remediation`:提供已解密 IPA)。验收里增加"加密二进制夹具下不产生噪声误报"。

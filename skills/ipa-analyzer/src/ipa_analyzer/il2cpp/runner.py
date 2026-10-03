@@ -327,7 +327,7 @@ def inspect_macho(path: Path) -> MachOInfo:
                 magic_le = struct.unpack("<I", head[:4])[0]
                 if magic_le not in (_MH_MAGIC, _MH_MAGIC_64):
                     return info
-                cpu = struct.unpack("<I", fh.read(4))[0]
+                cpu = struct.unpack("<I", head[4:8])[0]
                 info.slices.append(MachOSlice(cpu, 0, size, magic_le == _MH_MAGIC_64))
             for sl in info.slices:
                 sl.encrypted = _slice_encrypted(fh, sl)

@@ -59,3 +59,6 @@
 
 ## 备注
 - 回报里单列:每个引擎签名的**来源**与哪些是 UNVERIFIED;以及你判断"无法可靠识别"的引擎清单(如实说明,而非硬凑)。
+
+## 重要:真实样本的二进制全部被 FairPlay 加密
+先读 `docs/05-REAL-SAMPLES-AND-HTP.md` 中"已实测"一节。凡依赖 Mach-O 字符串 / ObjC 类名 / 符号的检测,在 `slice.encrypted=True` 时必须用 `skip_encrypted=True` 并**降级**到文件、目录、metadata 字符串等不依赖加密区间的证据;报告里要有"二进制已加密,基于二进制的检测受限"的说明(`remediation`:提供已解密 IPA)。验收里增加"加密二进制夹具下不产生噪声误报"。
