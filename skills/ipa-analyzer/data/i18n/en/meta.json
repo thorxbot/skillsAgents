@@ -6,7 +6,7 @@
   },
   "meta.distribution": {
     "title": "Distribution type",
-    "summary": "Distribution type: {type}. Competing hypotheses: {alternatives_text}.",
+    "summary": "Distribution type: {type}. Competing hypotheses: {alternatives_text}. This is container-layer evidence only and cannot prove where the package came from; decrypted and repackaged IPAs keep these files too.",
     "remediation": "Inferred only from embedded.mobileprovision, SC_Info and iTunesMetadata.plist; a re-signed package may differ from its original channel."
   },
   "meta.permissions": {
@@ -21,7 +21,7 @@
   },
   "meta.signature_integrity": {
     "title": "Code-signature resource seal check",
-    "summary": "{checked} files checked: {missing} missing, {modified} modified, {extra} extra. A consistent seal does not prove authenticity (re-signed packages carry a fresh seal).",
+    "summary": "{checked} files checked: {missing} missing, {modified} modified, {extra} extra. A consistent seal does not prove authenticity (re-signed packages carry a fresh seal). The extra-file count interprets the seal's path rules heuristically.",
     "remediation": "Missing or modified files mean the package was changed after signing (repackaging / injection)."
   },
   "meta.distribution.type.appstore": "App Store",

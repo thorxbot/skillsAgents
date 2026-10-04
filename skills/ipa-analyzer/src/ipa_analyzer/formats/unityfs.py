@@ -475,6 +475,8 @@ def iter_decompressed(
             raise UnityFSError("limit_exceeded", f"block {index} declares {block.uncompressed_size} bytes")
         if produced + block.uncompressed_size > max_total:
             raise UnityFSError("limit_exceeded", f"decompressed data would exceed {max_total} bytes")
+        if block.compressed_size > max_block + max_block // 255 + 1024:      # beyond any codec's worst-case expansion
+            raise UnityFSError("limit_exceeded", f"block {index} declares {block.compressed_size} compressed bytes")
         fileobj.seek(pos)
         raw = fileobj.read(block.compressed_size)
         if len(raw) != block.compressed_size:

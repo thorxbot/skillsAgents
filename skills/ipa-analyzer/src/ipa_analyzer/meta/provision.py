@@ -136,11 +136,16 @@ def provision_kind(prov: Mapping[str, Any]) -> Dict[str, Any]:
 
 
 def classify_distribution(prov: Optional[Mapping[str, Any]], *, prov_unreadable: bool = False,
-                          store_markers: Sequence[str] = (), has_code_signature: bool = False) -> Dict[str, Any]:
+                          store_markers: Sequence[str] = (), has_code_signature: bool = False,
+                          store_names_consistent: bool = False) -> Dict[str, Any]:
     """Decide the distribution type from the profile and App Store container markers.
 
     ``prov`` is a ``summarize_provision`` dict (``None`` = no profile). ``store_markers`` names the
     App Store container artefacts found (``"iTunesMetadata.plist"``, ``"SC_Info"``).
+    ``store_names_consistent`` is true when the SC_Info file names match the main executable.
+
+    Without a profile the App Store verdict rests on container-layer files only. A decrypted and
+    repackaged IPA keeps them as well, so the result is never better than ``suspected`` (0.6-0.7).
 
     Returns ``{type, verdict, confidence, evidence: [Evidence], alternatives: [str], repackaged_hint}``;
     ``type`` is ``appstore|adhoc|enterprise|development|unsigned_or_repackaged|unknown``.
@@ -188,8 +193,16 @@ def classify_distribution(prov: Optional[Mapping[str, Any]], *, prov_unreadable:
 
     if markers:
         if has_code_signature:
-            return {"type": "appstore", "verdict": Verdict.YES, "confidence": 0.9 if len(markers) > 1 else 0.8,
-                    "evidence": ev, "alternatives": [], "repackaged_hint": False}
+            both = len(markers) > 1
+            conf = 0.7 if both and store_names_consistent else (0.65 if both else 0.6)
+            ev.append(Evidence("heuristic", "container_evidence_only",
+                               "Container-layer evidence only: it cannot prove where the package came from "
+                               "(decrypted and repackaged IPAs keep these files)"))
+            if both and store_names_consistent:
+                ev.append(Evidence("heuristic", "store_names_consistent",
+                                   "SC_Info file name matches the main executable; no embedded.mobileprovision"))
+            return {"type": "appstore", "verdict": Verdict.SUSPECTED, "confidence": conf,
+                    "evidence": ev, "alternatives": ["unsigned_or_repackaged"], "repackaged_hint": False}
         ev.append(Evidence("heuristic", "_CodeSignature", "App Store artefacts present but the code signature is missing"))
         return {"type": "appstore", "verdict": Verdict.SUSPECTED, "confidence": 0.5, "evidence": ev,
                 "alternatives": ["unsigned_or_repackaged"], "repackaged_hint": True}

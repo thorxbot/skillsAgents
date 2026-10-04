@@ -25,11 +25,19 @@ from ..util.plist_utils import load_plist
 
 log = logging.getLogger(__name__)
 
-__all__ = ["parse_code_resources", "verify_code_resources", "compile_rules", "rule_expects",
-           "DEFAULT_MAX_BYTES", "DEFAULT_MAX_SECONDS", "MAX_EXAMPLES"]
+__all__ = ["parse_code_resources", "verify_code_resources", "compile_rules", "rule_expects", "rule_risk",
+           "DEFAULT_MAX_BYTES", "DEFAULT_MAX_SECONDS", "DEFAULT_RULE_SECONDS", "MAX_EXAMPLES",
+           "MAX_RULE_LENGTH", "MAX_RULE_INPUT"]
 
 DEFAULT_MAX_BYTES = 2 * 1024 ** 3
 DEFAULT_MAX_SECONDS = 60.0
+# Wall-clock budget for the whole "files outside the seal" rule evaluation. The regexes come from the
+# (untrusted) IPA, so they are screened (``rule_risk``), run on bounded input and bounded in total time.
+DEFAULT_RULE_SECONDS = 5.0
+MAX_RULE_LENGTH = 200
+MAX_RULE_INPUT = 256
+_MAX_UNBOUNDED = 2          # more unbounded repeats than this is polynomial-time risky (n^k backtracking)
+_LARGE_REPEAT = 20          # {n,m} with m above this counts as unbounded
 MAX_EXAMPLES = 10
 _CHUNK = 1024 * 1024
 
@@ -47,8 +55,130 @@ def parse_code_resources(data: bytes) -> Optional[Dict[str, Any]]:
 
 
 # --- rules ------------------------------------------------------------------------------------
-def compile_rules(rules: Any) -> List[Tuple[Pattern[str], float, bool]]:
-    """``[(regex, weight, omit)]`` from a ``rules`` / ``rules2`` dict; invalid regexes are skipped."""
+_BRACE_RE = re.compile(r"\{(\d*)(,?)(\d*)\}")
+
+
+def _quantifier_at(pat: str, i: int) -> Tuple[Optional[str], int]:
+    """Quantifier starting at ``pat[i]`` -> ``(kind, length)``; kind is ``None``, ``"bounded"`` or ``"unbounded"``."""
+    if i >= len(pat):
+        return None, 0
+    c = pat[i]
+    if c in "*+":
+        kind, ln = "unbounded", 1
+    elif c == "?":
+        kind, ln = "bounded", 1
+    elif c == "{":
+        m = _BRACE_RE.match(pat, i)
+        if m is None or not (m.group(1) or m.group(3)):
+            return None, 0
+        hi = m.group(3)
+        unbounded = bool(m.group(2)) and (not hi or int(hi) > _LARGE_REPEAT)
+        unbounded = unbounded or (not m.group(2) and int(m.group(1) or 0) > _LARGE_REPEAT)
+        kind, ln = ("unbounded" if unbounded else "bounded"), m.end() - i
+    else:
+        return None, 0
+    if i + ln < len(pat) and pat[i + ln] in "?+":      # lazy / possessive modifier
+        ln += 1
+    return kind, ln
+
+
+def rule_risk(pat: str) -> Optional[str]:
+    """Why ``pat`` must not be executed against attacker-chosen text, or ``None`` when it looks safe.
+
+    A conservative scanner (no regex engine is run): rejects over-long patterns, a group holding a
+    repeat or an alternation that is itself repeated without bound (``(a+)+``, ``(a|aa)*``) and more
+    than ``_MAX_UNBOUNDED`` unbounded repeats. Real Apple rule sets (``^(.*/)?Info\\.plist$`` ...) pass.
+    """
+    if len(pat) > MAX_RULE_LENGTH:
+        return "too long"
+    stack: List[List[bool]] = []
+    cur = [False, False]                       # [holds a repeat, holds an alternation]
+    unbounded = 0
+    i, n = 0, len(pat)
+    while i < n:
+        c = pat[i]
+        if c == "\\":
+            i += 2
+            kind, ln = _quantifier_at(pat, i)
+        elif c == "[":
+            j = i + 1
+            if j < n and pat[j] == "^":
+                j += 1
+            if j < n and pat[j] == "]":
+                j += 1
+            while j < n and pat[j] != "]":
+                j += 2 if pat[j] == "\\" else 1
+            i = j + 1
+            kind, ln = _quantifier_at(pat, i)
+        elif c == "(":
+            i += 1
+            opened = True
+            if pat.startswith("?", i):
+                if pat.startswith("?P<", i):
+                    i = pat.find(">", i) + 1 or n
+                elif pat[i + 1:i + 2] in (":", "=", "!"):
+                    i += 2
+                elif pat[i + 1:i + 3] in ("<=", "<!"):
+                    i += 3
+                else:                          # flags ``(?i)``, comments, ``(?P=name)``: not a group
+                    j = pat.find(")", i)
+                    i = (j + 1) if j >= 0 else n
+                    opened = False
+            if opened:
+                stack.append(cur)
+                cur = [False, False]
+            continue
+        elif c == ")":
+            i += 1
+            if not stack:
+                continue
+            inner, cur = cur, stack.pop()
+            kind, ln = _quantifier_at(pat, i)
+            if kind == "unbounded":
+                if inner[0] or inner[1]:
+                    return "nested quantifier"
+                unbounded += 1
+            cur[0] = cur[0] or inner[0] or kind is not None
+            cur[1] = cur[1] or inner[1]
+            i += ln
+            if unbounded > _MAX_UNBOUNDED:
+                return "too many unbounded repeats"
+            continue
+        elif c == "|":
+            cur[1] = True
+            i += 1
+            continue
+        elif c in "*+?{":
+            kind, ln = _quantifier_at(pat, i)
+            if kind is None:
+                i += 1
+                continue
+            cur[0] = True
+            unbounded += kind == "unbounded"
+            i += ln
+            if unbounded > _MAX_UNBOUNDED:
+                return "too many unbounded repeats"
+            continue
+        else:
+            i += 1
+            kind, ln = _quantifier_at(pat, i)
+        # an atom (escape, class, literal) followed by an optional quantifier
+        if kind is not None:
+            cur[0] = True
+            unbounded += kind == "unbounded"
+            i += ln
+            if unbounded > _MAX_UNBOUNDED:
+                return "too many unbounded repeats"
+    return None
+
+
+def compile_rules(rules: Any, rejected: Optional[List[str]] = None) -> List[Tuple[Pattern[str], float, bool]]:
+    """``[(regex, weight, omit)]`` from a ``rules`` / ``rules2`` dict.
+
+    Invalid regexes are skipped. Regexes the IPA could abuse for catastrophic backtracking (``rule_risk``)
+    are never compiled; their text is appended to ``rejected`` (when given) so callers can warn and
+    treat the rule set as incomplete.
+    """
     out: List[Tuple[Pattern[str], float, bool]] = []
     if not isinstance(rules, dict):
         return out
@@ -61,6 +191,12 @@ def compile_rules(rules: Any) -> List[Tuple[Pattern[str], float, bool]]:
             omit = val.get("omit") is True
         elif val is False:
             omit = True
+        risk = rule_risk(pat)
+        if risk is not None:
+            log.debug("not evaluating CodeResources rule %r: %s", pat[:80], risk)
+            if rejected is not None:
+                rejected.append(pat)
+            continue
         try:
             out.append((re.compile(pat), weight, omit))
         except re.error:
@@ -68,12 +204,15 @@ def compile_rules(rules: Any) -> List[Tuple[Pattern[str], float, bool]]:
     return out
 
 
-def rule_expects(rules: List[Tuple[Pattern[str], float, bool]], rel: str) -> bool:
+def rule_expects(rules: List[Tuple[Pattern[str], float, bool]], rel: str, *, max_input: int = MAX_RULE_INPUT) -> bool:
     """Would the seal cover ``rel``? Highest-weight matching rule decides; ``omit`` -> not covered.
+
+    The path is truncated to ``max_input`` characters before matching (bounds regex work).
 
     UNVERIFIED: tie-breaking between equal weights and case sensitivity of the regexes are not
     documented by Apple; ties are resolved towards "covered" and matching is case-sensitive.
     """
+    rel = rel[:max_input]
     best: Optional[Tuple[float, bool]] = None
     for rx, weight, omit in rules:
         if rx.search(rel):
@@ -122,15 +261,23 @@ def _ancestors(rel: str) -> Iterable[str]:
 def verify_code_resources(source: ArchiveSource, app_root: str, plist: Mapping[str, Any],
                           entries: Iterable[EntryInfo], *, executable: Optional[str] = None,
                           max_bytes: int = DEFAULT_MAX_BYTES,
-                          max_seconds: float = DEFAULT_MAX_SECONDS) -> Dict[str, Any]:
+                          max_seconds: float = DEFAULT_MAX_SECONDS,
+                          max_rule_seconds: float = DEFAULT_RULE_SECONDS) -> Dict[str, Any]:
     """Compare the seal in ``plist`` against the archive content.
 
     Returns ``{checked, missing, modified, extra, examples[{kind,path}], details{...}}``;
-    ``details.truncated`` is true when the byte / time budget stopped hashing early.
+    ``details.truncated`` is true when the byte / time budget stopped hashing early; ``details.rules_incomplete``
+    when rules had to be left unevaluated or the rule time budget ran out (the "extra" count is then a lower
+    bound). ``warnings`` lists such conditions.
     """
+    warnings: List[str] = []
     table_name = "files2" if isinstance(plist.get("files2"), dict) and plist.get("files2") else "files"
     table = plist.get(table_name) if isinstance(plist.get(table_name), dict) else {}
-    rules = compile_rules(plist.get("rules2") if plist.get("rules2") else plist.get("rules"))
+    rejected_rules: List[str] = []
+    rules = compile_rules(plist.get("rules2") if plist.get("rules2") else plist.get("rules"), rejected_rules)
+    if rejected_rules:
+        warnings.append("CodeResources: %d rule(s) not evaluated (over-long or backtracking-prone regex)"
+                        % len(rejected_rules))
 
     by_name: Dict[str, EntryInfo] = {}
     dir_prefixes = set()
@@ -194,6 +341,8 @@ def verify_code_resources(source: ArchiveSource, app_root: str, plist: Mapping[s
 
     listed = {_nfc(str(k).rstrip("/")) for k in table}
     extra_files: List[str] = []
+    rule_started = time.monotonic()
+    rules_timed_out = False
     for rel in sorted(by_name):
         n = _nfc(rel)
         if n in listed:
@@ -204,6 +353,11 @@ def verify_code_resources(source: ArchiveSource, app_root: str, plist: Mapping[s
             continue
         if any(a in nested_roots or _nfc(a) in listed for a in _ancestors(rel)):
             continue                      # inside a nested bundle / a directory the seal lists
+        if time.monotonic() - rule_started > max_rule_seconds:
+            rules_timed_out = True
+            warnings.append("CodeResources: rule evaluation stopped after %.1f s; extra-file count is partial"
+                            % max_rule_seconds)
+            break
         if not rule_expects(rules, rel):
             continue
         extra_files.append(rel)
@@ -219,6 +373,7 @@ def verify_code_resources(source: ArchiveSource, app_root: str, plist: Mapping[s
         "modified": len(modified),
         "extra": len(extra_files),
         "examples": examples,
+        "warnings": warnings,
         "details": {
             "table": table_name,
             "entries": len(table),
@@ -228,5 +383,8 @@ def verify_code_resources(source: ArchiveSource, app_root: str, plist: Mapping[s
             "truncated": truncated,
             "bytes_hashed": bytes_hashed,
             "nested_bundles": len(nested_roots),
+            "unevaluated_rules": len(rejected_rules),
+            "rules_timed_out": rules_timed_out,
+            "rules_incomplete": bool(rejected_rules) or rules_timed_out,
         },
     }

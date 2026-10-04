@@ -242,6 +242,7 @@ class Il2CppDumperBackend(_ExternalBackend):
             cfg = {}
         cfg.update(self.raw.get("config", {}).get("applied", {}))
         cfg["RequireAnyKey"] = False
+        cfg["ForceDump"] = bool(req.force_dump)
         extra = req.extra.get("dumper_config") if isinstance(req.extra, dict) else None
         if isinstance(extra, dict):
             cfg.update(extra)

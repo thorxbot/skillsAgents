@@ -39,6 +39,14 @@ INLINE_FILES_LIMIT = 20_000           # files kept in ctx.results; the full tabl
 INVENTORY_FILE = "inventory.json"
 _READ_ERROR_EXAMPLES = 10
 
+# "Extension says format X but the content is not X": files whose type is unknown by magic although the
+# extension names a structured format. Files sharing one 4-byte header are clustered (custom containers).
+HEADER_CLUSTER_MIN = 50
+HEADER_CLUSTER_MAX_KEYS = 10_000      # distinct headers tracked (random / encrypted data would otherwise grow without bound)
+HEADER_CLUSTER_EXAMPLES = 5
+HEADER_CLUSTER_LIMIT = 20             # clusters reported
+_STRUCTURED_CATEGORIES = frozenset({"image", "audio", "video", "script", "config"})
+
 _DIR_UNIT_SUFFIX = {".framework": "framework", ".appex": "appex", ".bundle": "bundle", ".app": "app"}
 
 
@@ -82,7 +90,8 @@ def _finish_tree(node: Dict[str, Any]) -> Dict[str, Any]:
 
 def build_inventory(source: ArchiveSource, app_root: str, *, root_name: str = "", tree_depth: int = TREE_DEPTH,
                     top_n: int = TOP_N, entropy_byte_budget: int = ENTROPY_BYTE_BUDGET,
-                    entropy_max_files: int = ENTROPY_MAX_FILES) -> Dict[str, Any]:
+                    entropy_max_files: int = ENTROPY_MAX_FILES,
+                    header_cluster_min: int = HEADER_CLUSTER_MIN) -> Dict[str, Any]:
     """Build the full inventory (all files) for ``source``; see CONTRACT-FREEZE section 4.2."""
     rules = load_rules()
     entries = [e for e in source.namelist() if not e.is_dir]
@@ -101,6 +110,8 @@ def build_inventory(source: ArchiveSource, app_root: str, *, root_name: str = ""
     sampled = skipped = 0
     entropy_bytes = 0
     total = 0
+    clusters: Dict[bytes, Dict[str, Any]] = {}
+    mismatch_files = mismatch_size = 0
 
     for e in entries:
         name = e.name
@@ -115,7 +126,7 @@ def build_inventory(source: ArchiveSource, app_root: str, *, root_name: str = ""
             n = min(e.size, ENTROPY_HEAD if want_entropy else TEXT_SNIFF_BYTES)
             try:
                 data = source.read_head(name, n)
-            except (InvalidInput, OSError) as exc:
+            except (InvalidInput, OSError, ValueError, OverflowError) as exc:
                 data = b""
                 n_read_errors += 1
                 if len(read_errors) < _READ_ERROR_EXAMPLES:
@@ -123,6 +134,19 @@ def build_inventory(source: ArchiveSource, app_root: str, *, root_name: str = ""
                 magic = "unreadable"
             if data:
                 magic, conf = sniff(data[:TEXT_SNIFF_BYTES])
+                if magic == "unknown" and len(data) >= 4 and rules.ext.get(ext) in _STRUCTURED_CATEGORIES:
+                    mismatch_files += 1
+                    mismatch_size += e.size
+                    head4 = bytes(data[:4])
+                    cl = clusters.get(head4)
+                    if cl is None and len(clusters) < HEADER_CLUSTER_MAX_KEYS:
+                        cl = clusters[head4] = {"count": 0, "exts": {}, "size": 0, "examples": []}
+                    if cl is not None:
+                        cl["count"] += 1
+                        cl["size"] += e.size
+                        cl["exts"][ext] = cl["exts"].get(ext, 0) + 1
+                        if len(cl["examples"]) < HEADER_CLUSTER_EXAMPLES:
+                            cl["examples"].append(name)
                 if want_entropy:
                     entropy = round(shannon(data), 4)
                     sampled += 1
@@ -203,6 +227,11 @@ def build_inventory(source: ArchiveSource, app_root: str, *, root_name: str = ""
         "embedded_mobileprovision": (app_root + "embedded.mobileprovision") in names,
         "iTunesMetadata_plist": "iTunesMetadata.plist" in names,
     }
+    header_clusters = [
+        {"head_hex": h.hex(), "head_ascii": "".join(chr(b) if 0x20 <= b < 0x7F else "." for b in h),
+         "count": c["count"], "exts": dict(sorted(c["exts"].items())), "size": c["size"], "examples": c["examples"]}
+        for h, c in sorted(clusters.items(), key=lambda kv: (-kv[1]["count"], kv[0]))
+        if c["count"] >= header_cluster_min][:HEADER_CLUSTER_LIMIT]
     return {
         "files": files,
         "files_total": len(files),
@@ -220,6 +249,8 @@ def build_inventory(source: ArchiveSource, app_root: str, *, root_name: str = ""
         "entropy_info": {"head_bytes": ENTROPY_HEAD, "sampled_files": sampled, "skipped_files": skipped,
                          "budget_exhausted": skipped > 0},
         "read_errors": {"count": n_read_errors, "examples": read_errors},
+        "header_clusters": header_clusters,
+        "ext_magic_mismatch": {"files": mismatch_files, "size": mismatch_size},
     }
 
 

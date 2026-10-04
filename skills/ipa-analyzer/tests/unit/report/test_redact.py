@@ -19,6 +19,16 @@ from ipa_analyzer.report.redact import RedactionStats, redact_obj, redact_report
     ("C:\\Users\\carol\\Desktop\\x.ipa", "carol"),
     ("c:/users/Carol/Desktop", "Carol"),
     ("/home/dave/work", "dave"),
+    ("C:\\Users\\John Smith\\Desktop", "Smith"),               # user names with spaces: up to the separator
+    ("D:\\Users\\Mary Ann Lee", "Lee"),
+    ("\\\\fileserver\\share\\Users\\bob\\x", "bob"),            # UNC
+    ("//fileserver/share/Users/bob/x", "bob"),
+    ("\\\\?\\UNC\\srv\\sh\\Users\\Bob Q\\x", "Bob"),
+    ("\\\\?\\C:\\Users\\Bob\\x", "Bob"),
+    ("file:///Users/erin/x.ipa", "erin"),
+    ("opened (/Users/frank/a.ipa)", "frank"),
+    ("device: " + UDID_OLD, UDID_OLD),                                  # device context
+    ("UDID=" + UDID_OLD, UDID_OLD),
 ])
 def test_redact_text_removes_personal_data(raw, must_not_contain):
     stats = RedactionStats()
@@ -33,6 +43,15 @@ def test_redact_text_removes_personal_data(raw, must_not_contain):
     "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",     # a sha256 is not a UDID
     "123e4567-e89b-12d3-a456-426614174000",                                  # a UUID is not a UDID
     "/Applications/Cydia.app", "Payload/DemoGame.app/Info.plist",
+    # App-internal paths and URLs that merely contain home/ or Users/ must not be rewritten
+    "Payload/X.app/res/home/btn.png", "assets/home/index.json", "https://example.com/home/page",
+    "Payload/X.app/Users/list.json", "see https://example.com/Users/profile now", "res/home/a/b/c.png",
+    "ftp://host:21/home/pub", "C:/data/home/x", "x:/Users/Shared/y",
+    # resource names that look like addresses
+    "btn@ipad.png", "Payload/X.app/icon@iphone.jpg", "bg@tablet.webp",
+    # digests are not UDIDs
+    "cdhash 199082ca199082ca199082ca199082ca199082ca", "sha1: 0123456789abcdef0123456789abcdef01234567",
+    "git 0123456789abcdef0123456789abcdef01234567 fixed it",
 ])
 def test_redact_text_leaves_harmless_strings(raw):
     stats = RedactionStats()
@@ -85,3 +104,40 @@ def test_extras_are_redacted_in_place_and_counted():
     extras = {"details/a.json": ["ok", "mail me@example.org"]}
     _, info = redact_report({"a": "b"}, extras=extras)
     assert extras["details/a.json"][1] == "mail [REDACTED-EMAIL]" and info["counts"]["email"] == 1
+
+
+def test_digest_keys_are_never_udids_and_not_reported():
+    h40 = "199082ca199082ca199082ca199082ca199082ca"
+    rd = {"macho": {"binaries": [{"slices": [{"signature": {"cdhash": h40, "cdhashes": {"sha1": h40, "sha256": "ab" * 32},
+                                                            "digest_list": [h40]}}]}]},
+          "git": {"commit": h40}, "plain": "x"}
+    red, info = redact_report(rd)
+    assert red["macho"] == rd["macho"] and red["git"] == rd["git"]
+    assert "udid" not in info["fields"] and info["counts"] == {}
+
+
+def test_device_keys_redact_bare_legacy_udids():
+    rd = {"provision": {"ProvisionedDevices": [UDID_OLD], "udid": UDID_OLD, "devices": [{"id": UDID_OLD}]},
+          "note": "paired device " + UDID_OLD}
+    red, info = redact_report(rd)
+    text = json.dumps(red)
+    assert UDID_OLD not in text and info["counts"]["udid"] == 4 and info["fields"] == ["udid"]
+
+
+def test_device_key_beats_hash_word_in_device_hash_keys():
+    red, _ = redact_report({"device_hash_prefixes": [UDID_OLD]})
+    assert UDID_OLD not in json.dumps(red)
+
+
+def test_hash_context_in_text_wins_over_earlier_device_word():
+    raw = "device app cdhash " + UDID_OLD
+    assert redact_text(raw) == raw
+
+
+def test_resource_paths_survive_in_a_whole_report():
+    rd = build_report("full_success").to_dict()
+    rd["resources"]["top_files"] = [{"path": "Payload/DemoGame.app/res/home/btn.png", "size": 1, "category": "image"}]
+    rd["warnings"].append("fetch https://example.com/home/page failed for /Users/alice/x.ipa")
+    red, _ = redact_report(rd)
+    assert red["resources"]["top_files"][0]["path"] == "Payload/DemoGame.app/res/home/btn.png"
+    assert "https://example.com/home/page" in red["warnings"][-1] and "alice" not in red["warnings"][-1]

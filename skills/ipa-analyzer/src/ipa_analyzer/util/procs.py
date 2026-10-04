@@ -19,6 +19,13 @@ _ENV_WHITELIST = ("PATH", "HOME", "USERPROFILE", "TMPDIR", "TEMP", "TMP", "SYSTE
                   "COMSPEC", "PATHEXT", "LANG", "LC_ALL", "LOCALAPPDATA", "APPDATA", "XDG_CACHE_HOME",
                   "XDG_CONFIG_HOME", "HTTP_PROXY", "HTTPS_PROXY", "NO_PROXY", "http_proxy", "https_proxy",
                   "no_proxy")
+# DOTNET_* variables passed through: locating the runtime and quieting the CLI. Anything else
+# (DOTNET_STARTUP_HOOKS, DOTNET_gcServer, ...) can change what code the host loads and is dropped.
+_DOTNET_ENV_WHITELIST = frozenset({
+    "DOTNET_ROOT", "DOTNET_ROOT_X64", "DOTNET_ROOT_ARM64", "DOTNET_ROOT(x86)", "DOTNET_ROLL_FORWARD", "DOTNET_NOLOGO",
+    "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "DOTNET_CLI_TELEMETRY_OPTOUT", "DOTNET_CLI_HOME", "DOTNET_MULTILEVEL_LOOKUP",
+    "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT",
+})
 
 
 @dataclass
@@ -38,10 +45,50 @@ class ProcResult:
 
 def minimal_env(extra: Optional[Mapping[str, str]] = None) -> dict:
     """Whitelisted copy of ``os.environ`` plus ``extra`` (for launching external tools)."""
-    env = {k: v for k, v in os.environ.items() if k in _ENV_WHITELIST or k.startswith("DOTNET_")}
+    env = {k: v for k, v in os.environ.items() if k in _ENV_WHITELIST or k in _DOTNET_ENV_WHITELIST}
     if extra:
         env.update(extra)
     return env
+
+
+def which_safe(cmd: str, path: Optional[str] = None, *, cwd: Optional[str] = None,
+               pathext: Optional[str] = None, windows: Optional[bool] = None) -> Optional[str]:
+    """Locate an executable on ``path`` (default ``$PATH``) without ever picking one from the working directory.
+
+    ``shutil.which`` searches the current directory first on Windows (and treats empty ``PATH`` entries as the
+    current directory on POSIX), so a file dropped next to the user would run instead of the real tool. Here
+    empty entries, ``.`` and any entry that resolves to ``cwd`` are skipped. A ``cmd`` that already contains a
+    directory component is returned as is when it is an executable file.
+    """
+    win = IS_WINDOWS if windows is None else windows
+    cwd_real = os.path.normcase(os.path.realpath(cwd if cwd is not None else os.getcwd()))
+
+    def usable(p: str) -> bool:
+        return os.path.isfile(p) and os.access(p, os.X_OK)
+
+    exts = [""]
+    if win:
+        raw = pathext if pathext is not None else os.environ.get("PATHEXT", ".COM;.EXE;.BAT;.CMD")
+        listed = [e for e in raw.split(";") if e]
+        have_ext = os.path.splitext(cmd)[1].lower() in [e.lower() for e in listed]
+        exts = [""] if have_ext else [""] + listed
+    if os.path.dirname(cmd) or (win and "/" in cmd):
+        return next((cmd + e for e in exts if usable(cmd + e)), None)
+    search = path if path is not None else os.environ.get("PATH", "")
+    seen = set()
+    for d in search.split(os.pathsep):
+        d = d.strip('"')
+        if not d or d == os.curdir:
+            continue
+        real = os.path.normcase(os.path.realpath(d))
+        if real == cwd_real or real in seen:
+            continue
+        seen.add(real)
+        for e in exts:
+            cand = os.path.join(d, cmd + e)
+            if usable(cand):
+                return cand
+    return None
 
 
 def taskkill_command(pid: int) -> List[str]:

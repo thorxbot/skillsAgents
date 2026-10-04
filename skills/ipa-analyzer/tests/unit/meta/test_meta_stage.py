@@ -72,7 +72,9 @@ def test_app_store_package_end_to_end(run_meta, builders):
         ("富大", "zh-Hans"), ("富大繁", "zh-Hant"), ("Foo EN", "en"), ("Foo Display", ""), ("FooName", "")]
     assert ident["names"][-1] == {"value": "sample", "source": "input_filename", "lang": ""}
     assert ident["extra"]["localizations"] == ["en", "zh-Hans", "zh-Hant"]
-    assert d["distribution"]["type"] == "appstore" and d["distribution"]["verdict"] == "yes"
+    assert d["distribution"]["type"] == "appstore" and d["distribution"]["verdict"] == "suspected"
+    assert d["distribution"]["confidence"] == 0.7           # SC_Info/Foo.sinf matches the executable
+    assert "cannot prove" in _finding(res, "meta.distribution").summary
     assert d["provision"] == {"present": False}
     assert d["itunes"]["item_name"] == "Foo Store Name" and d["itunes"]["genre_id"] == 6014
     assert d["fairplay_container"]["sc_info_present"] is True
@@ -92,6 +94,15 @@ def test_app_store_package_end_to_end(run_meta, builders):
     assert _finding(res, "meta.signature_integrity").verdict.value == "no"
     assert _finding(res, "meta.permissions").params["count"] == 3
     json.loads(_dump(res))        # fully JSON-serialisable
+
+
+def test_store_markers_with_foreign_sinf_name_get_lower_confidence(run_meta, builders):
+    files = _store_app(builders)
+    files[builders.APP + "SC_Info/Other.sinf"] = files.pop(builders.APP + "SC_Info/Foo.sinf")
+    res, _ = run_meta(files)
+    d = res.data["distribution"]
+    assert (d["type"], d["verdict"], d["confidence"]) == ("appstore", "suspected", 0.65)
+    assert "unsigned_or_repackaged" in d["extra"]["alternatives"]
 
 
 def test_redaction_default_hides_purchaser(run_meta, builders):

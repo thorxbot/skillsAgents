@@ -1,8 +1,9 @@
 """Last-line-of-defence redaction of personal data in the final report.
 
 Producers (meta) already blank purchaser fields; this pass scans every string of the finished report
-(and the rendered Markdown / HTML text) for: e-mail addresses, UDIDs (legacy 40 hex, new
-``XXXXXXXX-XXXXXXXXXXXXXXXX``), user names inside home-directory paths, and values stored under
+(and the rendered Markdown / HTML text) for: e-mail addresses, UDIDs (new ``XXXXXXXX-XXXXXXXXXXXXXXXX``
+anywhere; legacy 40 hex only under device-identifier keys / wording, never under cdhash / sha1 / digest
+keys), user names inside home-directory paths (only at the start of a path), and values stored under
 Apple-ID-like keys. Placeholders are plain ASCII and contain no ``<``/``>`` so they survive Markdown.
 """
 from __future__ import annotations
@@ -27,13 +28,34 @@ SENSITIVE_KEYS = frozenset({
     "accountinfo", "appleidaccount", "buyername", "purchaser",
 })
 
-# A leading "@2x" style asset suffix (icon@2x.png) must not look like an address.
-_EMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]+@(?!\d+[xX]\b)[A-Za-z0-9\-]+(?:\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,}")
+# A leading "@2x" style asset suffix (icon@2x.png) must not look like an address, and neither must an
+# asset name whose "domain" ends in a resource extension (btn@ipad.png).
+_EMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]+@(?!\d+[xX]\b)[A-Za-z0-9\-]+(?:\.[A-Za-z0-9\-]+)*\.([A-Za-z]{2,})")
+_NOT_A_TLD = frozenset({
+    "png", "jpg", "jpeg", "gif", "webp", "bmp", "ico", "icns", "svg", "tga", "dds", "ktx", "pvr", "astc", "heic", "tif",
+    "tiff", "pdf", "plist", "json", "xml", "strings", "nib", "car", "mp3", "mp4", "m4a", "wav", "ogg", "caf", "aac",
+    "ttf", "otf", "js", "css", "html", "txt", "dat", "bin", "pak", "bundle", "lua", "atlas", "fnt", "mom", "xib",
+    "storyboardc", "lproj", "dylib", "framework", "ccz",
+})
+# 40 hex digits are only a legacy UDID in device-identity context; the same shape is also a SHA-1 / cdhash.
 _UDID_LEGACY_RE = re.compile(r"(?<![0-9A-Fa-f])[0-9A-Fa-f]{40}(?![0-9A-Fa-f])")
 _UDID_NEW_RE = re.compile(r"(?<![0-9A-Fa-f])[0-9A-Fa-f]{8}-[0-9A-Fa-f]{16}(?![0-9A-Fa-f])")
-_HOME_POSIX_RE = re.compile(r"(/(?:Users|home)/)([^/\\\s\"'<>|:*?]+)(?=[/\\\s\"'<>|:*?,;)\]]|$)")
-_HOME_WIN_RE = re.compile(r"([A-Za-z]:[\\/]+Users[\\/]+)([^\\/\s\"'<>|:*?]+)(?=[\\/\s\"'<>|:*?,;)\]]|$)", re.IGNORECASE)
+_DEVICE_WORD_RE = re.compile(r"udid|devices?|provisioned|设备", re.IGNORECASE)
+_HASH_WORD_RE = re.compile(r"cdhash|sha-?1|sha-?256|sha-?512|digest|hash|checksum|fingerprint|thumbprint|commit|哈希|摘要",
+                           re.IGNORECASE)
+_CONTEXT_WINDOW = 40
+# Home directories: only at the start of a path (the previous character is not part of a path), so
+# ``res/home/btn.png`` and ``https://example.com/home/page`` stay untouched.
+_HOME_POSIX_RE = re.compile(
+    r"(?:(?<![A-Za-z0-9_.~%@+:\-/\\])|(?<=file://))(/(?:Users|home)/)([^/\\\s\"'<>|:*?]+)"
+    r"(?=[/\\\s\"'<>|:*?,;)\]]|$)")
+# Windows: user names may contain spaces, so the name runs to the next separator (or the end of the value).
+_WIN_NAME = r"(\[user\]|[^\\/\"'<>|:*?\r\n\t,;)\]\s](?:[^\\/\"'<>|:*?\r\n\t,;)\]]*[^\\/\"'<>|:*?\r\n\t,;)\]\s])?)"
+_HOME_WIN_RE = re.compile(r"((?<![A-Za-z])[A-Za-z]:[\\/]+Users[\\/]+)" + _WIN_NAME, re.IGNORECASE)
+_HOME_UNC_RE = re.compile(r"((?<![\\/\w])[\\/]{2}(?:\?[\\/]UNC[\\/])?[^\\/\s\"'<>|:*?]+[\\/]+[^\\/\s\"'<>|:*?]+[\\/]+Users[\\/]+)"
+                          + _WIN_NAME, re.IGNORECASE)
 _KEEP_USER_NAMES = frozenset({"shared", "public", "default", "guest", "all users", "[user]", "<user>", "user"})
+_HINT_DEVICE, _HINT_HASH = "device", "hash"
 
 
 @dataclass
@@ -60,22 +82,50 @@ def _norm_key(key: str) -> str:
     return re.sub(r"[\s_\-]+", "", key).lower()
 
 
-def redact_text(text: str, stats: Optional[RedactionStats] = None) -> str:
-    """Return ``text`` with e-mails, UDIDs and home-directory user names replaced."""
+def key_hint(key: str) -> str:
+    """Context a dict key gives its value: ``"device"`` (device identifiers), ``"hash"`` (digests) or ``""``."""
+    n = _norm_key(key)
+    if "udid" in n or "device" in n or "provisioned" in n:
+        return _HINT_DEVICE
+    if any(w in n for w in ("cdhash", "sha1", "sha256", "sha512", "digest", "hash", "checksum", "fingerprint",
+                            "thumbprint", "commit")):
+        return _HINT_HASH
+    return ""
+
+
+def _legacy_udid_context(text: str, start: int) -> bool:
+    """Do the characters just before a 40-hex run talk about a device (and not about a hash)?"""
+    window = text[max(0, start - _CONTEXT_WINDOW):start]
+    dev = [m.start() for m in _DEVICE_WORD_RE.finditer(window)]
+    if not dev:
+        return False
+    hsh = [m.start() for m in _HASH_WORD_RE.finditer(window)]
+    return not hsh or max(dev) > max(hsh)
+
+
+def redact_text(text: str, stats: Optional[RedactionStats] = None, *, hint: str = "") -> str:
+    """Return ``text`` with e-mails, UDIDs and home-directory user names replaced.
+
+    ``hint`` is the context of the value (see ``key_hint``). A bare 40-hex string is redacted as a legacy
+    UDID only for ``hint == "device"`` or when the preceding words mention a device / UDID; under a hash
+    hint (cdhash, sha1 ...) it is never touched.
+    """
     if not text:
         return text
     st = stats if stats is not None else RedactionStats()
     out = text
 
-    def _sub(rx: "re.Pattern[str]", repl: Any, name: str, s: str) -> str:
-        new, n = rx.subn(repl, s)
-        if n:
-            st.hit(name, n)
-        return new
+    def _email(m: "re.Match[str]") -> str:
+        if m.group(1).lower() in _NOT_A_TLD:
+            return m.group(0)
+        st.hit("email")
+        return PLACEHOLDERS["email"]
 
-    out = _sub(_EMAIL_RE, PLACEHOLDERS["email"], "email", out)
-    out = _sub(_UDID_NEW_RE, PLACEHOLDERS["udid"], "udid", out)
-    out = _sub(_UDID_LEGACY_RE, PLACEHOLDERS["udid"], "udid", out)
+    def _legacy(m: "re.Match[str]") -> str:
+        if hint == _HINT_HASH or not (hint == _HINT_DEVICE or _legacy_udid_context(m.string, m.start())):
+            return m.group(0)
+        st.hit("udid")
+        return PLACEHOLDERS["udid"]
 
     def _home(m: "re.Match[str]") -> str:
         if m.group(2).lower() in _KEEP_USER_NAMES:
@@ -83,17 +133,27 @@ def redact_text(text: str, stats: Optional[RedactionStats] = None) -> str:
         st.hit("home_path")
         return m.group(1) + PLACEHOLDERS["user"]
 
+    out = _EMAIL_RE.sub(_email, out)
+    new, n = _UDID_NEW_RE.subn(PLACEHOLDERS["udid"], out)
+    if n:
+        st.hit("udid", n)
+    out = _UDID_LEGACY_RE.sub(_legacy, new)
+    out = _HOME_UNC_RE.sub(_home, out)
     out = _HOME_POSIX_RE.sub(_home, out)
     out = _HOME_WIN_RE.sub(_home, out)
     return out
 
 
-def redact_obj(obj: Any, stats: RedactionStats) -> Any:
-    """Deep-copy ``obj`` (JSON-native types) with all strings redacted and sensitive-key values blanked."""
+def redact_obj(obj: Any, stats: RedactionStats, hint: str = "") -> Any:
+    """Deep-copy ``obj`` (JSON-native types) with all strings redacted and sensitive-key values blanked.
+
+    ``hint`` is inherited from the enclosing dict key (device-identifier keys redact bare 40-hex strings,
+    digest keys such as ``cdhash`` / ``sha1`` never do).
+    """
     if isinstance(obj, str):
-        return redact_text(obj, stats)
+        return redact_text(obj, stats, hint=hint)
     if isinstance(obj, list):
-        return [redact_obj(v, stats) for v in obj]
+        return [redact_obj(v, stats, hint) for v in obj]
     if isinstance(obj, dict):
         out: Dict[Any, Any] = {}
         for k, v in obj.items():
@@ -104,7 +164,7 @@ def redact_obj(obj: Any, stats: RedactionStats) -> Any:
                     out[k] = PLACEHOLDERS["value"]
                     stats.hit("key:" + _norm_key(k))
                 continue
-            out[k] = redact_obj(v, stats)
+            out[k] = redact_obj(v, stats, (key_hint(k) if isinstance(k, str) else "") or hint)
         return out
     return obj
 
@@ -122,7 +182,8 @@ def redact_report(report: Dict[str, Any], *, enabled: bool = True, producer_fiel
     if not enabled:
         return report, {"applied": False, "fields": prod, "counts": {}}
     stats = RedactionStats()
-    scrubbed = {k: (redact_obj(v, stats) if k != "redaction" else v) for k, v in report.items()}
+    scrubbed = {k: (redact_obj(v, stats, key_hint(k) if isinstance(k, str) else "") if k != "redaction" else v)
+                for k, v in report.items()}
     if extras is not None:
         for name in list(extras):
             extras[name] = redact_obj(extras[name], stats)

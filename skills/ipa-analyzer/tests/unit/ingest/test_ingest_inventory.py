@@ -371,3 +371,84 @@ def test_directory_input_through_stages(tmp_path, sample_ipa):
         assert rz.data[key] == rd.data[key], key
     ctx_z.close()
     ctx_d.close()
+
+
+# --- R1 regressions -----------------------------------------------------------------------------------
+def _custom_container_files(n=60):
+    files = {"Info.plist": b"bplist00" + b"\0" * 40, "Foo": MACHO}
+    for i in range(n):
+        files["res/a%03d.json" % i] = b"NHPK" + os.urandom(40)          # extension says json, content is not
+    for i in range(n // 2):
+        files["res/t%03d.png" % i] = b"NHPT" + os.urandom(40)
+    for i in range(55):
+        files["res/b%03d.png" % i] = b"\x89PNG\r\n\x1a\n" + b"\0" * 20  # genuine PNGs: not a mismatch
+    files["res/odd.json"] = b"QQQQ" + b"\0" * 8                         # a lone odd header stays below the threshold
+    files["res/text.json"] = b'{"a": 1}'
+    return files
+
+
+def test_header_clusters_report_extension_content_mismatch(tmp_path):
+    ipa = build_ipa(tmp_path / "c.ipa", _custom_container_files(), app_name="Foo")
+    src = ZipSource(ipa)
+    inv = build_inventory(src, "Payload/Foo.app/", root_name="Foo.app")
+    hc = inv["header_clusters"]
+    assert hc[0]["head_hex"] == b"NHPK".hex() and hc[0]["head_ascii"] == "NHPK" and hc[0]["count"] == 60
+    assert hc[0]["exts"] == {".json": 60} and 0 < len(hc[0]["examples"]) <= 5
+    assert hc[0]["examples"] == sorted(hc[0]["examples"]) and hc[0]["size"] == 60 * 44
+    assert all(e.startswith("Payload/Foo.app/res/a") for e in hc[0]["examples"])
+    assert len(hc) == 1                                   # 30 NHPT files / 1 odd file are below the threshold of 50
+    assert inv["ext_magic_mismatch"]["files"] == 60 + 30 + 1
+    src.close()
+
+
+def test_header_cluster_threshold_is_configurable(tmp_path):
+    ipa = build_ipa(tmp_path / "c.ipa", _custom_container_files(), app_name="Foo")
+    src = ZipSource(ipa)
+    inv = build_inventory(src, "Payload/Foo.app/", header_cluster_min=10)
+    assert [(c["head_ascii"], c["count"]) for c in inv["header_clusters"]] == [("NHPK", 60), ("NHPT", 30)]
+    assert inv["header_clusters"][1]["exts"] == {".png": 30}
+    src.close()
+
+
+def test_no_clusters_for_ordinary_apps(sample_ipa):
+    inv = build_inventory(ZipSource(sample_ipa), "Payload/Foo.app/")
+    assert inv["header_clusters"] == [] and inv["ext_magic_mismatch"]["files"] == 0
+
+
+def _poison_hoff(data: bytes, name: bytes, hoff: int) -> bytes:
+    """Give the central-directory record of ``name`` a zip64 local header offset ``hoff``."""
+    import struct
+    eocd = data.rfind(b"PK\x05\x06")
+    cd_size, cd_off = struct.unpack_from("<LL", data, eocd + 12)
+    cd = data[cd_off:cd_off + cd_size]
+    out, pos = bytearray(), 0
+    while pos < len(cd):
+        nlen, elen, clen = struct.unpack_from("<HHH", cd, pos + 28)
+        rec = bytearray(cd[pos:pos + 46 + nlen + elen + clen])
+        if bytes(rec[46:46 + nlen]) == name:
+            extra = struct.pack("<HHQ", 1, 8, hoff)
+            struct.pack_into("<L", rec, 42, 0xFFFFFFFF)
+            struct.pack_into("<H", rec, 30, elen + len(extra))
+            rec[46 + nlen + elen:46 + nlen + elen] = extra
+        out += rec
+        pos += 46 + nlen + elen + clen
+    tail = bytearray(data[eocd:])
+    struct.pack_into("<L", tail, 12, len(out))
+    return data[:cd_off] + bytes(out) + bytes(tail)
+
+
+def test_one_malformed_entry_does_not_fail_inventory_or_extraction(tmp_path):
+    ipa = build_ipa(tmp_path / "m.ipa", {"Info.plist": b"bplist00" + b"\0" * 40, "Foo": MACHO, "evil.bin": b"z" * 200},
+                    app_name="Foo", compress=False)
+    ipa.write_bytes(_poison_hoff(ipa.read_bytes(), b"Payload/Foo.app/evil.bin", 2 ** 63 + 5))
+    ctx = _ctx(tmp_path, ipa)
+    r1, r2 = _run(ctx)
+    assert r1.status == Status.OK and r2.status == Status.OK, r2.error
+    files = {f["path"]: f for f in r2.data["files"]}
+    assert files["Payload/Foo.app/evil.bin"]["magic"] == "unreadable"
+    assert files["Payload/Foo.app/Foo"]["magic"] == "macho"
+    assert r2.data["read_errors"]["count"] == 1
+    got = ctx.extract(["Payload/Foo.app/evil.bin", "Payload/Foo.app/Foo"])
+    assert list(got) == ["Payload/Foo.app/Foo"]
+    assert any("evil.bin" in w for w in ctx.warnings)
+    ctx.close()

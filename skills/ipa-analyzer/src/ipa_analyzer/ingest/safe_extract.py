@@ -353,6 +353,8 @@ class SafeExtractor:
                 errors[name] = str(exc)
             except OSError as exc:
                 errors[name] = "I/O error: %s" % exc
+            except (ValueError, OverflowError) as exc:      # malformed entry metadata: skip this entry only
+                errors[name] = "malformed entry: %s" % exc
             else:
                 if p is not None:
                     done[name] = p

@@ -20,6 +20,27 @@ SCHEMA_PATH = SKILL_ROOT / "schemas" / "report.schema.json"
 SCRIPT_PATH = SKILL_ROOT / "scripts" / "ipa_analyze.py"
 
 
+# Environment variables that change where tools / data are looked up or which host tools are found.
+_HOST_ENV_VARS = ("IPA_ANALYZER_DATA_DIR", "IPA_ANALYZER_SCHEMAS_DIR", "IPA_ANALYZER_REFERENCES_DIR",
+                  "IL2CPPDUMPER_PATH", "CPP2IL_PATH", "IL2CPPINSPECTOR_PATH",
+                  "DOTNET_ROOT", "DOTNET_ROOT_X64", "DOTNET_ROOT_ARM64", "DOTNET_ROLL_FORWARD", "XDG_CACHE_HOME",
+                  "XDG_CONFIG_HOME")
+
+
+@pytest.fixture(autouse=True)
+def _isolated_user_dirs(tmp_path_factory, monkeypatch):
+    """Never touch the developer's real cache / tool directory or pick up host tools.
+
+    ``IPA_ANALYZER_HOME`` (cache root and user-data dir) points at a fresh temporary directory and the
+    variables that redirect resource or tool lookups are removed. Tests that need specific values set
+    them themselves with ``monkeypatch`` (that runs after this fixture).
+    """
+    monkeypatch.setenv("IPA_ANALYZER_HOME", str(tmp_path_factory.mktemp("ipa-home")))
+    for var in _HOST_ENV_VARS:
+        monkeypatch.delenv(var, raising=False)
+    yield
+
+
 def pytest_addoption(parser):
     parser.addoption("--runslow", action="store_true", default=False, help="also run tests marked slow")
 

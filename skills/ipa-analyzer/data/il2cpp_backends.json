@@ -204,7 +204,7 @@
      "ForceDump": false,
      "NoRedirectedPointer": false
     },
-    "applied_note": "DumpAttribute is false to keep dump.cs smaller (attribute dumping is the slowest part and is not needed for the summary); everything else keeps the shipped defaults except RequireAnyKey. ForceDump is only set when the request asks for it and only influences Mach-O by marking the file IsDumped.",
+    "applied_note": "DumpAttribute is false to keep dump.cs smaller (attribute dumping is the slowest part and is not needed for the summary); everything else keeps the shipped defaults except RequireAnyKey. ForceDump is always written from the request (Il2CppRunRequest.force_dump, default false) and only influences Mach-O by marking the file IsDumped.",
     "field_semantics": {
      "RequireAnyKey": "Program.cs: after Main finishes 'Press any key to exit...' + Console.ReadKey(true). Must be false for non-interactive use.",
      "ForceIl2CppVersion/ForceVersion": "Use ForceVersion to choose the il2cpp BINARY parser (not the metadata parser).",

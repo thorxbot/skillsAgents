@@ -45,7 +45,8 @@ _EOCD64 = struct.Struct("<4sQ2H2L4Q")        # 56 bytes
 _CD = struct.Struct("<4s4B4HL2L5H2L")        # 46 bytes
 _LH = struct.Struct("<4s5HL2L2H")            # 30 bytes
 _MAX_COMMENT = 0xFFFF
-_MAX_CD_BYTES = 512 * MiB
+_MAX_CD_BYTES = 128 * MiB
+_MAX_CD_RECORD = _CD.size + 3 * 0xFFFF          # fixed part + name + extra + comment at their maximum lengths
 _CHUNK = 64 * 1024
 
 # "version made by" high byte (host system), APPNOTE 4.4.2: 0 MS-DOS/FAT, 10 NTFS, 14 VFAT.
@@ -227,11 +228,12 @@ class _DeflateReader(io.RawIOBase):
 
 # --- ZipSource ----------------------------------------------------------------------------------
 class _ZEntry:
-    __slots__ = ("info", "hoff", "method", "flags", "data_off")
+    __slots__ = ("info", "hoff", "method", "flags", "data_off", "bad")
 
     def __init__(self, info: EntryInfo, hoff: int, method: int, flags: int) -> None:
         self.info, self.hoff, self.method, self.flags = info, hoff, method, flags
         self.data_off: Optional[int] = None
+        self.bad: Optional[str] = None       # why the entry cannot be read (malformed offsets / sizes)
 
 
 def _parse_extra(extra: bytes) -> Dict[int, bytes]:
@@ -319,8 +321,12 @@ class ZipSource:
             concat -= _EOCD64.size + _LOC64.size
         if concat < 0 or cd_off + concat + cd_size > fsize:
             raise InvalidInput("truncated or corrupt zip: central directory lies outside the file (%s)" % self.path)
-        if cd_size > _MAX_CD_BYTES:
-            raise InvalidInput("central directory implausibly large (%d bytes)" % cd_size)
+        if cd_size > _MAX_CD_BYTES or (n_total != 0xFFFF and cd_size > n_total * _MAX_CD_RECORD):
+            raise InvalidInput("central directory implausibly large (%d bytes for %d entries)" % (cd_size, n_total))
+        if max_entries is not None and n_total != 0xFFFF and n_total > max_entries:
+            # decided from the end record, before the (possibly large) directory is read into memory
+            raise LimitExceeded("archive has more than %d entries (limit max_files); refusing to process"
+                                % max_entries)
         if concat:
             self.warnings.append("%d bytes of data precede the zip structure (self-extracting archive?)" % concat)
         fh.seek(cd_off + concat)
@@ -347,7 +353,7 @@ class ZipSource:
 
     def _parse_cd(self, cd: bytes, concat: int, n_total: int, max_entries: Optional[int]) -> None:
         off, end, count = 0, len(cd), 0
-        backslash = 0
+        backslash = malformed = 0
         while off < end:
             if end - off < _CD.size or cd[off:off + 4] != _SIG_CD:
                 raise InvalidInput("corrupt central directory (bad record #%d at offset %d) in %s"
@@ -397,7 +403,16 @@ class ZipSource:
                 self.duplicate_entries += 1
             if flags & _FLAG_ENCRYPTED:
                 self.encrypted_entries += 1
-            self._entries[name] = _ZEntry(info, hoff + concat, method, flags)
+            ent = _ZEntry(info, hoff + concat, method, flags)
+            if is_dir or usize == 0:
+                pass                          # never read: nothing to validate
+            elif ent.hoff + _LH.size > self._fsize:
+                ent.bad = "local header offset %d lies outside the archive" % ent.hoff
+            elif csize > self._fsize or (method == _STORED and usize > self._fsize):
+                ent.bad = "declared entry size exceeds the archive size"
+            if ent.bad:
+                malformed += 1
+            self._entries[name] = ent
         if count != n_total and n_total != 0xFFFF:
             self.warnings.append("central directory lists %d entries but the end record says %d" % (count, n_total))
         if self.fallback_names:
@@ -406,6 +421,8 @@ class ZipSource:
         if self.duplicate_entries:
             self.warnings.append("%d duplicate entry name(s) in the archive; the last occurrence wins"
                                  % self.duplicate_entries)
+        if malformed:
+            self.warnings.append("%d entry(ies) have out-of-range offsets or sizes and cannot be read" % malformed)
         if backslash:
             self.warnings.append("%d entry name(s) used backslash separators and were normalised" % backslash)
         if self.encrypted_entries:
@@ -425,6 +442,8 @@ class ZipSource:
             raise ValueError("source is closed")
         if info.is_dir or info.size == 0:
             return _StoredReader(io.BytesIO(b""), 0, 0)
+        if ent.bad:
+            raise InvalidInput("corrupt archive entry %r: %s" % (name, ent.bad))
         if ent.flags & _FLAG_ENCRYPTED:
             raise InvalidInput("entry %r is password-protected" % name)
         if ent.method not in (_STORED, _DEFLATED):
@@ -447,6 +466,9 @@ class ZipSource:
                 rd = _DeflateReader(fh, ent.data_off, info.compressed_size, info.size, name=name,
                                     memory_limit=self._memory_limit, spill_dir=self._spill_dir,
                                     spill_limit=self._spill_limit)
+        except (ValueError, OverflowError) as exc:     # e.g. a seek offset beyond the OS limit
+            fh.close()
+            raise InvalidInput("corrupt archive entry %r: %s" % (name, exc)) from exc
         except BaseException:
             fh.close()
             raise

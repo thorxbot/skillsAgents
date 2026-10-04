@@ -82,3 +82,44 @@ def test_minimal_env_whitelist(monkeypatch):
     monkeypatch.setenv("DOTNET_ROOT", "/d")
     env = procs.minimal_env({"A": "1"})
     assert "SECRET_TOKEN" not in env and env["DOTNET_ROOT"] == "/d" and env["A"] == "1"
+
+
+def test_minimal_env_drops_unlisted_dotnet_variables(monkeypatch):
+    monkeypatch.setenv("DOTNET_STARTUP_HOOKS", "/evil.dll")
+    monkeypatch.setenv("DOTNET_ROLL_FORWARD", "Major")
+    env = procs.minimal_env()
+    assert "DOTNET_STARTUP_HOOKS" not in env and env["DOTNET_ROLL_FORWARD"] == "Major"
+
+
+# --- which_safe: never resolve a tool from the working directory ----------------------------------------
+def _exe(path):
+    path.write_text("#!/bin/sh\n", encoding="utf-8")
+    path.chmod(0o755)
+    return path
+
+
+def test_which_safe_ignores_cwd_and_empty_path_entries(tmp_path, monkeypatch):
+    cwd, real = tmp_path / "cwd", tmp_path / "bin"
+    cwd.mkdir()
+    real.mkdir()
+    _exe(cwd / "mytool")
+    monkeypatch.chdir(cwd)
+    sep = os.pathsep
+    for search in ("", ".", sep + str(real), str(cwd), str(cwd) + sep + "relative-nonexistent"):
+        assert procs.which_safe("mytool", search) is None, search
+    _exe(real / "mytool")
+    assert procs.which_safe("mytool", str(cwd) + sep + str(real)) == os.path.join(str(real), "mytool")
+    assert procs.which_safe("mytool", sep + str(real)) == os.path.join(str(real), "mytool")
+    assert procs.which_safe("missing", str(real)) is None
+
+
+def test_which_safe_windows_pathext_and_cwd(tmp_path, monkeypatch):
+    cwd, real = tmp_path / "cwd", tmp_path / "bin"
+    cwd.mkdir()
+    real.mkdir()
+    _exe(cwd / "dotnet.EXE")
+    _exe(real / "dotnet.EXE")
+    monkeypatch.chdir(cwd)
+    got = procs.which_safe("dotnet", str(cwd) + os.pathsep + str(real), pathext=".COM;.EXE", windows=True)
+    assert got == os.path.join(str(real), "dotnet.EXE")
+    assert procs.which_safe("dotnet.EXE", str(cwd), pathext=".EXE", windows=True) is None

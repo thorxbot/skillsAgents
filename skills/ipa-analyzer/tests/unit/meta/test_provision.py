@@ -90,10 +90,18 @@ def test_distribution_matrix(builders):
     r = pv.classify_distribution(d("adhoc"), store_markers=["iTunesMetadata.plist"], has_code_signature=True)
     assert r["type"] == "adhoc" and r["verdict"].value == "suspected" and r["repackaged_hint"] and "appstore" in r["alternatives"]
     # no profile
+    # container-layer evidence cannot prove the origin: never better than suspected / 0.6-0.7
     r = pv.classify_distribution(None, store_markers=["iTunesMetadata.plist", "SC_Info"], has_code_signature=True)
-    assert (r["type"], r["verdict"].value, r["confidence"]) == ("appstore", "yes", 0.9)
-    r = pv.classify_distribution(None, store_markers=["SC_Info"], has_code_signature=True)
-    assert r["confidence"] == 0.8
+    assert (r["type"], r["verdict"].value, r["confidence"]) == ("appstore", "suspected", 0.65)
+    r = pv.classify_distribution(None, store_markers=["iTunesMetadata.plist", "SC_Info"], has_code_signature=True,
+                                 store_names_consistent=True)
+    assert (r["type"], r["verdict"].value, r["confidence"]) == ("appstore", "suspected", 0.7)
+    assert "unsigned_or_repackaged" in r["alternatives"]
+    assert any(e.ref == "container_evidence_only" and "cannot prove" in e.detail for e in r["evidence"])
+    r = pv.classify_distribution(None, store_markers=["SC_Info"], has_code_signature=True, store_names_consistent=True)
+    assert (r["verdict"].value, r["confidence"]) == ("suspected", 0.6)
+    r = pv.classify_distribution(None, store_markers=["iTunesMetadata.plist"], has_code_signature=True)
+    assert (r["verdict"].value, r["confidence"]) == ("suspected", 0.6)
     r = pv.classify_distribution(None, store_markers=["SC_Info"], has_code_signature=False)
     assert r["verdict"].value == "suspected" and "unsigned_or_repackaged" in r["alternatives"]
     r = pv.classify_distribution(None, has_code_signature=False)

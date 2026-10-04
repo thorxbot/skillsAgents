@@ -29,8 +29,9 @@ Header layouts, each checked against the official sources fetched during WP3b:
 * LuaJIT (lj_bcdump.h, v2.0 branch: ``BCDUMP_VERSION 1``; v2.1 branch: ``BCDUMP_VERSION 2``;
   lj_bcwrite.c ``bcwrite_header``, lj_bcread.c ``bcread_header``)::
       1B 4C 4A | dump version | flags (ULEB128) | [chunkname length (ULEB128) + bytes, absent when STRIP]
-  flags: 0x01 BE, 0x02 STRIP, 0x04 FFI, 0x08 FR2 (GC64 frame layout), 0x10 BITOP; 2.0 knows
-  only the first three.  The header comment in lj_bcdump.h requires private format changes to
+  flags: 0x01 BE, 0x02 STRIP, 0x04 FFI, 0x08 FR2 (GC64 frame layout), 0x10 BITOP,
+  0x80000000 DETERMINISTIC (``luajit -d``; Source: lj_bcdump.h BCDUMP_F_DETERMINISTIC, v2.1 branch,
+  checked against the repository HEAD in the R1 review); 2.0 knows only the first three.  The header comment in lj_bcdump.h requires private format changes to
   use a dump version >= 0x80, which is reported as a tamper signal.
 
 Every layout above was also confirmed against real dumps produced by ``lupa`` (Lua 5.1-5.5) and
@@ -88,8 +89,11 @@ LJ_F_STRIP = 0x02
 LJ_F_FFI = 0x04
 LJ_F_FR2 = 0x08
 LJ_F_BITOP = 0x10
-_LJ_FLAG_NAMES = ((LJ_F_BE, "BE"), (LJ_F_STRIP, "STRIP"), (LJ_F_FFI, "FFI"), (LJ_F_FR2, "FR2"), (LJ_F_BITOP, "BITOP"))
-_LJ_KNOWN_FLAGS = {1: LJ_F_BE | LJ_F_STRIP | LJ_F_FFI, 2: LJ_F_BE | LJ_F_STRIP | LJ_F_FFI | LJ_F_FR2 | LJ_F_BITOP}
+LJ_F_DETERMINISTIC = 0x80000000
+_LJ_FLAG_NAMES = ((LJ_F_BE, "BE"), (LJ_F_STRIP, "STRIP"), (LJ_F_FFI, "FFI"), (LJ_F_FR2, "FR2"), (LJ_F_BITOP, "BITOP"),
+                  (LJ_F_DETERMINISTIC, "DETERMINISTIC"))
+_LJ_KNOWN_FLAGS = {1: LJ_F_BE | LJ_F_STRIP | LJ_F_FFI,
+                   2: LJ_F_BE | LJ_F_STRIP | LJ_F_FFI | LJ_F_FR2 | LJ_F_BITOP | LJ_F_DETERMINISTIC}
 _LJ_PRIVATE_VERSION_MIN = 0x80
 
 # UNVERIFIED: the "usual" sizeof sets below are a plausibility heuristic, not part of any spec.

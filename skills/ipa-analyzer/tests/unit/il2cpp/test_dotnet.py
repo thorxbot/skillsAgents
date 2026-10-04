@@ -169,3 +169,18 @@ def test_default_consent(monkeypatch):
     assert D.default_consent(True)("x") is True
     monkeypatch.setattr(D.sys, "stdin", None)
     assert D.default_consent(False)("x") is False        # no TTY => never prompts, never assumes yes
+
+
+def test_dotnet_is_never_resolved_from_the_working_directory(tmp_path, monkeypatch):
+    import os
+    cwd, real = tmp_path / "downloads", tmp_path / "bin"
+    cwd.mkdir()
+    real.mkdir()
+    for d in (cwd, real):
+        exe = d / D.dotnet_exe_name("Linux")
+        exe.write_text("#!/bin/sh\n", encoding="utf-8")
+        exe.chmod(0o755)
+    monkeypatch.chdir(cwd)
+    env = {"PATH": os.pathsep.join(["", ".", str(cwd), str(real)])}
+    got = list(D.iter_dotnet_candidates(None, cache_root=tmp_path / "cache", env=env, system="Linux"))
+    assert got[0] == real / D.dotnet_exe_name("Linux") and cwd / D.dotnet_exe_name("Linux") not in got

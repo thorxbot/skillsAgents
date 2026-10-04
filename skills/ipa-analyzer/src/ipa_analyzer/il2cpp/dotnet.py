@@ -127,7 +127,7 @@ def iter_dotnet_candidates(explicit: Optional[str] = None, *, cache_root: Option
     if root:
         yield from emit(Path(root) / dotnet_exe_name(system))
     yield from emit(cached_dotnet_dir(cache_root) / dotnet_exe_name(system))
-    which = shutil.which(dotnet_exe_name(system), path=env.get("PATH"))
+    which = _procs.which_safe(dotnet_exe_name(system), env.get("PATH"))
     if which:
         yield from emit(Path(which))
     for p in _well_known(system, env):
@@ -242,10 +242,10 @@ def install_runtime(channel: str, *, cache_root: Optional[Path] = None, system: 
         script = _download_script(url, work, downloader)
         shell = None
         if system == "Windows":
-            shell = shutil.which("powershell") or shutil.which("pwsh")
+            shell = _procs.which_safe("powershell") or _procs.which_safe("pwsh")
             if not shell:
                 raise ToolDownloadError("PowerShell was not found; cannot run dotnet-install.ps1", "policy")
-        elif not shutil.which("bash"):
+        elif not _procs.which_safe("bash"):
             raise ToolDownloadError("bash was not found; cannot run dotnet-install.sh", "policy")
         cmd = build_install_command(system, script, install_dir=install_dir, channel=channel, shell_exe=shell)
         env = _procs.minimal_env({"DOTNET_CLI_TELEMETRY_OPTOUT": "1", "DOTNET_NOLOGO": "1"})

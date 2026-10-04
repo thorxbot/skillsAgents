@@ -316,3 +316,82 @@ def test_dir_source_limit_and_not_a_dir(tmp_path):
         DirSource(tmp_path / "d", max_entries=5)
     with pytest.raises(InvalidInput):
         DirSource(tmp_path / "d" / "f1")
+
+
+# --- R1 regressions: malformed directory records ------------------------------------------------------
+def _eocd(data: bytes) -> int:
+    return data.rfind(b"PK\x05\x06")
+
+
+def _with_zip64_hoff(data: bytes, hoff: int) -> bytes:
+    """Rewrite the single central-directory record so its local header offset lives in a zip64 extra field."""
+    import struct
+    eocd = _eocd(data)
+    cd_size, cd_off = struct.unpack_from("<LL", data, eocd + 12)
+    rec = bytearray(data[cd_off:cd_off + cd_size])
+    nlen, elen, clen = struct.unpack_from("<HHH", rec, 28)
+    assert (elen, clen) == (0, 0) and len(rec) == 46 + nlen
+    extra = struct.pack("<HHQ", 1, 8, hoff)
+    struct.pack_into("<H", rec, 30, len(extra))
+    struct.pack_into("<L", rec, 42, 0xFFFFFFFF)
+    new_cd = bytes(rec[:46 + nlen]) + extra
+    tail = bytearray(data[eocd:])
+    struct.pack_into("<L", tail, 12, len(new_cd))
+    return data[:cd_off] + new_cd + bytes(tail)
+
+
+@pytest.mark.parametrize("hoff", [2 ** 63 + 5, 2 ** 64 - 1, 10 ** 12])
+def test_huge_zip64_local_header_offset_is_invalid_input(tmp_path, hoff):
+    single = build_zip_bytes({"Payload/A.app/x.bin": b"y" * 64}, compress=False)
+    p = _write(tmp_path, _with_zip64_hoff(single, hoff), "z.ipa")
+    src = ZipSource(p)                                  # opening works; only the bad entry is unreadable
+    assert any("out-of-range" in w for w in src.warnings)
+    name = [e.name for e in src.namelist() if not e.is_dir][0]
+    with pytest.raises(InvalidInput):
+        src.read_head(name, 8)
+    with pytest.raises(InvalidInput):
+        src.open(name).read()
+    with pytest.raises(InvalidInput):
+        src.extract_to(name, tmp_path / "out.bin")
+
+
+def test_central_directory_beyond_end_of_file_is_rejected(tmp_path):
+    """EOCD cd_size / cd_off pointing outside the file must be refused before anything is read (mutation M12)."""
+    import struct
+    data = bytearray(build_ipa(tmp_path / "f.ipa", {"a": b"x" * 100}).read_bytes())
+    eocd = _eocd(bytes(data))
+    cd_size, cd_off = struct.unpack_from("<LL", data, eocd + 12)
+    bad_size = bytearray(data)
+    struct.pack_into("<L", bad_size, eocd + 12, cd_size + 10_000)       # directory "ends" after the file
+    with pytest.raises(InvalidInput, match="central directory lies outside the file"):
+        ZipSource(_write(tmp_path, bytes(bad_size), "s.ipa"))
+    bad_off = bytearray(data)
+    struct.pack_into("<L", bad_off, eocd + 16, cd_off + 10_000)         # offset past the directory
+    with pytest.raises(InvalidInput, match="central directory lies outside the file"):
+        ZipSource(_write(tmp_path, bytes(bad_off), "o.ipa"))
+
+
+def test_implausible_directory_size_rejected_before_reading_it(tmp_path, monkeypatch):
+    import struct
+    size = 20_000_000
+    eocd = b"PK\x05\x06" + struct.pack("<HHHHLLH", 0, 0, 2, 2, size, 0, 0)
+    p = _write(tmp_path, b"\0" * size + eocd, "big.ipa")
+    reads = []
+    real_open = open
+
+    def spy(*a, **k):
+        fh = real_open(*a, **k)
+        orig = fh.read
+        fh.read = lambda n=-1: (reads.append(n), orig(n))[1]
+        return fh
+
+    monkeypatch.setattr("ipa_analyzer.ingest.source.open", spy, raising=False)
+    with pytest.raises(InvalidInput, match="implausibly large"):
+        ZipSource(p)
+    assert all(n < 1_000_000 for n in reads)             # the 20 MB "directory" was never read
+
+
+def test_entry_count_limit_is_decided_from_the_end_record(tmp_path):
+    p = build_ipa(tmp_path / "many.ipa", {"f%d" % i: b"x" for i in range(30)})
+    with pytest.raises(LimitExceeded):
+        ZipSource(p, max_entries=10)

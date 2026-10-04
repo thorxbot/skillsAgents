@@ -132,19 +132,26 @@ def test_help_and_version_exit_0(capsys):
     assert "ipa-analyzer" in capsys.readouterr().out
 
 
-def test_doctor_offline(capsys):
+def test_doctor_offline(capsys, tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    monkeypatch.setenv("IPA_ANALYZER_HOME", str(home))
     assert cli.main(["doctor", "--offline"]) == 0
     out = capsys.readouterr().out
     for key in ("python", "platform", "dotnet", "cache dir", "stages", "engine checkers"):
         assert key in out
+    assert str(home) in out                               # the real user cache was not consulted
     assert cli.main(["doctor", "--offline", "--json"]) == 0
     data = json.loads(capsys.readouterr().out)
     assert any(c["name"] == "network" and c["level"] == "skip" for c in data["checks"])
 
 
-def test_tools_stub_subcommands(capsys):
+def test_tools_stub_subcommands(capsys, tmp_path, monkeypatch):
+    home = tmp_path / "home"
+    monkeypatch.setenv("IPA_ANALYZER_HOME", str(home))
     assert cli.main(["tools", "list"]) == 0
-    assert cli.main(["tools", "install", "il2cppdumper", "--offline"]) in (0, 1, 4)
+    # empty cache + offline: nothing to install, the failure is reported with exit code 4
+    assert cli.main(["tools", "install", "il2cppdumper", "--offline"]) == 4
+    assert not any(home.rglob("*.dll"))
     assert cli.main(["tools"]) == 1
 
 

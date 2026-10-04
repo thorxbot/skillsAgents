@@ -246,3 +246,48 @@ def test_load_inventory_files_falls_back_to_full_file(tmp_path):
     assert [f["path"] for f in filetypes.load_inventory_files(inv, tmp_path)] == ["a", "b"]
     assert len(filetypes.load_inventory_files(dict(inv, files_truncated=False), tmp_path)) == 1
     assert len(filetypes.load_inventory_files(inv, tmp_path / "missing")) == 1
+
+
+# --- R1 regressions: weak 4-byte magics must not turn plain text into fonts / audio -----------------
+def _sfnt(tag: bytes, num: int = 9) -> bytes:
+    log2 = num.bit_length() - 1
+    search = 16 * (1 << log2)
+    return tag + struct.pack(">4H", num, search, log2, num * 16 - search)
+
+
+@pytest.mark.parametrize("head", [
+    b"true\n", b"true", b"true,\n  \"x\": 1\n", b"true\x00\x00\x00\x00\x00\x00\x00\x00",
+    b"true" + struct.pack(">4H", 9, 1, 2, 3),
+])
+def test_true_prefixed_text_is_not_ttf(head):
+    assert magic.sniff(head)[0] != "ttf"
+
+
+def test_real_true_sfnt_header_is_ttf():
+    assert magic.sniff(_sfnt(b"true")) == ("ttf", 0.9)
+    assert magic.sniff(_sfnt(b"true", 20))[0] == "ttf"
+
+
+@pytest.mark.parametrize("text", ["hello strings\n", '"key" = "value";\n', "中文 UTF-16 内容"])
+def test_utf16le_bom_text_is_not_mp3(text):
+    data = b"\xff\xfe" + text.encode("utf-16-le")
+    assert magic.sniff(data)[0] != "mp3"
+    assert magic.sniff(data[:64])[0] != "mp3"
+
+
+def test_utf16_bom_ascii_text_is_text():
+    assert magic.sniff(b"\xff\xfe" + '"a" = "b";\n'.encode("utf-16-le"))[0] == "text"
+    assert magic.sniff(b"\xfe\xff" + '"a" = "b";\n'.encode("utf-16-be"))[0] == "text"
+
+
+@pytest.mark.parametrize("head,ok", [
+    (b"ID3\x03\x00\x00\x00\x00\x08\x00", True), (b"ID3\x04\x00\x00\x00\x00\x00\x7f", True),
+    (b"ID3 is the name of the tag format", False), (b"ID3\x09\x00\x00\x00\x00\x00\x00", False),
+    (b"ID3\x03\xff\x00\x00\x00\x00\x00", False), (b"ID3\x03\x00\x00\x80\x00\x00\x00", False),
+])
+def test_id3_requires_a_valid_header(head, ok):
+    assert (magic.sniff(head)[0] == "mp3") is ok
+
+
+def test_real_mpeg_frame_still_detected():
+    assert magic.sniff(b"\xff\xfb\x90\x00" + b"\x00" * 20)[0] == "mp3"

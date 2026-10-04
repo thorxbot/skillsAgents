@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import hashlib
 import plistlib
+import time
 import zipfile
+
+import pytest
 
 from ipa_analyzer.ingest.minimal_zip import ZipSource
 from ipa_analyzer.meta import coderesources as cr
@@ -133,3 +136,58 @@ def test_invalid_regex_rules_are_skipped():
     assert len(rules) == 3
     assert cr.rule_expects(rules, "ok/x") is True and cr.rule_expects(rules, "omit") is False
     assert cr.rule_expects(rules, "no") is False and cr.rule_expects(rules, "other") is False
+
+
+# --- ReDoS hardening (rules2 regexes come from the untrusted IPA) ------------------------------
+REAL_APPLE_RULES = [
+    r"^(Frameworks|SharedFrameworks|PlugIns|Plug-ins|XPCServices|Helpers|MacOS|Library/(Automator|Spotlight|LoginItems))/",
+    r"^.*", r"^.*\.dSYM($|/)", r"^(.*/)?\.DS_Store$", r"^[^/]+$", r"^embedded\.provisionprofile$",
+    r"^Resources/.*\.lproj/", r"^Resources/.*\.lproj/locversion.plist", r"^(.*/)?Info\.plist$", r"^Base\.lproj/",
+]
+
+
+@pytest.mark.parametrize("pat", REAL_APPLE_RULES)
+def test_real_world_rules_are_considered_safe(pat):
+    assert cr.rule_risk(pat) is None
+
+
+@pytest.mark.parametrize("pat", [r"^(a+)+$", r"^(a*)*$", r"^(a|aa)+$", r"^(?:a+)+$", r"(.+)*", r"^(\w+\s?)*$",
+                                 r"^([a-z]+)+$", r"(?P<x>a+)+", r"^(a+){1,}$", r"^(a{1,100})+$", r".*.*.*x",
+                                 "^" + "a" * 300])
+def test_risky_rules_are_rejected(pat):
+    assert cr.rule_risk(pat) is not None
+    rejected = []
+    assert cr.compile_rules({pat: True, "^ok$": True}, rejected) != [] and rejected == [pat]
+
+
+def test_adversarial_rule_finishes_quickly_and_is_reported(builders, tmp_path):
+    evil = "a" * 40
+    files = {"Info.plist": b"plist-bytes", evil + "!": b"x"}
+    s = builders.seal({"Info.plist": b"plist-bytes"}, extra_rules={"^(a+)+$": True})
+    started = time.monotonic()
+    res = _verify(_src(tmp_path, _pack(files, s)), s)
+    assert time.monotonic() - started < 1.0
+    det = res["details"]
+    assert det["unevaluated_rules"] == 1 and det["rules_incomplete"] is True
+    assert any("not evaluated" in w for w in res["warnings"])
+    assert res["extra"] == 1                       # the safe ``^.*`` rule still flags the unsealed file
+
+
+def test_rule_input_is_truncated():
+    seen = []
+
+    class Rx:
+        def search(self, text):
+            seen.append(len(text))
+            return True
+
+    assert cr.rule_expects([(Rx(), 1.0, False)], "x" * 5000) is True
+    assert seen == [cr.MAX_RULE_INPUT]
+
+
+def test_rule_time_budget_stops_evaluation(builders, tmp_path):
+    files = {"Info.plist": b"p", "e1": b"1", "e2": b"2"}
+    s = builders.seal({"Info.plist": b"p"})
+    res = _verify(_src(tmp_path, _pack(files, s)), s, max_rule_seconds=-1.0)
+    assert res["details"]["rules_timed_out"] is True and res["details"]["rules_incomplete"] is True
+    assert res["extra"] == 0 and any("stopped" in w for w in res["warnings"])

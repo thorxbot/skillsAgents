@@ -138,6 +138,31 @@ def test_luajit_20_does_not_know_fr2_bit():
     assert "luajit_unknown_flag_bits:0x8" in info.tamper_signals
 
 
+def _uleb(v: int) -> bytes:
+    out = bytearray()
+    while True:
+        b, v = v & 0x7F, v >> 7
+        out.append(b | (0x80 if v else 0))
+        if not v:
+            return bytes(out)
+
+
+@pytest.mark.parametrize("extra", [0, 0x08, 0x08 | 0x10, 0x08 | 0x04])
+def test_luajit_deterministic_flag_is_legitimate(extra):
+    # `luajit -d` sets BCDUMP_F_DETERMINISTIC (0x80000000); such bytecode is genuine, not tampered
+    flags = 0x80000000 | 0x02 | extra
+    info = lb.parse_header(b"\x1bLJ\x02" + _uleb(flags) + b"\x00" * 8)
+    assert info.luajit_flags == flags and "DETERMINISTIC" in info.luajit_flag_names
+    assert info.tamper_signals == [] and info.valid
+
+
+def test_luajit_20_rejects_deterministic_bit_and_other_high_bits():
+    info = lb.parse_header(b"\x1bLJ\x01" + _uleb(0x80000000 | 0x02) + b"\x00" * 8)
+    assert "luajit_unknown_flag_bits:0x80000000" in info.tamper_signals
+    info = lb.parse_header(b"\x1bLJ\x02" + _uleb(0x40000000 | 0x02) + b"\x00" * 8)
+    assert "luajit_unknown_flag_bits:0x40000000" in info.tamper_signals
+
+
 @pytest.mark.parametrize(
     "blob",
     [

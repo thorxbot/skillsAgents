@@ -110,3 +110,21 @@ def test_thin_macho_cputype_is_read_correctly(tmp_path, builders):
     p.write_bytes(builders.macho_thin(builders.CPU_X86_64))
     info = inspect_macho(p)
     assert info.slices[0].cputype == builders.CPU_X86_64 and info.preferred() is info.slices[0]
+
+
+@pytest.mark.parametrize("force", [True, False])
+def test_force_dump_is_written_to_the_dumper_config(tmp_path, force):
+    from ipa_analyzer.il2cpp import Il2CppRunRequest
+    backend = B.BACKEND_CLASSES["il2cppdumper"](B.load_catalog())
+    cfg_file = tmp_path / "config.json"
+    cfg_file.write_text(json.dumps({"RequireAnyKey": True, "ForceDump": not force}), encoding="utf-8")
+    req = Il2CppRunRequest(binary_path=tmp_path / "b", metadata_path=tmp_path / "m", out_dir=tmp_path / "o",
+                           force_dump=force)
+    backend._write_config(cfg_file, req)
+    written = json.loads(cfg_file.read_text(encoding="utf-8"))
+    assert written["ForceDump"] is force and written["RequireAnyKey"] is False
+    # an explicit dumper_config override from the caller still wins
+    req2 = Il2CppRunRequest(binary_path=tmp_path / "b", metadata_path=tmp_path / "m", out_dir=tmp_path / "o",
+                            force_dump=force, extra={"dumper_config": {"ForceDump": not force}})
+    backend._write_config(cfg_file, req2)
+    assert json.loads(cfg_file.read_text(encoding="utf-8"))["ForceDump"] is (not force)

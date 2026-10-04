@@ -241,7 +241,7 @@ def _print_summary(ctx: Any, outcome: Any, report_path: Path) -> None:
 def _check_dotnet(explicit: Optional[str]) -> Dict[str, Any]:
     from .util import procs
 
-    exe = explicit or shutil.which("dotnet")
+    exe = explicit or procs.which_safe("dotnet")
     if not exe:
         return {"name": "dotnet", "level": "warn", "detail": "not found (only needed for Il2CppDumper)"}
     r = procs.run([exe, "--list-runtimes"], timeout=15)

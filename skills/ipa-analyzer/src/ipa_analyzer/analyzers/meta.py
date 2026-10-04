@@ -286,9 +286,11 @@ class MetaStage:
         perm_sum = summarize_permissions(perms)
 
         # 9. distribution -----------------------------------------------------------------
+        exe_name = identity.get("executable")
+        names_consistent = bool(exe_name) and ("SC_Info/%s.sinf" % exe_name) in set(fair["files"])
         dist = classify_distribution(provision if provision.get("present") else None,
                                      prov_unreadable=prov_unreadable, store_markers=markers,
-                                     has_code_signature=has_code_sig)
+                                     has_code_signature=has_code_sig, store_names_consistent=names_consistent)
         distribution = {
             "type": dist["type"], "verdict": dist["verdict"].value, "confidence": dist["confidence"],
             "evidence": _evidence_dicts(dist["evidence"]),
@@ -317,6 +319,9 @@ class MetaStage:
                                                   executable=identity.get("executable")), None)
                 if integrity is None:
                     integrity_skip = "failed"
+                else:
+                    for w in integrity.get("warnings") or []:
+                        run.warn(w)
 
         # --- data ------------------------------------------------------------------------
         data: Dict[str, Any] = {
@@ -375,6 +380,7 @@ def _distribution_finding(dist: Dict[str, Any], raw: Dict[str, Any]) -> Finding:
     summary = "Distribution type: %s." % dist["type"]
     if alts:
         summary += " Competing hypotheses: %s." % alts
+    summary += " Container-layer evidence only; it cannot prove where the package came from."
     return Finding("meta.distribution", raw["verdict"], raw["confidence"], "Distribution type", summary,
                    {"type": dist["type"], "alternatives": raw["alternatives"],
                     "alternatives_text": alts or "-"}, list(raw["evidence"]),
@@ -422,10 +428,10 @@ def _integrity_finding(res: Optional[Dict[str, Any]], skip: str, cr_name: str) -
     params = {"checked": res["checked"], "missing": res["missing"], "modified": res["modified"],
               "extra": res["extra"], "reason": ""}
     ev = [Evidence("file", cr_name + ":" + x["path"], x["kind"]) for x in res["examples"]]
-    complete = not det["truncated"] and det["unsupported_digest"] == 0
+    complete = not det["truncated"] and det["unsupported_digest"] == 0 and not det.get("rules_incomplete")
     summary = ("%d files checked: %d missing, %d modified, %d extra. A consistent seal does not prove "
-               "authenticity (re-signed packages carry a fresh seal)." % (
-                   res["checked"], res["missing"], res["modified"], res["extra"]))
+               "authenticity (re-signed packages carry a fresh seal). The extra-file count interprets the seal's "
+               "path rules heuristically." % (res["checked"], res["missing"], res["modified"], res["extra"]))
     if res["modified"] or res["missing"]:
         return Finding("meta.signature_integrity", Verdict.YES, 0.85, "Resources differ from the code-signature seal",
                        summary, params, ev, tags=["tampered"])

@@ -337,3 +337,18 @@ def test_lz4_encoder_used_by_builder_matches_decoder_on_large_block():
     from ipa_analyzer.formats import lz4
 
     assert lz4.decompress_block(lz4_compress_block(big), expected_size=len(big)) == big
+
+
+def test_iter_refuses_oversized_compressed_block_before_reading_it():
+    # declared uncompressed size is small but the compressed size is huge: never read it into memory
+    class NoRead:
+        def seek(self, *_a):
+            raise AssertionError("must not seek")
+
+        def read(self, *_a):
+            raise AssertionError("must not read")
+
+    info = unityfs.BlocksInfo(uncompressed_data_hash=b"", blocks=[unityfs.StorageBlock(1000, 1 << 30, 3)], nodes=[])
+    with pytest.raises(UnityFSError) as exc:
+        list(unityfs.iter_decompressed(NoRead(), None, info))
+    assert exc.value.kind == "limit_exceeded"

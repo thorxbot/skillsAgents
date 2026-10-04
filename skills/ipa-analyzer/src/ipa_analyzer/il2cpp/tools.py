@@ -517,7 +517,7 @@ class ToolManager:
         for exe in spec.executable_names + [e.lower() for e in spec.executable_names]:
             if exe.lower().endswith(".dll"):
                 continue
-            found = shutil.which(exe, path=self.env.get("PATH"))
+            found = _procs.which_safe(exe, self.env.get("PATH"))
             if found:
                 res = self.from_path(spec, Path(found), "path")
                 if res.ok:

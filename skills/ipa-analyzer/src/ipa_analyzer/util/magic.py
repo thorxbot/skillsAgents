@@ -50,14 +50,16 @@ _FIXED: List[Tuple[bytes, str, float]] = [
     # and ZipUtils.cpp: sig[3] == '!' (plain) or 'p' (encrypted CCZ).
     (b"CCZ!", "ccz", 0.9), (b"CCZp", "ccz", 0.9),
     # Source: ID3v2 tag header; Ogg (RFC 3533) "OggS"; FLAC "fLaC"; CAF spec "caff"; AMR "#!AMR"; SMF "MThd".
-    (b"ID3", "mp3", 0.85), (b"OggS", "ogg", 0.97), (b"fLaC", "flac", 0.97), (b"caff", "caf", 0.97),
+    # ("ID3" is validated in ``_id3``.)
+    (b"OggS", "ogg", 0.97), (b"fLaC", "flac", 0.97), (b"caff", "caf", 0.97),
     (b"#!AMR", "amr", 0.95), (b"MThd", "midi", 0.95),
     # Source: Matroska/WebM EBML header 1A45DFA3; FLV "FLV\x01"; MPEG program stream pack header 000001BA.
     (b"\x1a\x45\xdf\xa3", "matroska", 0.9), (b"FLV\x01", "flv", 0.9), (b"\x00\x00\x01\xba", "mpeg_ps", 0.8),
     # UNVERIFIED (from memory): ASF header object GUID 75B22630-668E-11CF-A6D9-00AA0062CE6C.
     (b"\x30\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c", "asf", 0.95),
-    # Source: OpenType spec: 'OTTO' (CFF), 'ttcf' (collection), Apple 'true'; WOFF 'wOFF', WOFF2 'wOF2'.
-    (b"OTTO", "otf", 0.97), (b"ttcf", "ttc", 0.97), (b"true", "ttf", 0.9),
+    # Source: OpenType spec: 'OTTO' (CFF), 'ttcf' (collection); WOFF 'wOFF', WOFF2 'wOF2'.
+    # Apple's 'true' sfnt tag is validated in ``_sfnt_true`` (4 ASCII bytes alone also start plain text).
+    (b"OTTO", "otf", 0.97), (b"ttcf", "ttc", 0.97),
     (b"wOFF", "woff", 0.97), (b"wOF2", "woff2", 0.97),
     # Source: SQLite file format doc: header string "SQLite format 3\0".
     (b"SQLite format 3\x00", "sqlite", 0.99),
@@ -233,8 +235,38 @@ def _ttf(head: bytes) -> Optional[Result]:
     return None
 
 
+def _sfnt_table_header_ok(head: bytes) -> bool:
+    """sfnt offset table: numTables, searchRange = 16 * 2^floor(log2 n), entrySelector, rangeShift = 16n - searchRange."""
+    num, search, selector, shift = struct.unpack(">4H", head[4:12])
+    if not 4 <= num <= 64:
+        return False
+    log2 = num.bit_length() - 1
+    return search == 16 * (1 << log2) and selector == log2 and shift == num * 16 - search
+
+
+def _sfnt_true(head: bytes) -> Optional[Result]:
+    # Source: Apple TrueType reference: scaler type 'true' (0x74727565) starts the sfnt offset table.
+    # Free text beginning with ``true`` must not be called a font, so the whole 12-byte table is checked.
+    if head[:4] == b"true" and len(head) >= 12 and _sfnt_table_header_ok(head):
+        return "ttf", 0.9
+    return None
+
+
+def _id3(head: bytes) -> Optional[Result]:
+    # Source: ID3v2 header: "ID3", major 2..4, revision != 0xFF, flags, 4 sync-safe size bytes (< 0x80).
+    if head[:3] != b"ID3":
+        return None
+    if len(head) < 10:
+        return "mp3", 0.5
+    if head[3] in (2, 3, 4) and head[4] != 0xFF and all(b < 0x80 for b in head[6:10]):
+        return "mp3", 0.85
+    return None
+
+
 def _mpeg_audio(head: bytes) -> Optional[Result]:
     # Source: MPEG audio frame header: 11 sync bits, version != reserved, layer != reserved.
+    if head[:2] == b"\xff\xfe":
+        return None      # UTF-16LE byte-order mark (that header would be MPEG-1 layer I with CRC: not seen in practice)
     if len(head) >= 4 and head[0] == 0xFF and (head[1] & 0xE0) == 0xE0:
         layer = (head[1] >> 1) & 3
         version = (head[1] >> 3) & 3
@@ -280,13 +312,26 @@ def _shebang(head: bytes) -> Optional[Result]:
     return ("shebang", 0.8) if head.startswith(b"#!") and b"\n" in head[:128] and is_texty(head[:128]) else None
 
 
+def _bad_controls(text: str) -> int:
+    return sum(1 for ch in text if (ord(ch) < 0x20 and ch not in "\t\n\r\f\b") or ch == "\x7f")
+
+
 def is_texty(data: bytes) -> bool:
-    """Heuristic: mostly printable ASCII / valid UTF-8 with no NUL bytes."""
+    """Heuristic: mostly printable ASCII / valid UTF-8 with no NUL bytes (or BOM-marked UTF-16 text)."""
     if not data:
         return False
+    if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        # UTF-16 text with a byte-order mark; anything else starting FF FE / FE FF is not text
+        if len(data) < 4:
+            return False
+        body = data[2:2 + ((len(data) - 2) // 2) * 2]
+        try:
+            text = body.decode("utf-16-le" if data[:2] == b"\xff\xfe" else "utf-16-be")
+        except UnicodeDecodeError:
+            return False
+        return _bad_controls(text) == 0
     if b"\x00" in data:
-        # UTF-16 text: BOM FF FE / FE FF
-        return data[:2] in (b"\xff\xfe", b"\xfe\xff") and len(data) >= 4
+        return False
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -295,8 +340,7 @@ def is_texty(data: bytes) -> bool:
         text = data[:exc.start].decode("utf-8", "replace")
     if not text:
         return False
-    bad = sum(1 for ch in text if (ord(ch) < 0x20 and ch not in "\t\n\r\f\b") or ch == "\x7f")
-    return bad == 0
+    return _bad_controls(text) == 0
 
 
 _JSON_START = re.compile(rb"^\s*[\[{]\s*[\"\]}\[{\d\-tfn]")
@@ -317,7 +361,7 @@ def _text(head: bytes) -> Optional[Result]:
 _SPECIAL_BY_FIRST: Dict[int, List[Callable[[bytes], Optional[Result]]]] = {
     0xCA: [_macho, _java_class], 0xFE: [_macho], 0xCE: [_macho], 0xCF: [_macho],
     ord("R"): [_riff], ord("F"): [_form], ord("B"): [_bzip2, _bmp], 0x00: [_ico, _ttf], 0xFF: [_mpeg_audio],
-    ord("M"): [_pe],
+    ord("M"): [_pe], ord("t"): [_sfnt_true], ord("I"): [_id3],
 }
 _GENERIC: List[Callable[[bytes], Optional[Result]]] = [_ftyp, _plist_xml, _shebang, _text]
 

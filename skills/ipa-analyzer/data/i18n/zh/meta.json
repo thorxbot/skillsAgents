@@ -6,7 +6,7 @@
   },
   "meta.distribution": {
     "title": "分发类型",
-    "summary": "判定分发类型:{type}。竞争假设:{alternatives_text}。",
+    "summary": "判定分发类型:{type}。竞争假设:{alternatives_text}。该判定仅基于包容器层证据,不能证明来源:被解密后重打包的包同样可能保留这些文件。",
     "remediation": "分发类型仅依据 embedded.mobileprovision、SC_Info 与 iTunesMetadata.plist 推断;重签名包可能与原始分发渠道不同。"
   },
   "meta.permissions": {
@@ -21,7 +21,7 @@
   },
   "meta.signature_integrity": {
     "title": "代码签名资源封条校验",
-    "summary": "已校验 {checked} 个文件:缺失 {missing},被修改 {modified},额外 {extra}。封条一致不代表来源可信(重签名包会带新的封条)。",
+    "summary": "已校验 {checked} 个文件:缺失 {missing},被修改 {modified},额外 {extra}。封条一致不代表来源可信(重签名包会带新的封条)。「额外」文件数依据封条中的路径规则做启发式解释。",
     "remediation": "存在缺失或被修改的文件说明包在签名后被改动(重打包 / 注入)。"
   },
   "meta.distribution.type.appstore": "App Store",
