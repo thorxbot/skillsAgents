@@ -12,6 +12,10 @@
 - 只用合成夹具;不跑真实样本;不做 1GB 级性能夹具(可只做小规模的性能回归,标 slow 且默认跳过)。
 - 能用已有测试覆盖的不要重复写;集成测试聚焦跨阶段一致性与 CLI 端到端。
 
+## 已知待修(必做)
+- `tests/unit/il2cpp/test_runner.py::test_supervisor_merges_stderr_and_keeps_tail_bounded` 在 CPU 负载下偶发失败(单独跑通过):找出时序假设(固定 sleep / 过紧超时)并改为基于事件/同步的确定性写法,不要只加大超时。
+- SeaWorld 实测纠正:Cocos Creator 3.x 项目里的 NHPK/NHPT/NHPO 文件是自定义资源打包,不是自研引擎;集成夹具里的 `custom_engine.ipa` 与 `cocos_creator3.ipa` 要保持这两种情形可区分(自研 = 无已知引擎 + 画像;Cocos 内自定义封装 = 已知引擎 + 容器画像)。
+
 ## 要做的事
 1. **合成整包夹具**(用各 WP 的 builder 组合):
    - `unity_il2cpp_plain.ipa`:Unity IL2CPP,metadata 正常,bundle 标准,Mach-O 明文,`UnityFramework` + 假 dumper 可跑;
