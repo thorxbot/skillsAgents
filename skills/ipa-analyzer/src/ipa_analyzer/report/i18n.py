@@ -7,6 +7,10 @@ Two kinds of keys (CONTRACT-FREEZE section 1): Finding IDs map to ``{"title", "s
 Lookup order for a Finding: catalog[lang] -> catalog["en"] -> the English fallback text carried by the
 Finding itself. Templates use ``str.format`` syntax with ``Finding.params`` (attribute / index access
 is refused, so a template can never reach into objects).
+
+A Finding entry may carry verdict specific variants next to the plain fields (``"summary@unknown"``,
+``"title@n/a"``, ...): they win over the plain field for Findings with that verdict. This is for IDs whose
+verdicts need different wording / parameters (e.g. ``engine.primary`` confirmed vs. not confirmed).
 """
 from __future__ import annotations
 
@@ -146,11 +150,15 @@ class Catalog:
         entry_en = self._entry(FALLBACK_LANG, fid)
         out: Dict[str, str] = {}
         localized = True
+        verdict = str(finding.get("verdict") or "")
         for fld in FINDING_FIELDS:
             tmpl: Optional[str] = None
             for entry in (entry_lang, entry_en):
-                if entry and isinstance(entry.get(fld), str) and entry.get(fld):
-                    tmpl = entry[fld]
+                for key in ((fld + "@" + verdict, fld) if verdict else (fld,)):
+                    if entry and isinstance(entry.get(key), str) and entry.get(key):
+                        tmpl = entry[key]
+                        break
+                if tmpl is not None:
                     break
             if tmpl is None:
                 tmpl = str(finding.get(fld) or "")

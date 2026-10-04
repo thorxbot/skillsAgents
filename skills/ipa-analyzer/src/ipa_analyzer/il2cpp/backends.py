@@ -246,7 +246,8 @@ class Il2CppDumperBackend(_ExternalBackend):
         extra = req.extra.get("dumper_config") if isinstance(req.extra, dict) else None
         if isinstance(extra, dict):
             cfg.update(extra)
-        path.write_text(json.dumps(cfg, indent=2), encoding="utf-8", newline="\n")
+        with open(str(path), "w", encoding="utf-8", newline="\n") as fh:      # Path.write_text(newline=) needs Python 3.10
+            fh.write(json.dumps(cfg, indent=2))
 
     def _finish(self, req: Il2CppRunRequest, prov: ProvisionResult, sup: SupervisedResult, out_stage: Path,
                 log_path: Path, warnings: List[str], dur: float) -> Il2CppRunResult:

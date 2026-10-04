@@ -82,6 +82,19 @@ def test_finding_text_fallback_chain_and_warning(tmp_path):
     assert len(warns) == 1 and "a.c" in warns[0] and "z.z" in warns[0] and "'zh'" in warns[0]
 
 
+def test_verdict_specific_variants_win_over_the_plain_fields(tmp_path):
+    _write(tmp_path, "zh", "x", {"a.b": {"title": "确认 {n}", "summary": "已确认 {n}", "summary@unknown": "未确认,最近 {best}",
+                                         "title@n/a": "不适用"}})
+    cat = load_catalog("zh", data_dir=tmp_path)
+    base = {"id": "a.b", "title": "t", "summary": "s"}
+    yes = cat.finding_text(dict(base, verdict="yes", params={"n": 2}))
+    assert (yes.title, yes.summary) == ("确认 2", "已确认 2")
+    unk = cat.finding_text(dict(base, verdict="unknown", params={"best": "X"}))
+    assert (unk.title, unk.summary) == ("确认 {n}", "未确认,最近 X")        # only the fields that have a variant change
+    assert cat.finding_text(dict(base, verdict="n/a")).title == "不适用"
+    assert cat.finding_text(dict(base)).summary == "已确认 {n}"             # no verdict -> plain field
+
+
 def test_english_catalog_never_warns_about_missing_findings(tmp_path):
     _write(tmp_path, "en", "x", {"x.y": "z"})
     cat = load_catalog("en", data_dir=tmp_path)

@@ -267,6 +267,9 @@ def _guard(chunks: Iterator[bytes], holder: Dict[str, str]) -> Iterator[bytes]:
     except unityfs.UnityFSError as exc:
         holder["kind"] = exc.kind
         holder["detail"] = str(exc)[:200]
+    except OSError as exc:                 # a damaged archive entry (ingest.CorruptEntry) or an I/O error mid-stream
+        holder["kind"] = "io_error"
+        holder["detail"] = str(exc)[:200]
 
 
 def _scan_stream(path: str, kind: str, chunks: Iterator[bytes], read_range: Callable[[int, int], bytes],
@@ -321,6 +324,8 @@ def _scan_stream(path: str, kind: str, chunks: Iterator[bytes], read_range: Call
             cs.status = "limit" if res.bytes_scanned == 0 else "partial"
         elif k == "block_decompress_failed":
             cs.status = "block_decompress_failed"
+        elif k == "io_error":
+            cs.status = "partial" if res.bytes_scanned else "io_error"
         else:
             cs.status = "blocks_info_error"
     return cs

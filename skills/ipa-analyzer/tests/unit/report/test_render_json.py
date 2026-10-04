@@ -121,5 +121,6 @@ def test_golden_report_json(name, tmp_path, capsys):
     got = _normalise(json.loads((ctx.out_dir / "report.json").read_text(encoding="utf-8")))
     golden = GOLDEN / (name + ".report.json")
     if os.environ.get("IPA_UPDATE_GOLDEN") == "1" or not golden.exists():
-        golden.write_text(json.dumps(got, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        with open(str(golden), "w", encoding="utf-8", newline="\n") as fh:
+            fh.write(json.dumps(got, ensure_ascii=False, indent=2) + "\n")
     assert got == json.loads(golden.read_text(encoding="utf-8"))

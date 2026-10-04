@@ -602,9 +602,10 @@ def run_il2cpp_dump(req: Il2CppRunRequest, tools: Any, cfg: Config) -> Il2CppRun
 def _write_marker(out_dir: Path, key: str, res: Il2CppRunResult) -> None:
     try:
         out_dir.mkdir(parents=True, exist_ok=True)
-        (out_dir / CACHE_MARKER).write_text(json.dumps({
-            "key": key, "backend": res.backend, "backend_version": res.backend_version,
-            "artifacts": res.artifacts, "created": int(time.time())}, indent=1), encoding="utf-8", newline="\n")
+        payload = json.dumps({"key": key, "backend": res.backend, "backend_version": res.backend_version,
+                              "artifacts": res.artifacts, "created": int(time.time())}, indent=1)
+        with open(str(out_dir / CACHE_MARKER), "w", encoding="utf-8", newline="\n") as fh:   # write_text(newline=): 3.10+
+            fh.write(payload)
     except OSError as exc:
         log.warning("could not write the IL2CPP cache marker: %s", exc)
 

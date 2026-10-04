@@ -26,6 +26,15 @@ class UnsafePath(InvalidInput):
     """An archive entry name would escape the output directory (zip-slip, absolute path, ...)."""
 
 
+class CorruptEntry(InvalidInput, OSError):
+    """One archive entry cannot be read (corrupt / truncated data, wrong size or CRC, encrypted, unsupported method).
+
+    It is an ``OSError`` as well, so the ``except (KeyError, OSError)`` guards that stages put around optional reads
+    (``Info.plist``, a framework's version, a sample of a file ...) skip a damaged entry instead of failing the whole
+    stage; code that does not guard still sees an ``InvalidInput``.
+    """
+
+
 class RegistryError(IpaAnalyzerError):
     """Invalid stage registration (duplicate name, unknown dependency, ...)."""
 

@@ -23,7 +23,7 @@ import zlib
 from pathlib import Path
 from typing import BinaryIO, Dict, List, Optional, Tuple
 
-from ..errors import InvalidInput, LimitExceeded
+from ..errors import CorruptEntry, InvalidInput, LimitExceeded
 from ..util.magic import sniff
 from ..util.paths import to_long_path
 from . import EntryInfo
@@ -137,18 +137,18 @@ class _DeflateReader(io.RawIOBase):
                 self._fh.seek(self._start + self._cpos)
                 data = self._fh.read(min(_CHUNK, self._csize - self._cpos))
                 if not data:
-                    raise InvalidInput("truncated archive: entry data of %r ends early" % self._name)
+                    raise CorruptEntry("truncated archive: entry data of %r ends early" % self._name)
                 self._cpos += len(data)
             else:
-                raise InvalidInput("truncated or corrupt deflate stream in entry %r" % self._name)
+                raise CorruptEntry("truncated or corrupt deflate stream in entry %r" % self._name)
             try:
                 out = d.decompress(data, _CHUNK)
             except zlib.error as exc:
-                raise InvalidInput("corrupt deflate data in entry %r (%s)" % (self._name, exc)) from exc
+                raise CorruptEntry("corrupt deflate data in entry %r (%s)" % (self._name, exc)) from exc
             if out:
                 self._produced += len(out)
                 if self._produced > self._usize:
-                    raise InvalidInput("entry %r expands beyond its declared size %d (corrupt archive or "
+                    raise CorruptEntry("entry %r expands beyond its declared size %d (corrupt archive or "
                                        "decompression bomb)" % (self._name, self._usize))
                 return out
 
@@ -165,7 +165,7 @@ class _DeflateReader(io.RawIOBase):
                 chunk = self._next_chunk()
                 if chunk is None:
                     if self._produced < self._usize:
-                        raise InvalidInput("entry %r is shorter than its declared size (%d < %d)"
+                        raise CorruptEntry("entry %r is shorter than its declared size (%d < %d)"
                                            % (self._name, self._produced, self._usize))
                     break
                 self._pending = chunk
@@ -187,7 +187,7 @@ class _DeflateReader(io.RawIOBase):
                 break
             target.write(chunk)
         if self._produced < self._usize:
-            raise InvalidInput("entry %r is shorter than its declared size" % self._name)
+            raise CorruptEntry("entry %r is shorter than its declared size" % self._name)
         target.seek(0)
         self._mat = target
         try:
@@ -443,23 +443,23 @@ class ZipSource:
         if info.is_dir or info.size == 0:
             return _StoredReader(io.BytesIO(b""), 0, 0)
         if ent.bad:
-            raise InvalidInput("corrupt archive entry %r: %s" % (name, ent.bad))
+            raise CorruptEntry("corrupt archive entry %r: %s" % (name, ent.bad))
         if ent.flags & _FLAG_ENCRYPTED:
-            raise InvalidInput("entry %r is password-protected" % name)
+            raise CorruptEntry("entry %r is password-protected" % name)
         if ent.method not in (_STORED, _DEFLATED):
-            raise InvalidInput("entry %r uses unsupported compression method %d" % (name, ent.method))
+            raise CorruptEntry("entry %r uses unsupported compression method %d" % (name, ent.method))
         fh = open(to_long_path(self.path), "rb")
         try:
             if ent.data_off is None:
                 fh.seek(ent.hoff)
                 raw = fh.read(_LH.size)
                 if len(raw) != _LH.size or raw[:4] != _SIG_LH:
-                    raise InvalidInput("corrupt or truncated archive: bad local header for %r" % name)
+                    raise CorruptEntry("corrupt or truncated archive: bad local header for %r" % name)
                 nlen, elen = struct.unpack_from("<HH", raw, 26)
                 ent.data_off = ent.hoff + _LH.size + nlen + elen
             need = info.size if ent.method == _STORED else info.compressed_size
             if ent.data_off + need > self._fsize:
-                raise InvalidInput("truncated archive: data of %r extends beyond the end of the file" % name)
+                raise CorruptEntry("truncated archive: data of %r extends beyond the end of the file" % name)
             if ent.method == _STORED:
                 rd: io.RawIOBase = _StoredReader(fh, ent.data_off, info.size)
             else:
@@ -468,7 +468,7 @@ class ZipSource:
                                     spill_limit=self._spill_limit)
         except (ValueError, OverflowError) as exc:     # e.g. a seek offset beyond the OS limit
             fh.close()
-            raise InvalidInput("corrupt archive entry %r: %s" % (name, exc)) from exc
+            raise CorruptEntry("corrupt archive entry %r: %s" % (name, exc)) from exc
         except BaseException:
             fh.close()
             raise
@@ -524,7 +524,7 @@ class ZipSource:
                     total += r
                     out.write(view)
             if total != ent.info.size or (crc & 0xFFFFFFFF) != ent.info.crc:
-                raise InvalidInput("entry %r failed verification (size %d/%d, crc %08x/%08x): corrupt or "
+                raise CorruptEntry("entry %r failed verification (size %d/%d, crc %08x/%08x): corrupt or "
                                    "truncated archive" % (name, total, ent.info.size, crc & 0xFFFFFFFF, ent.info.crc))
         except BaseException:
             try:

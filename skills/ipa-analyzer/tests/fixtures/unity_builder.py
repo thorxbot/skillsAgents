@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import random
 import struct
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 from fixtures.formats_builder import build_pe_cli, build_unityfs, build_unityfs_ex
 from fixtures.macho_builder import build_macho
@@ -35,8 +35,9 @@ _FRAMEWORK_NAMES = (
 )
 
 
-def _identifier_table(count: int, rng: random.Random, obfuscated: bool = False) -> bytes:
-    parts: List[bytes] = list(_FRAMEWORK_NAMES)
+def _identifier_table(count: int, rng: random.Random, obfuscated: bool = False,
+                      extra: Sequence[str] = ()) -> bytes:
+    parts: List[bytes] = list(_FRAMEWORK_NAMES) + [e.encode("utf-8") for e in extra]
     for i in range(count):
         if obfuscated:
             parts.append(bytes(rng.choice(b"abcdefghij") for _ in range(rng.choice((1, 2)))))
@@ -54,8 +55,12 @@ def _filler(n: int, rng: random.Random) -> bytes:
 
 
 def build_metadata(version: int = 31, variant: str = "normal", *, names: int = 600, seed: int = 11,
-                   obfuscated: bool = False, xor_key: int = 0x5A) -> bytes:
-    """A synthetic ``global-metadata.dat`` with a real section table, readable string table and filler data."""
+                   obfuscated: bool = False, xor_key: int = 0x5A, extra_identifiers: Sequence[str] = ()) -> bytes:
+    """A synthetic ``global-metadata.dat`` with a real section table, readable string table and filler data.
+
+    ``extra_identifiers`` are appended to the identifier pool (e.g. ``["HybridCLR", "XLua"]``) without disturbing
+    the random generator, so the default output is byte-identical to before.
+    """
     if variant not in METADATA_VARIANTS:
         raise ValueError(variant)
     if variant == "empty":
@@ -63,7 +68,7 @@ def build_metadata(version: int = 31, variant: str = "normal", *, names: int = 6
     rng = random.Random(seed)
     entry, nsec, str_idx = LAYOUT[version]
     header_size = 8 + entry * nsec
-    strings = _identifier_table(names, rng, obfuscated)
+    strings = _identifier_table(names, rng, obfuscated, extra_identifiers)
     body = bytearray()
     sections = []
     pos = header_size

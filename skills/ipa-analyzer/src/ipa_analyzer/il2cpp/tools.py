@@ -535,6 +535,7 @@ class ToolManager:
     def from_path(self, spec: ToolSpec, p: Path, source: str) -> ResolvedTool:
         """Interpret a user supplied path (file or directory) as a launchable tool."""
         err = ResolvedTool(False, spec.name, source=source, error_code=Il2CppErrorCode.E_TOOL_DOWNLOAD_FAILED)
+        p = Path(os.path.abspath(os.path.expanduser(str(p))))   # the dumper runs in another cwd: a relative path would break
         if not p.exists():
             err.message = "tool path does not exist: %s" % p
             return err
@@ -679,7 +680,8 @@ class ToolManager:
             marker = {"name": spec.name, "version": spec.version, "asset_id": aid, "filename": asset.get("filename"),
                       "url": asset.get("url"), "sha256": sha, "installed_at": int(time.time()),
                       "warnings": warnings}
-            (staging / INSTALL_MARKER).write_text(json.dumps(marker, indent=1), encoding="utf-8", newline="\n")
+            with open(str(staging / INSTALL_MARKER), "w", encoding="utf-8", newline="\n") as fh:   # no write_text(newline=) before 3.10
+                fh.write(json.dumps(marker, indent=1))
             target.parent.mkdir(parents=True, exist_ok=True)
             if target.exists():
                 shutil.rmtree(target, ignore_errors=True)

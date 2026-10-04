@@ -3,10 +3,18 @@ name: ci
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  # ---------------------------------------------------------------------------------------------
+  # Main matrix: 3 OS x 3 Python versions. Unit + end-to-end tests on synthetic fixtures (no network, no real apps).
+  # ---------------------------------------------------------------------------------------------
   test:
-    name: ${{ matrix.os }} / py${{ matrix.python }}
+    name: test / ${{ matrix.os }} / py${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -15,17 +23,166 @@ jobs:
         python: ["3.9", "3.12", "3.13"]
     defaults:
       run:
+        shell: bash
         working-directory: skills/ipa-analyzer
+    env:
+      PYTHONUTF8: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: Install
-        run: python -m pip install -e .[dev]
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
       - name: Import without warnings
         run: python -W error -c "import ipa_analyzer, ipa_analyzer.cli"
-      - name: Smoke (no install entry point)
+      - name: Smoke (no-install entry point)
         run: python scripts/ipa_analyze.py --help
+      - name: Doctor (offline)
+        run: python scripts/ipa_analyze.py doctor --offline
+      - name: DoD 1 - analyze a synthetic IPA with the no-install entry point
+        run: |
+          python tests/fixtures/build_fixtures.py fixtures-out unity_il2cpp_plain custom_engine
+          python scripts/ipa_analyze.py analyze fixtures-out/unity_il2cpp_plain.ipa -o out --offline
+          python scripts/ipa_analyze.py analyze fixtures-out/custom_engine.ipa -o out --offline --lang en
+          python -c "import glob,json,sys; r=[json.load(open(p,encoding='utf-8')) for p in glob.glob('out/*/report.json')]; assert len(r)==2 and all(x['schema_version']=='1.0' for x in r); assert len(glob.glob('out/*/report.md'))==2"
+      - name: Same through the installed console script
+        run: ipa-analyze analyze fixtures-out/custom_engine.ipa -o out2 --offline
       - name: Tests
-        run: python -m pytest -q
+        run: python -m pytest -q -ra
+      - name: Slow tests (one leg only)
+        if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12'
+        run: python -m pytest -q -ra --runslow tests/integration/test_perf_slow.py tests/integration/test_robustness.py
+      - name: Show a failing run's reports
+        if: failure()
+        run: ls -R out 2>/dev/null | head -50 || true
+
+  # ---------------------------------------------------------------------------------------------
+  # DoD 6: no .NET and no network. The runner image is stripped of .NET first; the test additionally asserts
+  # that it is really gone (IPA_EXPECT_NO_DOTNET=1) so the job cannot silently test the wrong thing.
+  # ---------------------------------------------------------------------------------------------
+  no-dotnet-no-network:
+    name: no-dotnet-no-network (ubuntu, offline)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/ipa-analyzer
+    env:
+      IPA_EXPECT_NO_DOTNET: "1"
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Remove .NET from the runner
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/lib/dotnet /usr/local/share/dotnet "$HOME/.dotnet" /usr/bin/dotnet /usr/local/bin/dotnet || true
+          echo "DOTNET_ROOT=" >> "$GITHUB_ENV"
+          if command -v dotnet >/dev/null 2>&1; then echo "dotnet still on PATH"; exit 1; fi
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: doctor --offline (no dotnet) and analysis with a missing tool
+        run: |
+          python scripts/ipa_analyze.py doctor --offline
+          python tests/fixtures/build_fixtures.py fixtures-out unity_il2cpp_plain
+          python scripts/ipa_analyze.py analyze fixtures-out/unity_il2cpp_plain.ipa -o out --offline
+          python - <<'PY'
+          import glob, json
+          r = json.load(open(glob.glob("out/*/report.json")[0], encoding="utf-8"))
+          dump = r["engine_details"]["unity"]["dump"]
+          assert dump["ok"] is False and dump["error_code"] in ("E_TOOL_DOWNLOAD_FAILED", "E_DOTNET_MISSING"), dump
+          assert dump["remediation"], "the failure must come with advice"
+          st = {s["name"]: s["status"] for s in r["stages"]}
+          assert st["engine.unity"] == "partial" and st["report"] == "ok" and "failed" not in st.values(), st
+          PY
+      - name: Offline / no-dotnet tests
+        run: python -m pytest -q -ra tests/integration/test_no_dotnet_offline.py
+      - name: Whole suite still green without .NET
+        run: python -m pytest -q -ra
+
+  # ---------------------------------------------------------------------------------------------
+  # Packaging: a non-editable wheel install in a clean virtualenv works from any directory (data / schemas /
+  # references are bundled) and has no dependencies.
+  # ---------------------------------------------------------------------------------------------
+  wheel-install:
+    name: wheel install (clean venv) / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Build and install into a fresh venv
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/venv"
+          if [ -d "$RUNNER_TEMP/venv/Scripts" ]; then BIN="$RUNNER_TEMP/venv/Scripts"; else BIN="$RUNNER_TEMP/venv/bin"; fi
+          "$BIN/python" -m pip install --upgrade pip
+          "$BIN/python" -m pip install ./skills/ipa-analyzer
+          "$BIN/python" -m pip list --format=freeze | tee "$RUNNER_TEMP/freeze.txt"
+          test "$(grep -vc -E '^(ipa-analyzer|pip|setuptools|wheel)==' "$RUNNER_TEMP/freeze.txt")" = "0"
+          echo "BIN=$BIN" >> "$GITHUB_ENV"
+      - name: Run from another directory
+        shell: bash
+        working-directory: ${{ runner.temp }}
+        run: |
+          python "$GITHUB_WORKSPACE/skills/ipa-analyzer/tests/fixtures/build_fixtures.py" fx custom_engine
+          "$BIN/ipa-analyze" doctor --offline
+          "$BIN/ipa-analyze" analyze fx/custom_engine.ipa -o out --offline
+          "$BIN/python" -c "from ipa_analyzer.util.paths import resource_dir; [print(n, resource_dir(n)) for n in ('data','schemas','references')]"
+          test -f out/*/report.json && test -f out/*/report.md
+
+  # ---------------------------------------------------------------------------------------------
+  # Optional (manual / scheduled, allowed to fail): real .NET + the real Il2CppDumper download.
+  # Needs the network; opt in with workflow_dispatch or by adding the label/branch you prefer.
+  # ---------------------------------------------------------------------------------------------
+  with-dotnet:
+    name: with-dotnet (network, optional)
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: skills/ipa-analyzer
+    env:
+      IPA_TEST_NETWORK: "1"
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: Network tests (downloads are SHA256-verified by the tool)
+        run: python -m pytest -q -ra -m network
+      - name: Fetch the real Il2CppDumper and smoke-run it
+        run: |
+          python scripts/ipa_analyze.py doctor
+          python scripts/ipa_analyze.py tools install il2cppdumper
+          python scripts/ipa_analyze.py tools list
+          python scripts/ipa_analyze.py tools path il2cppdumper
+          python tests/fixtures/build_fixtures.py fixtures-out unity_il2cpp_plain
+          python scripts/ipa_analyze.py analyze fixtures-out/unity_il2cpp_plain.ipa -o out
+          python - <<'PY'
+          import glob, json
+          r = json.load(open(glob.glob("out/*/report.json")[0], encoding="utf-8"))
+          dump = r["engine_details"]["unity"]["dump"]
+          # the synthetic metadata is not a real one: the *real* dumper must have been found, started and have failed on it
+          assert dump["ran"] and dump["backend"] == "il2cppdumper" and dump["backend_version"], dump
+          assert dump["error_code"] not in ("E_TOOL_DOWNLOAD_FAILED", "E_DOTNET_MISSING"), dump
+          PY

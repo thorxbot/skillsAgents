@@ -283,11 +283,17 @@ def test_supervisor_answers_answerable_prompts():
     assert r.returncode == 0 and r.answered == 1 and "got yes" in r.all_lines()
 
 
-def test_supervisor_merges_stderr_and_keeps_tail_bounded():
+def test_supervisor_merges_stderr_and_keeps_tail_bounded(tmp_path):
+    # stdout and stderr are separate pipes read by separate threads, so the *position* of the stderr line in
+    # the merged stream is scheduler-dependent (it can land between ``head`` and ``tail``). Only order-free
+    # facts are asserted: nothing is dropped (``lines_total`` and the complete log) and ``tail`` stays bounded.
     code = "import sys\nfor i in range(1000): print('line', i)\nprint('E', file=sys.stderr)"
-    r = run_supervised(_py(code), cwd=None, env=None, timeout_s=20, tail_n=50)
+    log = tmp_path / "run.log"
+    r = run_supervised(_py(code), cwd=None, env=None, timeout_s=20, tail_n=50, log_path=log)
     assert r.returncode == 0 and r.lines_total == 1001 and len(r.tail) == 50
-    assert "E" in r.tail or "E" in r.head
+    log_lines = log.read_text(encoding="utf-8").splitlines()
+    assert len(log_lines) == 1001
+    assert log_lines.count("[err] E") == 1 and sum(1 for ln in log_lines if ln.startswith("[out] line ")) == 1000
 
 
 def test_supervisor_start_error():

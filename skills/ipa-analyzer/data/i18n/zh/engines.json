@@ -12,7 +12,9 @@
   "engine.primary": {
     "title": "主引擎:{name}",
     "summary": "{name}({family})已确认,命中 {signals} 个信号,置信度 {confidence}。{version}",
-    "remediation": "主程序已被 FairPlay 加密,基于二进制的特征缺失,结论主要来自文件 / 目录 / 链接库;提供已解密 IPA 可提高准确度。"
+    "remediation": "主程序已被 FairPlay 加密,基于二进制的特征缺失,结论主要来自文件 / 目录 / 链接库;提供已解密 IPA 可提高准确度。",
+    "title@unknown": "主引擎:未确认",
+    "summary@unknown": "没有已知引擎达到确认阈值;最接近的候选:{best}({best_confidence})。"
   },
   "engine.language": {
     "title": "实现语言",
@@ -25,7 +27,8 @@
   },
   "engine.wrapper": {
     "title": "宿主 / 嵌入引擎",
-    "summary": "宿主:{host};嵌入:{embedded}"
+    "summary": "宿主:{host};嵌入:{embedded}",
+    "summary@n/a": "未发现宿主 / 嵌入引擎的组合结构。"
   },
   "engines.next.container": "优先检查 {path}({verdict}):自定义容器,{where}。",
   "engines.next.header_cluster": "有 {count} 个文件共享自定义文件头 {header}:各读一个小文件和一个大文件,确认文件头之后的字节是否为标准格式(见载荷证据)。",

@@ -12,7 +12,9 @@
   "engine.primary": {
     "title": "Primary engine: {name}",
     "summary": "{name} ({family}) confirmed with {signals} matching signal(s), confidence {confidence}. {version}",
-    "remediation": "The main binary is FairPlay-encrypted: binary-based traits are missing and the verdict relies on files, directories and linked libraries. A decrypted IPA improves accuracy."
+    "remediation": "The main binary is FairPlay-encrypted: binary-based traits are missing and the verdict relies on files, directories and linked libraries. A decrypted IPA improves accuracy.",
+    "title@unknown": "Primary engine: not confirmed",
+    "summary@unknown": "No known engine reached its confirmation threshold; best candidate: {best} ({best_confidence})."
   },
   "engine.language": {
     "title": "Implementation languages",
@@ -25,7 +27,8 @@
   },
   "engine.wrapper": {
     "title": "Host / embedded engines",
-    "summary": "Host: {host}; embedded: {embedded}"
+    "summary": "Host: {host}; embedded: {embedded}",
+    "summary@n/a": "No host / embedded engine structure found."
   },
   "engines.next.container": "Inspect {path} first ({verdict}): custom container, {where}.",
   "engines.next.header_cluster": "{count} files share the custom header {header}: read one small and one large sample and check whether the bytes after the header are a standard format (see the payload evidence).",

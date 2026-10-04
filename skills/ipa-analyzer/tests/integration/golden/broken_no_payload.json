@@ -1,0 +1,24 @@
+{
+"classification": ["unknown", null],
+"exit_code": 2,
+"findings": [
+  ["classify.category", "unknown", 0.2, ["classify"]]
+],
+"libraries": [],
+"stages": [
+  ["ingest", "failed", "InvalidInput"],
+  ["inventory", "skipped", "dependency ingest failed"],
+  ["macho", "skipped", "dependency inventory skipped"],
+  ["meta", "skipped", "dependency ingest failed"],
+  ["engine.fingerprint", "skipped", "dependency inventory skipped"],
+  ["engine.detect", "skipped", "dependency inventory skipped"],
+  ["engine.other", "skipped", "dependency engine.detect skipped"],
+  ["engine.unity", "skipped", "dependency engine.detect skipped"],
+  ["engine.unity.hotfix", "skipped", "dependency engine.unity skipped"],
+  ["libs", "skipped", "dependency inventory skipped"],
+  ["classify", "partial", "missing upstream data: meta, engine.detect, engine.fingerprint, libs"],
+  ["protect", "skipped", "dependency inventory skipped"],
+  ["report", "ok", ""]
+],
+"warnings": []
+}
