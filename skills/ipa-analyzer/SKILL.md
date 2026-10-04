@@ -6,7 +6,7 @@ description: Analyze iOS IPA / .app files - 分析 ipa、ipa 结构、ipa 报告
 # ipa-analyzer
 
 Static, read-only analysis of an IPA. Output: `report.md` (Chinese by default) + `report.json` in `<out>/<name>-<sha12>/`.
-It never executes anything from the IPA and never decrypts anything.
+It never executes anything from the IPA and never defeats FairPlay or any platform DRM. The one exception to "no decryption" is optional, operator-enabled Cocos XXTEA script decryption (`--cocos-decrypt`, off by default) for apps you own or are authorised to assess; see `references/cocos-family.md`.
 
 Below, `IA` means `python3 <SKILL_DIR>/scripts/ipa_analyze.py` (`<SKILL_DIR>` = the folder holding this file; Windows: `python` or `py -3`).
 If `ipa-analyze` is on PATH it is the same program. Python >= 3.9, no other packages needed.
@@ -64,7 +64,7 @@ Other dump errors (`E_METADATA_ENCRYPTED`, `E_METADATA_VERSION_UNSUPPORTED`, `E_
     encryption is suspected. Report the evidence, state it is unconfirmed, do not claim a vendor scheme. See `references/unity-assetbundle.md`.
   - `high_entropy_unknown` / `xor_simple` / `offset_prefix`: whole-file encryption, XOR or a prefix; counts and sample paths are in the report.
   - Hot-update scripts: Lua version profile, bytecode vs plain, "mismatch" notes, `custom_lua_suspected` (see `references/unity-hotfix.md`). Bytecode is `no`, tampered/XOR/random is `suspected`.
-  - The tool only reports. Never decrypt, extract keys or recover scripts.
+  - For Unity hot-update the tool only reports (no key recovery). Cocos XXTEA is the one opt-in exception: `--cocos-decrypt` recovers the app's own key and writes plaintext to `<out>/decrypted/` — for apps you own or are authorised to assess (`references/cocos-family.md`).
 - **Unity metadata**: `unity.metadata.encrypted` suspected/yes blocks the dump (`E_METADATA_ENCRYPTED`); see `references/unity-il2cpp-metadata.md`.
 
 ## Privacy
@@ -77,6 +77,7 @@ IA analyze X.ipa -o out --offline                  # default run (md + json)
 IA analyze X.ipa -o out --offline --lang en        # English report
 IA analyze X.ipa -o out --offline --stages meta,libs   # only some stages (+ dependencies)
 IA analyze X.ipa -o out --offline --extract metadata,bundles   # also copy those files to out/.../split/
+IA analyze X.ipa -o out --offline --cocos-decrypt              # own/authorised app: recover XXTEA key, write out/.../decrypted/
 IA analyze X.ipa -o out --offline --il2cpp-tool /path/Il2CppDumper.dll   # use a tool you already have
 IA analyze X.ipa -o out --offline --no-il2cpp      # never dump
 IA tools list --offline | IA tools path il2cppdumper --offline

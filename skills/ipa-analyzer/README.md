@@ -2,7 +2,7 @@
 
 分析 iOS IPA(或 `.app` 目录)的 **Claude Code Skill + 跨平台 Python CLI**:给出结构化 `report.json` 与可读的 `report.md`,覆盖应用信息、项目结构、资源构成、第三方库用途、加密 / 保护判定、游戏引擎识别(含自研引擎指纹)、Unity 专项(IL2CPP / AssetBundle 加密、热更新、自动 Il2CppDumper)、隐私与权限。
 
-- 纯静态、只读:**不执行** IPA 里的任何内容;不解密、不脱壳、不绕过任何保护(FairPlay 只检测、只报告)。
+- 纯静态、只读:**不执行** IPA 里的任何内容;不脱壳、不绕过平台 DRM(FairPlay 只检测、只报告)。唯一的例外是**可选、需显式开启**的 Cocos XXTEA 脚本解密(`--cocos-decrypt`,默认关闭),仅用于你拥有或已获授权评估的应用,见 `references/cocos-family.md`。
 - 零第三方依赖:Python >= 3.9 标准库即可,macOS / Linux / Windows 通用,不依赖 `otool` / `lipo` / `codesign` / `unzip`。
 - 每个结论都带 `verdict`(`yes / no / suspected / unknown / n/a`)+ 置信度 + 证据;没把握就报 `suspected` / `unknown`,不会报 `no`。
 - 某个阶段失败或被跳过不会拖垮整体,报告里会写明原因(附录 10.1)。
@@ -64,12 +64,13 @@ ipa-analyze analyze app.ipa -o out          # 默认输出 md + json
 ipa-analyze analyze app.ipa -o out --offline            # 完全不联网
 ipa-analyze analyze app.ipa -o out --lang en --format md,json,html
 ipa-analyze analyze app.ipa -o out --extract metadata,bundles   # 同时把这些文件提取到 out/.../split/
+ipa-analyze analyze app.ipa -o out --cocos-decrypt              # 自有/授权应用:恢复 XXTEA 密钥并解密脚本到 out/.../decrypted/
 ipa-analyze analyze app.ipa -o out --stages meta,libs   # 只跑部分阶段(自动带上硬依赖)
 ipa-analyze analyze app.ipa -o out --il2cpp-tool /path/Il2CppDumper.dll --dotnet /path/dotnet
 ipa-analyze tools list | install il2cppdumper | install dotnet --yes | path il2cppdumper
 ```
 
-输出在 `out/<名字>-<sha12>/`:`report.md`、`report.json`、`inventory.json`(完整文件表)、`il2cpp/`(dump 产物)、`split/`(`--extract`)。退出码:0 正常,1 用法错误,2 输入无效(仍尽力写报告),3 有阶段失败(报告已写),4 致命错误。
+输出在 `out/<名字>-<sha12>/`:`report.md`、`report.json`、`inventory.json`(完整文件表)、`il2cpp/`(dump 产物)、`split/`(`--extract`)、`decrypted/`(`--cocos-decrypt`,含 `manifest.json`)。退出码:0 正常,1 用法错误,2 输入无效(仍尽力写报告),3 有阶段失败(报告已写),4 致命错误。
 
 ### 示例(合成夹具的输出,非真实应用)
 

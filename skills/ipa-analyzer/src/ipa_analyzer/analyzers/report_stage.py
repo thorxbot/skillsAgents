@@ -26,7 +26,7 @@ NAME = 'report'
 INVENTORY_REL = "inventory.json"
 
 
-@register(name='report', after=('ingest', 'inventory', 'meta', 'macho', 'engine.fingerprint', 'engine.detect', 'engine.other', 'engine.unity', 'engine.unity.hotfix', 'libs', 'protect', 'classify'), always_run=True)
+@register(name='report', after=('ingest', 'inventory', 'meta', 'macho', 'engine.fingerprint', 'engine.detect', 'engine.other', 'cocos.decrypt', 'engine.unity', 'engine.unity.hotfix', 'libs', 'protect', 'classify'), always_run=True)
 class ReportStage:
     def run(self, ctx: AnalysisContext) -> StageResult:
         return _run(ctx)

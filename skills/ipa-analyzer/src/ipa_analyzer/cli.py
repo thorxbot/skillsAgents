@@ -67,6 +67,15 @@ def build_parser() -> argparse.ArgumentParser:
     a.add_argument("--libs-user", metavar="PATH", help="user library knowledge base (libs.user.json)")
     a.add_argument("--engines-user", metavar="DIR", help="directory with extra engine signature *.json files")
     a.add_argument("--no-signature-integrity", action="store_true", help="skip CodeResources hash verification")
+    a.add_argument("--cocos-decrypt", action="store_true",
+                   help="decrypt Cocos XXTEA Lua/.jsc scripts to <out>/decrypted/ (apps you own or are authorised "
+                        "to assess); recovers the key from the app binary unless --no-xxtea-key-scan")
+    a.add_argument("--xxtea-key", metavar="KEY", action="append", dest="xxtea_key",
+                   help="candidate XXTEA key for --cocos-decrypt (repeatable); tried before binary strings")
+    a.add_argument("--xxtea-sign", metavar="SIGN", default="XXTEA",
+                   help="Cocos Lua chunk sign prefix (default: XXTEA); use '' for none")
+    a.add_argument("--no-xxtea-key-scan", action="store_true",
+                   help="with --cocos-decrypt, do not harvest key candidates from the app binary")
     a.add_argument("--keep-workdir", action="store_true", help="keep the scratch directory after the run")
     a.add_argument("-v", "--verbose", action="count", default=0, help="-v info, -vv debug logging")
     a.set_defaults(func=cmd_analyze)
@@ -121,6 +130,10 @@ def config_from_args(args: argparse.Namespace) -> Config:
     cfg.libs_user_path = Path(args.libs_user) if args.libs_user else None
     cfg.engines_user_dir = Path(args.engines_user) if args.engines_user else None
     cfg.signature_integrity = not args.no_signature_integrity
+    cfg.cocos.enabled = args.cocos_decrypt
+    cfg.cocos.keys = tuple(args.xxtea_key) if args.xxtea_key else ()
+    cfg.cocos.sign = args.xxtea_sign
+    cfg.cocos.scan_binary_for_key = not args.no_xxtea_key_scan
     cfg.keep_workdir = args.keep_workdir
     cfg.verbose = args.verbose
     return cfg.validate()

@@ -16,7 +16,7 @@ from ipa_analyzer import cli, pipeline
 from ipa_analyzer.models import Status, StageResult
 
 STUB_NAMES = ["ingest", "inventory", "meta", "macho", "engine.fingerprint", "engine.detect", "engine.other",
-              "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify", "report"]
+              "cocos.decrypt", "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify", "report"]
 
 
 @pytest.fixture()
@@ -56,11 +56,11 @@ def test_analyze_minimal_ipa_produces_valid_report(min_ipa, tmp_path, check_repo
     assert "report:" in capsys.readouterr().out
 
 
-def test_all_13_stages_listed_in_dependency_order(min_ipa, tmp_path):
+def test_all_stages_listed_in_dependency_order(min_ipa, tmp_path):
     out = tmp_path / "out"
     cli.main(["analyze", str(min_ipa), "-o", str(out)])
     order = [s["name"] for s in _load(out)["stages"]]
-    assert len(order) == 13 and set(order) == set(STUB_NAMES) and order[0] == "ingest" and order[-1] == "report"
+    assert len(order) == len(STUB_NAMES) and set(order) == set(STUB_NAMES) and order[0] == "ingest" and order[-1] == "report"
     reg = pipeline.ensure_analyzers_loaded()
     pos = {n: i for i, n in enumerate(order)}
     for s in reg.specs():
@@ -161,7 +161,7 @@ def test_stages_and_skip_flags(min_ipa, tmp_path, check_report):
     report = _load(out)
     assert check_report(report) == [] and code == _expected_code(report)
     st = {s["name"]: s for s in report["stages"]}
-    assert len(st) == 13
+    assert len(st) == 14
     assert st["classify"]["status"] == "skipped" and st["classify"]["reason"] == "disabled by --skip"
     # not selected and not a hard dependency of "meta"
     for n in ("libs", "protect", "engine.unity", "engine.unity.hotfix", "engine.other", "engine.detect"):

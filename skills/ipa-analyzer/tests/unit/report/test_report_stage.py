@@ -35,7 +35,7 @@ def test_stage_registration_matches_contract():
     spec = ensure_analyzers_loaded().get("report")
     assert spec.always_run and not spec.requires
     assert set(spec.after) == {"ingest", "inventory", "meta", "macho", "engine.fingerprint", "engine.detect", "engine.other",
-                               "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify"}
+                               "cocos.decrypt", "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify"}
 
 
 @pytest.mark.parametrize("name", FIXTURE_NAMES)

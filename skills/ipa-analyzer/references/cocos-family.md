@@ -1,7 +1,9 @@
 # Cocos family: variants, layouts and protection (WP7b checker `cocos`)
 
 Grade: **V** = verified against source / a real sample in this project, **U** = UNVERIFIED (memory or single secondary source).
-Detection only: the checker never decrypts, never extracts keys.
+Detection only: the `cocos` checker never decrypts, never extracts keys. Decryption is a separate, opt-in capability —
+see [Decryption and key recovery](#decryption-and-key-recovery-opt-in-cocosdecrypt-stage) — gated behind
+`--cocos-decrypt` for apps you own or are authorised to assess.
 
 ## Variants and the markers used (`engines/checkers/cocos.py`, `data/engines_checks.json` section `cocos`)
 
@@ -38,3 +40,29 @@ scripts: plain `.lua`/`.js` -> `no`; Lua bytecode -> `no` ("compiled", bytecode 
 * Whether a `suspected` script is really XXTEA (vs another cipher / obfuscation) without the key.
 * Creator 2.x layout details (U) and `cocos2d_iphone` names (U).
 * Binary-based hints (xxtea symbols, `setXXTEAKey` strings, Lua runtime version) on FairPlay-encrypted binaries: C strings are ciphertext; only the symbol table is read, and release builds are usually stripped. The result says so (`xxtea_hint.binary.status`).
+
+## Decryption and key recovery (opt-in, `cocos.decrypt` stage)
+
+For apps you own or are authorised to assess. Off by default; enabled with `--cocos-decrypt`. Implemented by
+`analyzers/cocos_decrypt.py` + `crypto/xxtea.py` + `crypto/cocos.py`; the detection `cocos` checker is unchanged.
+
+Cocos ships the XXTEA key inside its own binary so it can decrypt its own scripts at run time, so "decryption" here
+is key *recovery* plus the standard xxtea-c transform, not breaking cryptography:
+
+* **Key recovery** (`crypto/cocos.recover_key`): try, in order, any `--xxtea-key` you pass, the template default
+  `XXTEA`, then every printable-ASCII run (4..32 bytes) harvested from the main binary. A candidate is accepted only
+  if it decrypts a sample to valid script (Lua bytecode magic `\x1bLua` / mostly-printable source for Lua; UTF-8 /
+  gzip-then-UTF-8 for `.jsc`). On a FairPlay-encrypted binary the key strings are ciphertext, so recovery usually
+  fails — pass `--xxtea-key` from an authorised source, or analyse a decrypted IPA.
+* **Lua** (`decrypt_lua`): require the sign prefix (`--xxtea-sign`, default `XXTEA`), then `xxtea_decrypt` the rest.
+* **Creator `.jsc`** (`decrypt_jsc`): `xxtea_decrypt` the whole file, then gunzip when the plaintext is gzip.
+* **XXTEA format** (`crypto/xxtea.py`): xxtea-c compatible — little-endian word packing, a trailing length word,
+  key zero-padded to 16 bytes, `DELTA=0x9E3779B9`, `rounds=6+52//n`. Verified byte-for-byte against the authoritative
+  `xxtea` reference library (pinned vectors in `tests/unit/crypto/test_xxtea.py`).
+
+Output: decrypted scripts under `<out>/decrypted/` (mirroring the in-app path) and `decrypted/manifest.json`
+(recovered key, per-file result). Not yet covered: `CCZp` / PVR textures (`setPvrEncryptionKey`, a 4×u32 key passed
+in code, not a string) and custom-wrapper resources — these still report as detection only.
+
+Flags: `--cocos-decrypt` (enable), `--xxtea-key KEY` (repeatable; tried first), `--xxtea-sign SIGN` (default `XXTEA`,
+`''` for none), `--no-xxtea-key-scan` (do not harvest candidates from the binary; use only `--xxtea-key`).

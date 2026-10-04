@@ -30,7 +30,7 @@ _HOST_ENV_VARS = ("IPA_ANALYZER_DATA_DIR", "IPA_ANALYZER_SCHEMAS_DIR", "IPA_ANAL
 CLI_TIMEOUT_S = 180
 # deterministic execution order (topological layers, alphabetical inside a layer; ``report`` always last)
 STAGE_ORDER = ["ingest", "inventory", "macho", "meta", "engine.fingerprint", "engine.detect", "engine.other",
-               "engine.unity", "engine.unity.hotfix", "libs", "classify", "protect", "report"]
+               "cocos.decrypt", "engine.unity", "engine.unity.hotfix", "libs", "classify", "protect", "report"]
 BROKEN = [n for n in FIXTURES if n.startswith("broken_")]
 GOOD = [n for n in FIXTURES if n not in BROKEN]
 

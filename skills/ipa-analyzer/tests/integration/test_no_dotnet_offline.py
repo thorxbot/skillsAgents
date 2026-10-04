@@ -24,7 +24,7 @@ def test_doctor_works_without_dotnet_and_network(runs, env):
     assert p.returncode == 0, p.stderr
     checks = {c["name"]: c for c in json.loads(p.stdout)["checks"]}
     assert checks["network"]["level"] == "skip" and "offline" in checks["network"]["detail"]
-    assert checks["stages"]["detail"].startswith("13")
+    assert checks["stages"]["detail"].startswith("14")
     assert checks["dotnet"]["level"] == "warn" and "not found" in checks["dotnet"]["detail"]
     human = run_cli_command(["doctor", "--offline"], runs.home, env=env)
     assert human.returncode == 0 and "[SKIP] network" in human.stdout
