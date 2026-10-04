@@ -49,3 +49,17 @@
 - 网络检索摘要(**UNVERIFIED,单一来源**):UnityCN 类私有引擎的加密 bundle 报告为"仅数据块加密,按 0x10020 分块,AES-256-GCM";用于交叉参考,不要写进规则。
 
 待用户补充(醒来后):`HtpDecryptor.cs` 的位置或内容(marker 字节、块结构)。有了才能把 Htp 变体升级为"确认",否则仅为 `suspected`。
+
+## 3. WP5 在两个 Unity 真实样本上的结果(2026-10-04)
+| | JiangNan | GoodCoffee |
+|---|---|---|
+| Unity 版本 | **2022.3.62f3c1**(`c1` 后缀可能是国内版,仅作提示;`unity default resources` 写 2022.3.54f1,判为 stale 冲突) | **6000.3.10f1**(12 个来源一致) |
+| il2cpp metadata | **v31**,头部自洽,字符串区可读,熵 4.69 ⇒ `no`(0.9) | **v39**,新布局自洽,熵 5.93 ⇒ `no`(0.9);Il2CppDumper 读不了,Cpp2IL/Redux 可以 |
+| 二进制 | cryptid=1 ⇒ dump 被拦截 `E_BINARY_FAIRPLAY` | 同左 |
+| AssetBundle | `Data/Raw/*.b` 共 32 个,**头部标准**(UnityFS v8,LZ4HC,BlocksInfo 可解),但 **32/32 的第一个 LZ4HC 数据块解压失败(bad_offset)** ⇒ `block_encrypted_suspected`(聚合 suspected 0.75)。块内 LZ4 字面量里 Unity 版本串被**零散改字节**;前 256 字节内反复出现 8 字节序列 `d8d333cd3bd8eca4`(891 个块中 139 个出现)——**疑似 Htp 风格 marker,未确认** | 2368 个候选,**2367 个无任何可识别头(`high_entropy_unknown`,前 16KB 熵 7.83–7.99)**,只有 `filelist.bundle` 是明文 ⇒ 聚合 `yes`(0.9):整文件加密/自定义容器;有 Addressables(`aa/catalog.bin`、`aa_remote/Release/iOS/v1.24.1/catalog_1.24.1.bin`) |
+
+**意义**
+- 这是 `formats.unityfs` 的**首次真实验证**:头部、格式版本 8、2022.1.1+ 的 padding-at-start 标志、LZ4HC BlocksInfo 解码均无不符。尚未在真实数据上验证:标准 bundle 成功路径(因为所有真实数据块都解压失败)、LZMA/none 块、`blocks_info_at_end`、UnityWeb/UnityRaw。
+- JiangNan 的现象与用户 AssetStudio 项目中的 Htp 描述(LZ4 块 + 前 256 字节内 marker + 解压前解密)**高度吻合**;但 marker 的真实字节与解密细节仍需 `HtpDecryptor.cs`(**待用户提供**)才能把判定从 `suspected` 升级为确认。
+- 对 WP5b:两个样本的 bundle 都无法解压,**热更新扫描只能降级为散文件 + metadata 字符串表扫描**,并在报告里说明"bundle 被加密,内容扫描受限"。
+- 两个样本都没有明文 Unity 二进制,`UNITY_VERSION_RE` 仍未在真实播放器二进制上验证(版本来自 SerializedFile 头)。
