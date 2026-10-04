@@ -1,6 +1,6 @@
 # R1 评审:Wave 1(WP1 / WP2 / WP3 / WP3b / WP6 / WP8)
 
-评审基线:`8f189f1`(main,评审开始时工作树干净,评审结束后 `git status` 仍干净)。依据:`_common.md`、`R-review.md`、`01/02`、`CONTRACT-FREEZE.md`(含 §13)、`05-REAL-SAMPLES-AND-HTP.md`。
+评审基线:`8f189f1`(main,评审开始时工作树干净,评审结束后 `git status` 仍干净)。依据:`_common.md`、`R-review.md`、`01/02`、`CONTRACT-FREEZE.md`(含 §13)、`05-
 评审方式:通读 ingest / util(magic, filetypes, paths, procs) / analyzers(ingest, inventory, meta, macho, report) / meta / macho / formats / il2cpp / report 源码;全量跑测试;4 个真实 IPA 只读端到端;14 个变异检查;针对性探测(手工构造 zip、正则、脱敏)。
 
 ## 0. 总览
@@ -55,7 +55,7 @@
   → 建议:在 `sniff` 里把 BOM 检查(`FF FE`、`FE FF`、`EF BB BF`)放到 `_mpeg_audio` 之前,或 `_mpeg_audio` 要求连续两个帧头。
 
 - **[Minor][WP1][data/filetypes.json + src/ipa_analyzer/util/filetypes.py:~95] magic 为 unknown 时按扩展名定类,会把"扩展名与内容不符"的自定义封装计入标准类别**
-  → 影响:某样本 5,400 个 `自定义 4 字节头` 头的文件里,4,654 个 `.json` 被计为 config、768 个 `.astc` + 26 个 `.png` 被计为 image(image 占体积 70%)、392 个 `.js` 计为 script,而 `magic` 都是 `unknown`。`05-REAL-SAMPLES` 已指出这是 `engine.custom` 的关键线索,但 inventory 里没有任何字段标出"ext 暗示格式 X 而内容不是 X"。报告第 5 章的占比因此偏乐观地"像是标准资源"。样本 上 `.ccz`(`CCZp`)按 magic 正确归 image,不受影响。
+  → 影响:某样本约 5,400 个带自定义头的文件里,4,654 个 `.json` 被计为 config、768 个 `.astc` + 26 个 `.png` 被计为 image(image 占体积 70%)、392 个 `.js` 计为 script,而 `magic` 都是 `unknown`。`05-,但 inventory 里没有任何字段标出"ext 暗示格式 X 而内容不是 X"。报告第 5 章的占比因此偏乐观地"像是标准资源"。样本 上 `.ccz`(`CCZp`)按 magic 正确归 image,不受影响。
   → 建议:在 `files[]`(或 `extra.ext_magic_mismatch`)里为"已知结构化扩展名(png/jpg/json/js/astc/ogg/mp3/…)但 magic=unknown 且头部不是文本"的文件加标记并汇总计数,供 WP7 与 WP8 使用;类别可保持按扩展名,但报告要显示"N 个文件头部与扩展名不符"。
 
 - **[Minor][WP1][src/ipa_analyzer/ingest/safe_extract.py:303] 提取用 `tempfile.mkstemp`/`is_file()` 等调用不带 `to_long_path`**
