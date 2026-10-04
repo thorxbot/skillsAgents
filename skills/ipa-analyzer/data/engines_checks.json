@@ -1,0 +1,311 @@
+{
+ "version": 1,
+ "description": "Thresholds, file patterns and string patterns for the engine checkers (WP7b). Every checker reads its own section merged over 'common'. Nothing here is a verdict: verdicts come from the checkers and always carry their evidence.",
+ "common": {
+  "vendor_regex": "(^|/)(Frameworks|PlugIns|Watch|SC_Info|_CodeSignature)/|\\.bundle/|\\.framework/|\\.lproj/|\\.storyboardc/",
+  "max_samples": 5,
+  "max_evidence": 8,
+  "head_bytes": 4096,
+  "min_bytes_for_entropy": 256,
+  "entropy_large_sample_bytes": 1024,
+  "entropy_high_min": 7.2,
+  "entropy_high_min_small": 6.6,
+  "encoded_text_min_bytes": 256,
+  "compress_min_confidence": 0.8,
+  "magic_min_confidence": 0.9,
+  "wrapper_cluster_min_files": 8,
+  "wrapper_probe_max_files": 2000,
+  "wrapper_probe_bytes": 1040,
+  "wrapper_payload_offsets": [
+   8,
+   12,
+   16,
+   20,
+   24,
+   32
+  ],
+  "structured_exts": [
+   ".json",
+   ".js",
+   ".png",
+   ".jpg",
+   ".jpeg",
+   ".astc",
+   ".ktx",
+   ".pvr",
+   ".lua",
+   ".plist",
+   ".xml",
+   ".txt",
+   ".atlas",
+   ".fnt",
+   ".mp3",
+   ".ogg",
+   ".caf",
+   ".wav",
+   ".bin",
+   ".csv"
+  ],
+  "binary_scan_max_mb": 700,
+  "binary_scan_max_strings": 3000000,
+  "binary_scan_max_symbols": 1000000,
+  "xxtea": {
+   "prefix_min_len": 2,
+   "prefix_max_len": 16,
+   "prefix_support_min": 0.9,
+   "min_files": 3,
+   "mod4_share_min": 0.9
+  },
+  "script_sample_max": 200,
+  "resource_sample_max": 200,
+  "version_scan_max_bytes": 8388608,
+  "lua_dialect_files": 30,
+  "lua_dialect_bytes": 32768
+ },
+ "cocos": {
+  "variant_min_score": 3,
+  "strong_resource_exts": [
+   ".csb",
+   ".exportjson",
+   ".ccbi"
+  ],
+  "lua_framework_markers": [
+   "(^|/)cocos/init\\.luac?$",
+   "(^|/)cocos/cocos2d/(Cocos2d|Cocos2dConstants|Opengl|OpenglConstants)\\.luac?$",
+   "(^|/)src/app/MyApp\\.luac?$"
+  ],
+  "iphone_dirs": [
+   "Published-iOS/",
+   "Published-Android/"
+  ],
+  "script_exts": [
+   ".lua",
+   ".luac",
+   ".js",
+   ".jsc"
+  ],
+  "lua_exts": [
+   ".lua",
+   ".luac"
+  ],
+  "ccz_head_max_files": 20000,
+  "plist_max_bytes": 524288,
+  "plist_sample_max": 40,
+  "resource_exts": [".json", ".png", ".jpg", ".jpeg", ".astc", ".pvr", ".ktx", ".plist", ".csb", ".exportjson", ".fnt", ".tmx", ".atlas", ".caf", ".mp3", ".ogg", ".wav", ".bin"],
+  "resource_count_exts": [
+   ".csb",
+   ".exportjson",
+   ".tmx",
+   ".fnt",
+   ".ccbi"
+  ],
+  "bundle_list_max": 50,
+  "bundle_config_max_bytes": 1048576,
+  "settings_json_max_bytes": 1048576,
+  "creator2_engine_js": [
+   "src/cocos2d-jsb.js",
+   "src/project.js"
+  ],
+  "engine_js_max_bytes": 8388608,
+  "binary_patterns": {
+   "xxtea_api": "xxtea_(?:de|en)crypt|xxtea_long|XXTEA",
+   "xxtea_key_setter": "setXXTEAKey(?:AndSign)?|jsb_set_xxtea_key",
+   "pvr_key": "setPvrEncryptionKey",
+   "cocos_cpp": "_ZN7cocos2d|cocos2d::",
+   "cocos2dx_version": "cocos2d-x-?\\s?\\d+\\.\\d+(?:\\.\\d+)?",
+   "blowfish": "BF_set_key|BF_cbc_encrypt|BF_ecb_encrypt|[Bb]lowfish"
+  }
+ },
+ "egret": {
+  "min_markers": 2,
+  "strong_markers": [
+   "(^|/)egret(\\.web)?(\\.min)?\\.js$",
+   "(^|/)resource/default\\.res\\.json$"
+  ],
+  "markers": [
+   "(^|/)resource/[^/]+\\.res\\.json$",
+   "(^|/)resource/[^/]+\\.thm\\.json$",
+   "\\.exml$",
+   "(^|/)libs/modules/egret/",
+   "(^|/)egret[A-Za-z0-9._-]*\\.js$"
+  ],
+  "data_exts": [
+   ".json",
+   ".exml",
+   ".png",
+   ".jpg",
+   ".jpeg",
+   ".mp3",
+   ".fnt",
+   ".txt"
+  ],
+  "version_files": [
+   "(^|/)egret(\\.web)?(\\.min)?\\.js$"
+  ],
+  "version_regexes": [
+   "engineVersion\\s*[=:]\\s*[\"']([0-9][0-9.]*)"
+  ]
+ },
+ "laya": {
+  "min_markers": 2,
+  "strong_markers": [
+   "(^|/)laya\\.core(\\.min)?\\.js$"
+  ],
+  "markers": [
+   "(^|/)laya[A-Za-z0-9._-]*\\.js$",
+   "\\.(lh|lmat|ls|lani|ltc|lav)$",
+   "(^|/)fileconfig\\.json$",
+   "(^|/)conch(/|$)",
+   "(^|/)libs/laya"
+  ],
+  "data_exts": [
+   ".atlas",
+   ".lh",
+   ".lmat",
+   ".ls",
+   ".lani",
+   ".ltc",
+   ".lav",
+   ".lm",
+   ".json",
+   ".png",
+   ".jpg",
+   ".mp3"
+  ],
+  "version_files": [
+   "(^|/)laya\\.core(\\.min)?\\.js$"
+  ],
+  "version_regexes": [
+   "Laya\\.version\\s*=\\s*[\"']([0-9][0-9A-Za-z.\\-]*)"
+  ]
+ },
+ "unreal": {
+  "applies_probe_max": 5,
+  "max_containers": 50,
+  "crypto_config_regex": "(^|/)(DefaultCrypto|Crypto)\\.(ini|json)$"
+ },
+ "godot": {
+  "max_packs": 20,
+  "max_entries": 5000
+ },
+ "flutter": {
+  "binary_patterns": {
+   "dart_snapshot": "kDart(?:Vm|Isolate)Snapshot(?:Data|Instructions)",
+   "dart_version": "Dart (\\d+\\.\\d+\\.\\d+)"
+  }
+ },
+ "react_native": {
+  "bundle_exts": [
+   ".jsbundle",
+   ".bundle"
+  ],
+  "default_bundles": [
+   "main.jsbundle",
+   "index.ios.jsbundle"
+  ],
+  "max_bundles": 20
+ },
+ "lua": {
+  "lua_exts": [
+   ".lua",
+   ".luac",
+   ".lub",
+   ".lc",
+   ".lu"
+  ],
+  "min_files": 1
+ },
+ "defold": {
+  "markers": [
+   "(^|/)game\\.arci$",
+   "(^|/)game\\.arcd$",
+   "(^|/)game\\.projectc$",
+   "(^|/)game\\.dmanifest$"
+  ],
+  "max_archives": 5,
+  "max_entries": 200000
+ },
+ "gamemaker": {
+  "data_file_regex": "(^|/)(game\\.(ios|droid|unx|win)|data\\.win)$",
+  "max_files": 5,
+  "max_chunks": 400
+ },
+ "solar2d_love": {
+  "markers_regex": "(^|/)resource\\.car$|\\.love$",
+  "max_love": 5,
+  "love_lua_sample": 20,
+  "car_scan_max_bytes": 67108864,
+  "car_max_hits": 5000
+ },
+ "xamarin": {
+  "key_assemblies": [
+   "(^|/)Xamarin\\.iOS\\.dll$",
+   "(^|/)Microsoft\\.iOS\\.dll$",
+   "(^|/)(mscorlib|System\\.Private\\.CoreLib)\\.dll$"
+  ],
+  "max_dlls": 100,
+  "max_read_bytes": 4194304,
+  "max_listed": 100
+ },
+ "web_hybrid": {
+  "detect_ids": [
+   "cordova_capacitor",
+   "web_hybrid",
+   "phaser_pixi_webview",
+   "construct_webview"
+  ],
+  "markers": [
+   "(^|/)www/index\\.html$",
+   "(^|/)capacitor\\.config\\.json$",
+   "(^|/)cordova(_plugins)?\\.js$",
+   "(^|/)public/index\\.html$"
+  ],
+  "web_root_regex": "(^|/)(www|public|webapp)/",
+  "web_exts": [
+   ".html",
+   ".htm",
+   ".js",
+   ".css"
+  ],
+  "sample_max": 200,
+  "minify_probe_bytes": 65536,
+  "minified_line_length": 1000
+ },
+ "generic_scripts": {
+  "handled_min_confidence": 0.5,
+  "handled_ids": [
+   "unity",
+   "unreal",
+   "godot",
+   "flutter",
+   "react_native",
+   "egret",
+   "layaair",
+   "laya",
+   "defold",
+   "gamemaker",
+   "solar2d",
+   "love2d",
+   "xamarin_maui",
+   "cordova_capacitor",
+   "web_hybrid",
+   "phaser_pixi_webview",
+   "construct_webview"
+  ],
+  "script_exts": [
+   ".js",
+   ".lua",
+   ".luac",
+   ".py",
+   ".pyc",
+   ".json",
+   ".txt"
+  ],
+  "info_exts": [
+   ".json",
+   ".txt"
+  ],
+  "min_script_files": 3,
+  "max_inventory_clusters": 10
+ }
+}

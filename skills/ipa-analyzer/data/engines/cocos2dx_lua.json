@@ -1,0 +1,93 @@
+{
+  "id": "cocos2dx_lua",
+  "name": "cocos2d-x (Lua)",
+  "family": "cocos",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "symbol",
+      "pattern": "_ZN7cocos2d9LuaEngine*",
+      "weight": 0.5,
+      "note": "cocos2d::LuaEngine"
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN7cocos2d8LuaStack*",
+      "weight": 0.4,
+      "note": "cocos2d::LuaStack (setXXTEAKeyAndSign)"
+    },
+    {
+      "type": "symbol",
+      "pattern": "lua_cocos2dx_*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "re:cocos2d-x[ -]v?([0-9]+\\.[0-9]+(?:\\.[0-9]+)?)",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "**/cocos/cocos2d/Cocos2d.lua",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:lua_bytecode",
+      "weight": 0.25
+    },
+    {
+      "type": "file",
+      "pattern": "*.luac",
+      "weight": 0.25,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.lua",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "main.lua",
+      "weight": 0.1,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "main.luac",
+      "weight": 0.1,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz",
+      "weight": 0.3
+    }
+  ],
+  "exclusive_with": [
+    "cocos2d_iphone",
+    "cocos2dx_cpp",
+    "cocos2dx_js",
+    "cocos_creator_2x",
+    "cocos_creator_3x"
+  ],
+  "language_hints": [
+    "lua",
+    "cpp"
+  ],
+  "notes": "Script protection (XXTEA, bytecode) is judged by the cocos checker (WP7b).",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/scripting/lua-bindings/manual/CCLuaEngine.h (LuaEngine) and CCLuaStack.h (setXXTEAKeyAndSign, luaLoadBuffer with xxtea decryption)",
+    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)",
+    "MEMORY, not re-checked this session (signals flagged unverified): lua_cocos2dx_ binding prefix, src/cocos/cocos2d/Cocos2d.lua template path, main.lua(c)"
+  ],
+  "open_source_base": "cocos2d-x",
+  "version_regex": "cocos2d-x[ -]v?([0-9]+\\.[0-9]+(?:\\.[0-9]+)?)",
+  "layout_expected": true
+}

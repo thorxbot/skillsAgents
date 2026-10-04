@@ -1,0 +1,147 @@
+{
+  "id": "unity",
+  "name": "Unity",
+  "family": "unity",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "dir",
+      "pattern": "/Frameworks/UnityFramework.framework",
+      "weight": 0.9,
+      "strong": true,
+      "note": "Unity 2019.3+ iOS player framework (real samples)"
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/Managed/Metadata/global-metadata.dat",
+      "weight": 0.9,
+      "strong": true,
+      "note": "IL2CPP metadata (real samples; architecture 4.3)"
+    },
+    {
+      "type": "file",
+      "pattern": "magic:il2cpp_metadata",
+      "weight": 0.9,
+      "strong": true,
+      "note": "metadata header AF 1B B1 FA (Il2CppDumper Metadata.cs sanity)"
+    },
+    {
+      "type": "file",
+      "pattern": "magic:unityfs",
+      "weight": 0.9,
+      "strong": true,
+      "note": "UnityFS AssetBundle signature"
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/globalgamemanagers",
+      "weight": 0.5
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/unity default resources",
+      "weight": 0.5
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/Resources/unity_builtin_extra",
+      "weight": 0.4
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/boot.config",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/RuntimeInitializeOnLoads.json",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/ScriptingAssemblies.json",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/sharedassets*.assets",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/resources.assets",
+      "weight": 0.2
+    },
+    {
+      "type": "dir",
+      "pattern": "/Data/Raw",
+      "weight": 0.1
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/data.unity3d",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "pre-2017 / WebGL-style player data"
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/level0",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Data/Managed/*.dll",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "Mono backend assemblies (architecture 4.3)"
+    },
+    {
+      "type": "string",
+      "pattern": "UnityAppController",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "UnityAppController",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "UnityFramework.framework/UnityFramework",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "il2cpp_init",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "re:(?<![0-9A-Za-z.])(?:20[12][0-9]|5|6000)\\.[0-9]{1,2}\\.[0-9]{1,2}[fpab][0-9]{1,2}(?:c[0-9]{1,2})?(?![0-9A-Za-z])",
+      "weight": 0.3,
+      "unverified": true,
+      "note": "Unity version string (macho.scan.UNITY_VERSION_RE)"
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "csharp",
+    "cpp"
+  ],
+  "notes": "Both IL2CPP and Mono players; the il2cpp/mono backend is decided by the engine.unity stage.",
+  "sources": [
+    "REAL-SAMPLE: JiangNan.app and GoodCoffee.app (user supplied IPAs, read-only, 2026-10-04): Frameworks/UnityFramework.framework, Data/Managed/Metadata/global-metadata.dat, Data/globalgamemanagers, Data/unity default resources, Data/Resources/unity_builtin_extra, Data/boot.config, Data/RuntimeInitializeOnLoads.json, Data/ScriptingAssemblies.json, Data/sharedassets*.assets, Data/Raw/",
+    "docs/02-ARCHITECTURE.md 4.3 (Unity minimal signature)",
+    "formats/unityfs + util/magic (WP1/WP3b) UnityFS signatures",
+    "MEMORY, not re-checked this session (signals flagged unverified): UnityAppController, il2cpp_init, Data/data.unity3d, Data/level0, Data/Managed/*.dll"
+  ],
+  "embeddable": true,
+  "version_regex": "((?:20[12][0-9]|5|6000)\\.[0-9]{1,2}\\.[0-9]{1,2}[fpab][0-9]{1,2}(?:c[0-9]{1,2})?)"
+}

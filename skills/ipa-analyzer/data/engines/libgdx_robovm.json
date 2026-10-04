@@ -1,0 +1,41 @@
+{
+  "id": "libgdx_robovm",
+  "name": "libGDX (RoboVM / MobiVM)",
+  "family": "libgdx",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "string",
+      "pattern": "com/badlogic/gdx",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "org/robovm/",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "IOSApplication",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.atlas",
+      "weight": 0.1,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "java"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): Java class names retained as strings in the AOT binary"
+  ]
+}

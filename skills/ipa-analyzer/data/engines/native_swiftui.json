@@ -1,0 +1,37 @@
+{
+  "id": "native_swiftui",
+  "name": "Native app (SwiftUI)",
+  "family": "native",
+  "kind": "native",
+  "confirm_threshold": 0.5,
+  "signals": [
+    {
+      "type": "dylib",
+      "pattern": "SwiftUI.framework/SwiftUI",
+      "weight": 0.5,
+      "note": "iPhoneOS SDK has SwiftUI.framework"
+    },
+    {
+      "type": "symbol",
+      "pattern": "_$s7SwiftUI*",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "libswiftSwiftUI",
+      "weight": 0.4,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "swift"
+  ],
+  "notes": "Fallback classification only; a linked SwiftUI does not prove the UI is SwiftUI.",
+  "sources": [
+    "FETCHED/LOCAL: iPhoneOS26.2.sdk .tbd files (Xcode on the analysis host) for system framework / class / function names",
+    "MEMORY, not re-checked this session (signals flagged unverified): Swift mangling of module SwiftUI"
+  ],
+  "role": "fallback"
+}

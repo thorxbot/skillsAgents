@@ -1,0 +1,41 @@
+{
+  "id": "kotlin_multiplatform",
+  "name": "Kotlin Multiplatform (Kotlin/Native)",
+  "family": "kotlin",
+  "kind": "cross_platform_ui",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "objc_prefix",
+      "pattern": "KotlinBase",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "KotlinUnit",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "Kotlin_initRuntimeIfNeeded",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "kotlin.native",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "kotlin"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): Kotlin/Native runtime symbol and ObjC export class names"
+  ]
+}

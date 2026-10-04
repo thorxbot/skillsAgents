@@ -1,0 +1,46 @@
+{
+  "id": "native_objc",
+  "name": "Native app (Objective-C)",
+  "family": "native",
+  "kind": "native",
+  "confirm_threshold": 0.8,
+  "signals": [
+    {
+      "type": "binary_section",
+      "pattern": "__DATA,__objc_classlist",
+      "weight": 0.3,
+      "note": "Mach-O ObjC runtime section"
+    },
+    {
+      "type": "binary_section",
+      "pattern": "__DATA_CONST,__objc_classlist",
+      "weight": 0.3
+    },
+    {
+      "type": "binary_section",
+      "pattern": "__TEXT,__objc_classname",
+      "weight": 0.2
+    },
+    {
+      "type": "dylib",
+      "pattern": "UIKit.framework/UIKit",
+      "weight": 0.2
+    },
+    {
+      "type": "plist_key",
+      "pattern": "UIMainStoryboardFile",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "objc"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED/LOCAL: iPhoneOS26.2.sdk .tbd files (Xcode on the analysis host) for system framework / class / function names",
+    "macho/constants.py (WP3) ObjC section names"
+  ],
+  "role": "fallback"
+}

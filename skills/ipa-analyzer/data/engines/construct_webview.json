@@ -1,0 +1,41 @@
+{
+  "id": "construct_webview",
+  "name": "Construct (web export)",
+  "family": "construct",
+  "kind": "web_hybrid",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "c3runtime.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "c3main.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "c2runtime.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "offline.json",
+      "weight": 0.1,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): runtime script names of Construct 2/3 web exports (usually wrapped in Cordova / WKWebView)"
+  ]
+}

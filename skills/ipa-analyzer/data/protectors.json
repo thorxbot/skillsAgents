@@ -1,0 +1,314 @@
+{
+ "_comment": "Anti-debug / jailbreak-detection feature rules. Every pattern was found in the listed public sources (OWASP MASTG iOS resilience pages, Apple QA1361, IOSSecuritySuite source). A hit is a characteristic, not a conclusion: verdict never exceeds 'suspected'. Weights are this project's own heuristics (UNVERIFIED). obfuscation/packer rule sets are intentionally empty: no commercial protector signature could be verified from public sources.",
+ "version": 1,
+ "thresholds": {
+  "suspected": 0.4,
+  "weak": 0.1,
+  "max_confidence": 0.8
+ },
+ "antidebug": {
+  "symbols": [
+   {
+    "pattern": "_ptrace",
+    "weight": 0.5,
+    "note": "ptrace(PT_DENY_ATTACH) / debugger denial",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0085/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/DebuggerChecker.swift"
+    ]
+   },
+   {
+    "pattern": "_sysctl",
+    "weight": 0.15,
+    "note": "sysctl P_TRACED debugger check (also used for ordinary system queries)",
+    "sources": [
+     "https://developer.apple.com/library/archive/qa/qa1361/_index.html",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0085/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/DebuggerChecker.swift"
+    ]
+   },
+   {
+    "pattern": "_task_get_exception_ports",
+    "weight": 0.4,
+    "note": "Mach exception-port debugger check",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0085/"
+    ]
+   },
+   {
+    "pattern": "_getppid",
+    "weight": 0.1,
+    "note": "parent-process debugger check (weak)",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0085/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/DebuggerChecker.swift"
+    ]
+   },
+   {
+    "pattern": "_dlsym",
+    "weight": 0.1,
+    "note": "dynamic symbol lookup used to hide ptrace (weak)",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0085/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/DebuggerChecker.swift"
+    ]
+   }
+  ],
+  "strings": [
+   {
+    "pattern": "ptrace",
+    "weight": 0.35,
+    "note": "string 'ptrace' (dlsym lookup of the non-public ptrace)",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0085/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/DebuggerChecker.swift"
+    ]
+   }
+  ]
+ },
+ "jailbreak_detect": {
+  "strings": [
+   {
+    "pattern": "/Applications/Cydia.app",
+    "weight": 0.4,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/Applications/Sileo.app",
+    "weight": 0.4,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/Applications/Zebra.app",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/Library/MobileSubstrate/MobileSubstrate.dylib",
+    "weight": 0.4,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/Library/MobileSubstrate/DynamicLibraries",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/usr/sbin/sshd",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/usr/bin/ssh",
+    "weight": 0.15,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/bin/bash",
+    "weight": 0.1,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/etc/apt",
+    "weight": 0.25,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/private/var/lib/apt",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/var/lib/cydia",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/private/var/stash",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/usr/libexec/cydia",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "cydia://",
+    "weight": 0.4,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "sileo://",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/demos/ios/MASVS-RESILIENCE/MASTG-DEMO-0021/MASTG-DEMO-0021",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "zbra://",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/usr/sbin/frida-server",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "/usr/lib/frida",
+    "weight": 0.3,
+    "note": "",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "cydiasubstrate",
+    "weight": 0.25,
+    "note": "",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   }
+  ],
+  "symbols": [
+   {
+    "pattern": "_fork",
+    "weight": 0.1,
+    "note": "fork() sandbox-escape check (weak)",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "_dyld_image_count",
+    "weight": 0.1,
+    "note": "loaded-image enumeration (weak)",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "_dyld_get_image_name",
+    "weight": 0.1,
+    "note": "loaded-image enumeration (weak)",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   }
+  ],
+  "query_schemes": [
+   {
+    "pattern": "cydia",
+    "weight": 0.5,
+    "note": "URL scheme queried via canOpenURL (must be listed in LSApplicationQueriesSchemes)",
+    "sources": [
+     "https://mas.owasp.org/MASTG/knowledge/ios/MASVS-RESILIENCE/MASTG-KNOW-0084/",
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "sileo",
+    "weight": 0.4,
+    "note": "URL scheme queried via canOpenURL (must be listed in LSApplicationQueriesSchemes)",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   },
+   {
+    "pattern": "zbra",
+    "weight": 0.3,
+    "note": "URL scheme queried via canOpenURL (must be listed in LSApplicationQueriesSchemes)",
+    "sources": [
+     "https://raw.githubusercontent.com/securing/IOSSecuritySuite/master/IOSSecuritySuite/JailbreakChecker.swift"
+    ]
+   }
+  ]
+ },
+ "obfuscation": {
+  "unity_identifier": {
+   "suspected_level": [
+    "medium",
+    "high"
+   ],
+   "suspected_score": 0.35
+  }
+ },
+ "packer": {
+  "signatures": []
+ }
+}

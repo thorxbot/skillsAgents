@@ -1,0 +1,1804 @@
+{
+ "version": 1,
+ "description": "Engine-independent capability rules for engine.fingerprint (WP7). Signal grammar: see engines/signatures.py. Signals flagged unverified are capped to a low weight by the loader.",
+ "dimensions": {
+  "render": [
+   {
+    "id": "metal",
+    "name": "Metal",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "dylib",
+      "pattern": "Metal.framework/Metal",
+      "weight": 0.4
+     },
+     {
+      "type": "dylib",
+      "pattern": "MetalKit.framework/MetalKit",
+      "weight": 0.2
+     },
+     {
+      "type": "symbol",
+      "pattern": "MTLCreateSystemDefaultDevice",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "OBJC_CLASS_$_CAMetalLayer",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "OBJC_CLASS_$_MTKView",
+      "weight": 0.3
+     },
+     {
+      "type": "file",
+      "pattern": "magic:metallib",
+      "weight": 0.35
+     }
+    ],
+    "sources": [
+     "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names",
+     "util/magic.py: MTLB header checked against system .metallib files"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "gles",
+    "name": "OpenGL ES",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "dylib",
+      "pattern": "OpenGLES.framework/OpenGLES",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "OBJC_CLASS_$_EAGLContext",
+      "weight": 0.4
+     },
+     {
+      "type": "symbol",
+      "pattern": "OBJC_CLASS_$_GLKView",
+      "weight": 0.2
+     },
+     {
+      "type": "symbol",
+      "pattern": "OBJC_CLASS_$_CAEAGLLayer",
+      "weight": 0.3
+     }
+    ],
+    "sources": [
+     "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "vulkan",
+    "name": "Vulkan (MoltenVK)",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "dylib",
+      "pattern": "MoltenVK",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dir",
+      "pattern": "MoltenVK.*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "vkCreateInstance",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "vkCreateInstance",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): MoltenVK framework name, vkCreateInstance"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "angle",
+    "name": "ANGLE (GLES over Metal)",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "dylib",
+      "pattern": "libGLESv2",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dir",
+      "pattern": "libGLESv2.*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "eglGetDisplay",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "ANGLE (",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): ANGLE framework names"
+    ],
+    "notes": ""
+   }
+  ],
+  "shader_formats": [
+   {
+    "id": "metallib",
+    "name": "Metal library (.metallib)",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:metallib",
+      "weight": 0.9
+     }
+    ],
+    "sources": [
+     "util/magic.py: 'MTLB' header (checked against system files)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "metal_source",
+    "name": "Metal Shading Language source",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.metal",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "glsl",
+    "name": "GLSL / GLSL ES source",
+    "confirm_threshold": 0.3,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.vsh",
+      "weight": 0.35,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.fsh",
+      "weight": 0.35,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.glsl",
+      "weight": 0.35,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.vert",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.frag",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): conventional shader extensions"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "spirv",
+    "name": "SPIR-V",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.spv",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): Khronos SPIR-V extension"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "hlsl",
+    "name": "HLSL source",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.hlsl",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   }
+  ],
+  "script_vms": [
+   {
+    "id": "lua",
+    "name": "Lua (PUC)",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "luaL_newstate",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "Lua C API"
+     },
+     {
+      "type": "symbol",
+      "pattern": "lua_pcallk",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "luaL_openlibs",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "luaL_loadbufferx",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "lua_newstate",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "bad argument #%d to '%s' (%s)",
+      "weight": 0.35,
+      "unverified": true,
+      "note": "lauxlib luaL_argerror message"
+     },
+     {
+      "type": "string",
+      "pattern": "re:\\$Lua(?:Version)?: (?:Lua )?5\\.[1-4]",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "lua_ident"
+     },
+     {
+      "type": "file",
+      "pattern": "*.lua",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.luac",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "Lua 5.4 reference manual C API names (recalled; the manual fetch failed this session, so UNVERIFIED)",
+     "MEMORY, not re-checked this session (signals flagged unverified): lauxlib message / lua_ident strings"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "luajit",
+    "name": "LuaJIT",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "luaJIT_setmode",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "luaopen_jit",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "LuaJIT 2.",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): LuaJIT extension API and version banner"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "quickjs",
+    "name": "QuickJS",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "JS_NewCFunction2",
+      "weight": 0.5,
+      "note": "quickjs.h"
+     },
+     {
+      "type": "symbol",
+      "pattern": "_JS_FreeValueRT",
+      "weight": 0.5,
+      "note": "inline JS_FreeValue calls __JS_FreeValueRT"
+     },
+     {
+      "type": "symbol",
+      "pattern": "JS_ReadObject",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "JS_NewRuntime",
+      "weight": 0.2
+     },
+     {
+      "type": "string",
+      "pattern": "QuickJS",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/bellard/quickjs/master/quickjs.h - JS_NewRuntime, JS_NewContext, JS_Eval, JS_NewCFunction2, __JS_FreeValueRT, JS_WriteObject, JS_ReadObject"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "duktape",
+    "name": "Duktape",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "duk_create_heap",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "duk_eval_raw",
+      "weight": 0.4
+     },
+     {
+      "type": "symbol",
+      "pattern": "duk_push_c_function",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "duk_destroy_heap",
+      "weight": 0.3
+     },
+     {
+      "type": "string",
+      "pattern": "Duktape",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/svaarala/duktape/master/src-input/duktape.h.in - duk_create_heap, duk_create_heap_default, duk_eval_raw, duk_push_c_function, duk_destroy_heap"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "v8",
+    "name": "V8",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN2v8*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "libv8",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): namespace v8"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "jsc",
+    "name": "JavaScriptCore",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "dylib",
+      "pattern": "JavaScriptCore.framework/JavaScriptCore",
+      "weight": 0.25
+     },
+     {
+      "type": "symbol",
+      "pattern": "JSGlobalContextCreate",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "JSEvaluateScript",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "JSContextGroupCreate",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "OBJC_CLASS_$_JSContext",
+      "weight": 0.3
+     }
+    ],
+    "sources": [
+     "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names (JavaScriptCore.tbd: JSGlobalContextCreate, JSEvaluateScript, JSContextGroupCreate, JSContext)",
+     "NOTE: system framework; WKWebView-based apps link it too, so a lone dylib is weak"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "mozjs",
+    "name": "SpiderMonkey",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "string",
+      "pattern": "SpiderMonkey",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN2JS*",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "mozjs",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "python",
+    "name": "Python (embedded)",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "Py_Initialize",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "PyRun_SimpleString",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "PyMarshal_ReadObjectFromString",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "PYTHONHOME",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "bad marshal data (unknown type code)",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.pyc",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.nxs",
+      "weight": 0.2,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): CPython C API and marshal error text; .pyc magic is checked by code, see fingerprint.py"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "squirrel",
+    "name": "Squirrel",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "sq_open",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "sq_newthread",
+      "weight": 0.3
+     },
+     {
+      "type": "symbol",
+      "pattern": "sq_compilebuffer",
+      "weight": 0.4
+     },
+     {
+      "type": "symbol",
+      "pattern": "sq_pushroottable",
+      "weight": 0.3
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/albertodemichelis/squirrel/master/include/squirrel.h - sq_open, sq_newthread, sq_compilebuffer, sq_pushroottable"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "angelscript",
+    "name": "AngelScript",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "asCreateScriptEngine",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN16asCScriptEngine*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "AngelScript",
+      "weight": 0.2,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/codecat/angelscript-mirror/master/sdk/angelscript/include/angelscript.h - asCreateScriptEngine, asIScriptEngine, asIScriptModule"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "wren",
+    "name": "Wren",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "wrenNewVM",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "wrenInterpret",
+      "weight": 0.4
+     },
+     {
+      "type": "symbol",
+      "pattern": "wrenFreeVM",
+      "weight": 0.3
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/wren-lang/wren/main/src/include/wren.h - wrenNewVM, wrenInterpret, wrenFreeVM"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "mruby",
+    "name": "mruby",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "mrb_open",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "mrb_close",
+      "weight": 0.3
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/mruby/mruby/master/include/mruby.h - mrb_open, mrb_close (mrb_load_string NOT in the header)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "mono",
+    "name": "Mono runtime",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "mono_jit_init",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "mono_runtime_invoke",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "libmonosgen-2.0",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "libmono",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "il2cpp",
+    "name": "IL2CPP",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:il2cpp_metadata",
+      "weight": 0.8
+     },
+     {
+      "type": "file",
+      "pattern": "global-metadata.dat",
+      "weight": 0.6
+     },
+     {
+      "type": "symbol",
+      "pattern": "il2cpp_init",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "il2cpp_*",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "util/magic.py: Il2CppDumper Metadata.cs sanity 0xFAB11BAF",
+     "REAL-SAMPLE: JiangNan / GoodCoffee: Data/Managed/Metadata/global-metadata.dat",
+     "MEMORY, not re-checked this session (signals flagged unverified): il2cpp_* symbol prefix"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "hermes",
+    "name": "Hermes bytecode VM",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:hermes_bytecode",
+      "weight": 0.9
+     },
+     {
+      "type": "dir",
+      "pattern": "hermes.framework",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "HermesInternal",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN6hermes*",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "FETCHED: facebook/hermes BytecodeFileFormat.h MAGIC 0x1F1903C103BC1FC6"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "hashlink",
+    "name": "HashLink",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "hlboot.dat",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.hl",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   }
+  ],
+  "physics": [
+   {
+    "id": "box2d",
+    "name": "Box2D",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN7b2World*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN6b2Body*",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "Box2D",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "Box2D",
+      "weight": 0.2,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): b2World / b2Body class names (fetch of the header failed)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "chipmunk",
+    "name": "Chipmunk",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "cpSpaceNew",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "cpSpaceStep",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "bullet",
+    "name": "Bullet",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN23btDiscreteDynamicsWorld*",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN11btRigidBody*",
+      "weight": 0.3
+     },
+     {
+      "type": "string",
+      "pattern": "Bullet",
+      "weight": 0.1,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/bulletphysics/bullet3/master/src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h - class btDiscreteDynamicsWorld, btRigidBody (Itanium mangling: length-prefixed names 23 / 11)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "physx",
+    "name": "PhysX",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "PxCreatePhysics",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "PxCreateFoundation",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN5physx*",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): PxPhysicsAPI.h fetch did not show the names"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "jolt",
+    "name": "Jolt Physics",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN3JPH*",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): namespace JPH"
+    ],
+    "notes": ""
+   }
+  ],
+  "audio": [
+   {
+    "id": "fmod",
+    "name": "FMOD",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "FMOD_System_Create",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "libfmod",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "magic:fsb",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.fsb",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.bank",
+      "weight": 0.2,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): FMOD_System_Create, FSB5 / .bank files (docs fetch failed)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "wwise",
+    "name": "Wwise",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN2AK11SoundEngine*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.wem",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.bnk",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "magic:wwise_bank",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "magic:wwise_pck",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): AK::SoundEngine, .wem/.bnk"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "openal",
+    "name": "OpenAL",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "dylib",
+      "pattern": "OpenAL.framework/OpenAL",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "alcOpenDevice",
+      "weight": 0.4
+     },
+     {
+      "type": "symbol",
+      "pattern": "alGenSources",
+      "weight": 0.3
+     }
+    ],
+    "sources": [
+     "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names (OpenAL.tbd: alcOpenDevice, alGenSources)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "bass",
+    "name": "BASS",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "BASS_Init",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dylib",
+      "pattern": "libbass",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "soloud",
+    "name": "SoLoud",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN6SoLoud*",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): namespace SoLoud"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "miniaudio",
+    "name": "miniaudio",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "ma_engine_init",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "ma_device_init",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "sdl_mixer",
+    "name": "SDL_mixer",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "Mix_OpenAudio",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   }
+  ],
+  "animation": [
+   {
+    "id": "spine",
+    "name": "Spine",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "spSkeleton_create",
+      "weight": 0.5
+     },
+     {
+      "type": "symbol",
+      "pattern": "_ZN5spine*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.skel",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "FETCHED: https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/4.1/spine-c/spine-c/include/spine/Skeleton.h - spSkeleton_create",
+     "MEMORY, not re-checked this session (signals flagged unverified): spine-cpp namespace, .skel"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "dragonbones",
+    "name": "DragonBones",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*_ske.json",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*_tex.json",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.dbbin",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "live2d",
+    "name": "Live2D Cubism",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:moc3",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.moc3",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.model3.json",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "csmGetVersion",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "symbol",
+      "pattern": "csmReviveMocInPlace",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): MOC3 magic is UNVERIFIED in util/magic.py too"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "lottie",
+    "name": "Lottie",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "objc_prefix",
+      "pattern": "LottieAnimationView",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "dir",
+      "pattern": "Lottie.*",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.lottie",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "rive",
+    "name": "Rive",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.riv",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "cocosbuilder",
+    "name": "CocosBuilder animations",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.ccbi",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   }
+  ],
+  "network": [
+   {
+    "id": "enet",
+    "name": "ENet",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "enet_host_create",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "kcp",
+    "name": "KCP",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "ikcp_create",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "raknet",
+    "name": "RakNet",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN6RakNet*",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "protobuf",
+    "name": "Protocol Buffers",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN6google8protobuf*",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "google.protobuf",
+      "weight": 0.2,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified): namespace google::protobuf"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "flatbuffers",
+    "name": "FlatBuffers",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "_ZN11flatbuffers*",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "libwebsockets",
+    "name": "libwebsockets",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "lws_create_context",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "curl",
+    "name": "libcurl",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "symbol",
+      "pattern": "curl_easy_init",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "string",
+      "pattern": "libcurl/",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   }
+  ],
+  "asset_formats": [
+   {
+    "id": "ccz",
+    "name": "CCZ (zlib texture/data container)",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:ccz",
+      "weight": 0.9
+     }
+    ],
+    "sources": [
+     "util/magic.py: cocos-engine ZipUtils.h CCZHeader.sig 'CCZ!'/'CCZp'"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "pvr",
+    "name": "PVR texture",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:pvr",
+      "weight": 0.8
+     },
+     {
+      "type": "file",
+      "pattern": "*.pvr",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.pvr.ccz",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "util/magic.py PVR3 header (UNVERIFIED there)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "astc",
+    "name": "ASTC texture",
+    "confirm_threshold": 0.4,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:astc",
+      "weight": 0.8
+     },
+     {
+      "type": "file",
+      "pattern": "*.astc",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "util/magic.py ASTC header (UNVERIFIED there)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "ktx",
+    "name": "KTX / KTX2 texture",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:ktx",
+      "weight": 0.9
+     },
+     {
+      "type": "file",
+      "pattern": "magic:ktx2",
+      "weight": 0.9
+     }
+    ],
+    "sources": [
+     "util/magic.py: Khronos identifiers"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "dds",
+    "name": "DDS texture",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:dds",
+      "weight": 0.9
+     }
+    ],
+    "sources": [
+     "util/magic.py"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "spine_atlas",
+    "name": "Spine / libGDX atlas",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.atlas",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "bmfont",
+    "name": "BMFont (.fnt)",
+    "confirm_threshold": 0.3,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.fnt",
+      "weight": 0.35,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "cocos_3d",
+    "name": "Cocos 3D models (c3t/c3b)",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.c3b",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.c3t",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "tiled",
+    "name": "Tiled maps (tmx)",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.tmx",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "gltf",
+    "name": "glTF",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.gltf",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.glb",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "fbx",
+    "name": "FBX / OBJ models",
+    "confirm_threshold": 0.3,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.fbx",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.obj",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "live2d_moc",
+    "name": "Live2D model (moc3)",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:moc3",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.moc3",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "fmod_wwise_banks",
+    "name": "Audio middleware banks",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:fsb",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "magic:wwise_bank",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "magic:wwise_pck",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.bnk",
+      "weight": 0.3,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.bank",
+      "weight": 0.3,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "unity_assetbundle",
+    "name": "Unity AssetBundle",
+    "confirm_threshold": 0.5,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "magic:unityfs",
+      "weight": 0.9
+     }
+    ],
+    "sources": [
+     "util/magic.py"
+    ],
+    "notes": ""
+   },
+   {
+    "id": "ue_package",
+    "name": "Unreal package",
+    "confirm_threshold": 0.35,
+    "signals": [
+     {
+      "type": "file",
+      "pattern": "*.uasset",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "*.uexp",
+      "weight": 0.4,
+      "unverified": true
+     },
+     {
+      "type": "file",
+      "pattern": "magic:uasset",
+      "weight": 0.4,
+      "unverified": true
+     }
+    ],
+    "sources": [
+     "MEMORY, not re-checked this session (signals flagged unverified)"
+    ],
+    "notes": ""
+   }
+  ]
+ },
+ "main_loop_hints": [
+  {
+   "id": "CADisplayLink",
+   "type": "symbol",
+   "pattern": "OBJC_CLASS_$_CADisplayLink",
+   "source": "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+  },
+  {
+   "id": "MTKView",
+   "type": "symbol",
+   "pattern": "OBJC_CLASS_$_MTKView",
+   "source": "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+  },
+  {
+   "id": "CAMetalLayer",
+   "type": "symbol",
+   "pattern": "OBJC_CLASS_$_CAMetalLayer",
+   "source": "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+  },
+  {
+   "id": "GLKView",
+   "type": "symbol",
+   "pattern": "OBJC_CLASS_$_GLKView",
+   "source": "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+  },
+  {
+   "id": "CAEAGLLayer",
+   "type": "symbol",
+   "pattern": "OBJC_CLASS_$_CAEAGLLayer",
+   "source": "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+  },
+  {
+   "id": "GCController",
+   "type": "symbol",
+   "pattern": "OBJC_CLASS_$_GCController",
+   "source": "LOCAL: iPhoneOS26.2.sdk .tbd (Xcode on the analysis host): symbol/class/framework names"
+  }
+ ]
+}

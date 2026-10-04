@@ -1,0 +1,35 @@
+{
+  "id": "irrlicht",
+  "name": "Irrlicht",
+  "family": "irrlicht",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "string",
+      "pattern": "Irrlicht Engine",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN3irr*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "irrlicht",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): namespace irr, banner"
+  ]
+}

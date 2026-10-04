@@ -1,0 +1,33 @@
+{
+ "protect.fairplay": {
+  "title": "FairPlay 加密",
+  "summary": "{case_zh}",
+  "remediation": "{remediation_zh}"
+ },
+ "protect.codesign": {
+  "title": "代码签名",
+  "summary": "主程序已签名:{signed};签名类型:{signature_type};Team ID:{team_id};get-task-allow:{get_task_allow};分发类型:{distribution}。"
+ },
+ "protect.stripped": {
+  "title": "符号剥离与加固",
+  "summary": "主程序符号已剥离:{main_stripped};PIE:{main_pie};栈保护:{main_stack_canary};ARC:{main_arc}。"
+ },
+ "protect.antidebug": {
+  "title": "反调试特征",
+  "summary": "{case_zh}",
+  "remediation": "{remediation_zh}"
+ },
+ "protect.jailbreak_detect": {
+  "title": "越狱检测特征",
+  "summary": "{case_zh}",
+  "remediation": "{remediation_zh}"
+ },
+ "protect.obfuscation": {
+  "title": "代码混淆",
+  "summary": "{case_zh}"
+ },
+ "protect.packer": {
+  "title": "商业壳 / 保护器",
+  "summary": "当前版本没有可核实的壳 / 保护器特征库,未做检查。"
+ }
+}

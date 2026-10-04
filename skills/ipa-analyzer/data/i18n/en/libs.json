@@ -1,0 +1,37 @@
+{
+ "libs.summary": {
+  "title": "Libraries identified",
+  "summary": "Identified {identified} third-party and {system} system libraries; {unknown} unrecognised; top categories: {top_categories}."
+ },
+ "libs.unknown": {
+  "title": "Unrecognised libraries",
+  "summary": "{count} libraries matched no knowledge-base rule (purpose unknown): {names}."
+ },
+ "libs.category.engine": "Engine / rendering",
+ "libs.category.network": "Networking",
+ "libs.category.ads": "Advertising",
+ "libs.category.analytics": "Attribution / analytics",
+ "libs.category.crash": "Crash reporting",
+ "libs.category.payment": "Payment",
+ "libs.category.social": "Social / login",
+ "libs.category.push": "Push",
+ "libs.category.media": "Audio / video / RTC",
+ "libs.category.security": "Security / anti-cheat",
+ "libs.category.hotfix": "Hot update / scripting",
+ "libs.category.storage": "Storage / database",
+ "libs.category.ui": "UI",
+ "libs.category.system": "System frameworks",
+ "libs.category.other": "Other",
+ "libs.kind.system": "System library",
+ "libs.kind.bundled_dylib": "Bundled dylib",
+ "libs.kind.framework": "Framework",
+ "libs.kind.static_sdk": "Statically linked SDK",
+ "libs.kind.resource_bundle": "Resource bundle",
+ "libs.kind.unity_namespace": "Unity namespace",
+ "libs.unknown_hint": "Name-only guess, unverified",
+ "libs.limit.binary_encrypted": "Binary is encrypted: binary-based detection is limited (load commands, imported symbols and files only)",
+ "libs.privacy.ads": "Advertising",
+ "libs.privacy.analytics": "Analytics",
+ "libs.privacy.tracking": "Tracking",
+ "libs.privacy.social": "Social"
+}

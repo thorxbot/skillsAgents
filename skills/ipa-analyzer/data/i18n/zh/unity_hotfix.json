@@ -1,0 +1,42 @@
+{
+  "unity.hotfix.framework": {
+    "title": "热更新框架识别",
+    "summary": "识别结果:{frameworks}。{summary_text} {limits}",
+    "remediation": "若主程序被 FairPlay 加密,基于二进制的检测受限;请提供已解密的 IPA(本工具不会解密)。"
+  },
+  "unity.hotfix.lua": {
+    "title": "Lua 热更新脚本",
+    "summary": "已检查的 Lua 文件:明文 {plain}、字节码 {bytecode}、压缩 {compressed}、疑似加密 {encrypted_suspected},共 {total} 个(采样结果,不代表全量)。",
+    "remediation": ""
+  },
+  "unity.hotfix.lua_version": {
+    "title": "Lua 版本画像",
+    "summary": "运行时版本串:{runtime};一致性:{consistent};疑似魔改 Lua:{custom_suspected}。{notes} 标准头部不能排除 opcode 重排等魔改。",
+    "remediation": ""
+  },
+  "unity.hotfix.csharp_dll": {
+    "title": "C# 热更新程序集",
+    "summary": "共 {total} 个候选程序集:热更 {hot}(如 {hot_names})、AOT 补充元数据 {aot_meta};格式分布:{formats}。仅报告,不解密。",
+    "remediation": ""
+  },
+  "unity.hotfix.js": {
+    "title": "JavaScript 热更新脚本",
+    "summary": "JS 文件:明文 {plain}、二进制非文本 {binary_non_text}、疑似加密 {encrypted_suspected},共 {total} 个;后端:{backends}。",
+    "remediation": ""
+  },
+  "unity.hotfix.resource_update": {
+    "title": "资源热更新",
+    "summary": "资源热更框架:{frameworks};目录/清单:{catalogs} 个 catalog、{manifests} 个清单;疑似 CDN 域名(仅域名):{hosts}。{layout}",
+    "remediation": ""
+  },
+  "unity.hotfix.script_protection": {
+    "title": "热更新脚本保护",
+    "summary": "Lua:{lua};JS:{js};C#:{csharp}。明文/字节码不算保护,压缩不等于加密,高熵仅为疑似,采样不等于全量。命名线索:{hints}。",
+    "remediation": "无法检查的容器(bundle 被加密或块级加密)只能得出 unknown;如需确认请提供已解密的 IPA 或用户侧的解密材料,本工具不做解密。"
+  },
+  "unity_hotfix.kind.csharp": "C# 热更",
+  "unity_hotfix.kind.lua": "Lua",
+  "unity_hotfix.kind.js": "JavaScript",
+  "unity_hotfix.kind.resource": "资源热更",
+  "unity_hotfix.protection.hint": "以下为标识符命名线索,不构成证明。"
+}

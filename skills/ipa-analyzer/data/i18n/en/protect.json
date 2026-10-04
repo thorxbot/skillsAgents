@@ -1,0 +1,12 @@
+{
+ "protect.fairplay": {
+  "title": "FairPlay encryption",
+  "summary": "{case_en}"
+ },
+ "protect.antidebug": {
+  "title": "Anti-debugging features"
+ },
+ "protect.jailbreak_detect": {
+  "title": "Jailbreak-detection features"
+ }
+}

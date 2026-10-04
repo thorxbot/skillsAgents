@@ -1,0 +1,53 @@
+{
+  "id": "kivy_python",
+  "name": "Kivy (Python)",
+  "family": "kivy",
+  "kind": "cross_platform_ui",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "**/kivy/data/style.kv",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "main.pyc",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "main.py",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "dir",
+      "pattern": "lib/python3*",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "kivy.",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "Py_Initialize",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "python"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): kivy-ios layout"
+  ]
+}

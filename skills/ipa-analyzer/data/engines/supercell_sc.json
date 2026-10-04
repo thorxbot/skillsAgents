@@ -1,0 +1,42 @@
+{
+  "id": "supercell_sc",
+  "name": "Supercell-style .sc assets (file-format clue)",
+  "family": "supercell",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "*_tex.sc",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.sctx",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.sc",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "head:SC",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "Clue only; the internal engine name is not asserted.",
+  "sources": [
+    "docs/03-ENGINE-RESEARCH.md section 1 (B/C level): *.sc, *_tex.sc, *.sctx with LZMA / SC / SCLZ / Sig: / START / ZSTD headers; community tools scPacker, cat_tools - NOT re-checked",
+    "Header forms are not used for matching because the source tools were not read"
+  ]
+}

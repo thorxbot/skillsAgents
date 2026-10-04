@@ -1,0 +1,69 @@
+{
+  "id": "react_native",
+  "name": "React Native",
+  "family": "react_native",
+  "kind": "cross_platform_ui",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/main.jsbundle",
+      "weight": 0.6,
+      "note": "default bundle name: URLForResource:@\"main\" withExtension:@\"jsbundle\""
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "RCTBridge",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "RCTRootView",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "RCTAppDelegate",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "dir",
+      "pattern": "/Frameworks/hermes.framework",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.jsbundle",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:hermes_bytecode",
+      "weight": 0.3
+    },
+    {
+      "type": "string",
+      "pattern": "RCTBridge",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript",
+    "typescript",
+    "objc"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/facebook/react-native/main/packages/react-native/React/Base/RCTBundleURLProvider.mm - @\"main\" / @\"jsbundle\"",
+    "FETCHED: facebook/hermes BytecodeFileFormat.h MAGIC = 0x1F1903C103BC1FC6",
+    "MEMORY, not re-checked this session (signals flagged unverified): RCT* class names, hermes.framework"
+  ],
+  "wrapper_host": true
+}

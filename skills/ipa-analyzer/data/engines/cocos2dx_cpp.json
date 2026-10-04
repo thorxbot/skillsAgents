@@ -1,0 +1,86 @@
+{
+  "id": "cocos2dx_cpp",
+  "name": "cocos2d-x (C++)",
+  "family": "cocos",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "symbol",
+      "pattern": "_ZN7cocos2d*",
+      "weight": 0.45,
+      "note": "namespace cocos2d (NS_CC_BEGIN)"
+    },
+    {
+      "type": "string",
+      "pattern": "re:cocos2d-x[ -]v?([0-9]+\\.[0-9]+(?:\\.[0-9]+)?)",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "CC_VERSION string"
+    },
+    {
+      "type": "string",
+      "pattern": "ShaderPositionTextureColor",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "cocos2d: ",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz#50",
+      "weight": 0.15
+    },
+    {
+      "type": "file",
+      "pattern": "*.csb",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.c3b",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.c3t",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "libc++",
+      "weight": 0.1
+    }
+  ],
+  "exclusive_with": [
+    "cocos2d_iphone",
+    "cocos2dx_js",
+    "cocos2dx_lua",
+    "cocos_creator_2x",
+    "cocos_creator_3x"
+  ],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)",
+    "REAL-SAMPLE: ISBN.app (user supplied IPA, read-only, 2026-10-04): 5,663 files with CCZp header under HD/",
+    "FETCHED: https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/scripting/lua-bindings/manual/CCLuaEngine.h - class LuaEngine inside the cocos2d namespace (NS_CC_BEGIN)",
+    "MEMORY, not re-checked this session (signals flagged unverified): version string, ShaderPositionTextureColor, .csb/.c3b/.c3t extensions"
+  ],
+  "open_source_base": "cocos2d-x",
+  "version_regex": "cocos2d-x[ -]v?([0-9]+\\.[0-9]+(?:\\.[0-9]+)?)"
+}

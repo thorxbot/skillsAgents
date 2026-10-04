@@ -1,0 +1,54 @@
+{
+  "id": "egret",
+  "name": "Egret Engine",
+  "family": "egret",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "egret.min.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "egret.web.min.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "**/resource/default.res.json",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.thm.json",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.exml",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "manifest.json",
+      "weight": 0.05,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript",
+    "typescript"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): all Egret signals unverified; typically hosted in a WKWebView / native runtime shell"
+  ]
+}

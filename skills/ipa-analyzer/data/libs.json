@@ -1,0 +1,4436 @@
+{
+ "_comment": "ipa-analyzer libs knowledge base. Format: references/libs-kb-format.md. Every match token was checked against the listed sources (podspecs, upstream source trees/docs, or names observed in real App Store IPAs); unverifiable tokens were removed rather than guessed.",
+ "version": 1,
+ "categories": [
+  "engine",
+  "network",
+  "ads",
+  "analytics",
+  "crash",
+  "payment",
+  "social",
+  "push",
+  "media",
+  "security",
+  "hotfix",
+  "storage",
+  "ui",
+  "system",
+  "other"
+ ],
+ "libs": [
+  {
+   "id": "adapty",
+   "name": "Adapty",
+   "vendor": "Adapty",
+   "category": "payment",
+   "purpose_zh": "Adapty 订阅与应用内购买 SDK",
+   "purpose_en": "Adapty subscription and in-app purchase SDK",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://adapty.io/",
+   "match": {
+    "bundle": [
+     "Adapty.bundle"
+    ],
+    "framework": [
+     "Adapty",
+     "AdaptyUI"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Adapty",
+    "https://github.com/adaptyteam/AdaptySDK-iOS"
+   ]
+  },
+  {
+   "id": "adcolony",
+   "name": "AdColony",
+   "vendor": "AdColony (Digital Turbine)",
+   "category": "ads",
+   "purpose_zh": "AdColony 视频广告 SDK",
+   "purpose_en": "AdColony video ads SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "http://adcolony.com",
+   "match": {
+    "framework": [
+     "AdColony"
+    ],
+    "objc_prefix": [
+     "AdColony"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AdColony"
+   ]
+  },
+  {
+   "id": "adjust",
+   "name": "Adjust",
+   "vendor": "Adjust",
+   "category": "analytics",
+   "purpose_zh": "Adjust 移动归因 SDK",
+   "purpose_en": "Adjust mobile attribution SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://www.adjust.com",
+   "match": {
+    "bundle": [
+     "Adjust.bundle"
+    ],
+    "framework": [
+     "AdjustSdk",
+     "Adjust"
+    ],
+    "objc_prefix": [
+     "ADJConfig",
+     "ADJEvent",
+     "Adjust"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Adjust",
+    "https://github.com/adjust/ios_sdk",
+    "https://github.com/adjust/unity_sdk"
+   ]
+  },
+  {
+   "id": "admob",
+   "name": "Google Mobile Ads SDK (AdMob)",
+   "vendor": "Google",
+   "category": "ads",
+   "purpose_zh": "Google AdMob 广告 SDK,展示横幅、插屏、激励视频等广告",
+   "purpose_en": "Google AdMob ads SDK (banner, interstitial, rewarded ads)",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://developers.google.com/admob/ios/quick-start",
+   "match": {
+    "bundle": [
+     "GoogleMobileAdsResources.bundle"
+    ],
+    "framework": [
+     "GoogleMobileAds"
+    ],
+    "objc_prefix": [
+     "GADMobileAds",
+     "GADRequest",
+     "GADBannerView"
+    ],
+    "plist_key": [
+     "GADApplicationIdentifier"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Google-Mobile-Ads-SDK",
+    "https://developers.google.com/admob/ios/api/reference/Classes/GADMobileAds",
+    "https://developers.google.com/admob/ios/quick-start"
+   ]
+  },
+  {
+   "id": "adyen",
+   "name": "Adyen",
+   "vendor": "Adyen",
+   "category": "payment",
+   "purpose_zh": "Adyen 支付 SDK",
+   "purpose_en": "Adyen payments SDK",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://adyen.com",
+   "match": {
+    "bundle": [
+     "Adyen.bundle",
+     "AdyenCard.bundle",
+     "AdyenActions.bundle"
+    ],
+    "framework": [
+     "Adyen",
+     "AdyenCard",
+     "AdyenActions",
+     "AdyenDropIn",
+     "AdyenComponents",
+     "AdyenSession",
+     "AdyenEncryption"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Adyen"
+   ]
+  },
+  {
+   "id": "afnetworking",
+   "name": "AFNetworking",
+   "vendor": "AFNetworking (Alamofire Software Foundation)",
+   "category": "network",
+   "purpose_zh": "AFNetworking:Objective-C 网络请求库",
+   "purpose_en": "AFNetworking, Objective-C networking library",
+   "tags": [],
+   "homepage": "https://github.com/AFNetworking/AFNetworking",
+   "match": {
+    "framework": [
+     "AFNetworking"
+    ],
+    "objc_prefix": [
+     "AFHTTPSessionManager",
+     "AFURLSessionManager"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AFNetworking",
+    "https://github.com/AFNetworking/AFNetworking"
+   ]
+  },
+  {
+   "id": "agora",
+   "name": "Agora RTC SDK",
+   "vendor": "Agora (声网)",
+   "category": "media",
+   "purpose_zh": "声网 Agora 实时音视频(RTC)SDK",
+   "purpose_en": "Agora real-time audio/video (RTC) SDK",
+   "tags": [],
+   "homepage": "https://www.agora.io",
+   "match": {
+    "framework": [
+     "AgoraRtcKit",
+     "Agorafdkaac",
+     "Agoraffmpeg"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AgoraRtcEngine_iOS"
+   ]
+  },
+  {
+   "id": "airship",
+   "name": "Airship",
+   "vendor": "Airship",
+   "category": "push",
+   "purpose_zh": "Airship 推送与客户互动 SDK",
+   "purpose_en": "Airship push and customer engagement SDK",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://www.airship.com",
+   "match": {
+    "bundle": [
+     "AirshipCoreResources.bundle"
+    ],
+    "framework": [
+     "AirshipCore",
+     "AirshipKit",
+     "AirshipBasement",
+     "AirshipMessageCenter",
+     "AirshipAutomation"
+    ],
+    "objc_prefix": [
+     "UAirship"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Airship",
+    "https://github.com/urbanairship/ios-library"
+   ]
+  },
+  {
+   "id": "alamofire",
+   "name": "Alamofire",
+   "vendor": "Alamofire Software Foundation",
+   "category": "network",
+   "purpose_zh": "Alamofire:Swift 网络请求库",
+   "purpose_en": "Alamofire, Swift HTTP networking library",
+   "tags": [],
+   "homepage": "https://github.com/Alamofire/Alamofire",
+   "match": {
+    "framework": [
+     "Alamofire"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Alamofire"
+   ]
+  },
+  {
+   "id": "alipay_sdk",
+   "name": "Alipay SDK (支付宝)",
+   "vendor": "Ant Group (Alipay)",
+   "category": "payment",
+   "purpose_zh": "支付宝 SDK(支付、授权登录)",
+   "purpose_en": "Alipay SDK (payments and authorization login)",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://open.alipay.com/",
+   "match": {
+    "bundle": [
+     "AlipaySDK.bundle"
+    ],
+    "framework": [
+     "AlipaySDK"
+    ],
+    "objc_prefix": [
+     "AlipaySDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AlipaySDK-iOS"
+   ]
+  },
+  {
+   "id": "aliyun_player",
+   "name": "Alibaba Cloud Player",
+   "vendor": "Alibaba Cloud",
+   "category": "media",
+   "purpose_zh": "阿里云播放器 SDK",
+   "purpose_en": "Alibaba Cloud player SDK",
+   "tags": [],
+   "homepage": "https://help.aliyun.com/product/29949.html",
+   "match": {
+    "framework": [
+     "AliyunPlayer",
+     "AliPlayerSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AliPlayerSDK_iOS"
+   ]
+  },
+  {
+   "id": "amplitude",
+   "name": "Amplitude",
+   "vendor": "Amplitude",
+   "category": "analytics",
+   "purpose_zh": "Amplitude 产品分析 SDK",
+   "purpose_en": "Amplitude product analytics SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://amplitude.com",
+   "match": {
+    "framework": [
+     "Amplitude",
+     "AmplitudeSwift"
+    ],
+    "objc_prefix": [
+     "Amplitude"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Amplitude-iOS",
+    "https://cocoapods.org/pods/AmplitudeSwift"
+   ]
+  },
+  {
+   "id": "angelscript",
+   "name": "AngelScript",
+   "vendor": "Andreas Jönsson",
+   "category": "hotfix",
+   "purpose_zh": "AngelScript 游戏脚本引擎",
+   "purpose_en": "AngelScript game scripting engine",
+   "tags": [],
+   "homepage": "https://github.com/codecat/angelscript-mirror",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/codecat/angelscript-mirror"
+   ]
+  },
+  {
+   "id": "anythink",
+   "name": "AnyThink (TopOn)",
+   "vendor": "TopOn",
+   "category": "ads",
+   "purpose_zh": "AnyThink(TopOn)广告聚合 SDK",
+   "purpose_en": "AnyThink (TopOn) ad mediation SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.toponad.com",
+   "match": {
+    "framework": [
+     "AnyThinkSDK",
+     "AnyThink*"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AnyThinkiOS",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "appauth",
+   "name": "AppAuth / GTMAppAuth",
+   "vendor": "OpenID Foundation / Google",
+   "category": "social",
+   "purpose_zh": "AppAuth 与 GTMAppAuth(OAuth 2.0 / OpenID Connect 客户端)",
+   "purpose_en": "AppAuth and GTMAppAuth (OAuth 2.0 / OpenID Connect client)",
+   "tags": [],
+   "homepage": "https://github.com/openid/AppAuth-iOS",
+   "match": {
+    "bundle": [
+     "AppAuthCore_Privacy.bundle",
+     "GTMAppAuth_Privacy.bundle"
+    ],
+    "framework": [
+     "AppAuth",
+     "AppAuthCore",
+     "GTMAppAuth"
+    ],
+    "objc_prefix": [
+     "OIDAuthState"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AppAuth",
+    "https://cocoapods.org/pods/GTMAppAuth",
+    "https://github.com/openid/AppAuth-iOS"
+   ]
+  },
+  {
+   "id": "applovin",
+   "name": "AppLovin SDK / MAX",
+   "vendor": "AppLovin",
+   "category": "ads",
+   "purpose_zh": "AppLovin 广告变现与聚合(MAX)SDK",
+   "purpose_en": "AppLovin ad monetization and mediation (MAX) SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.applovin.com/",
+   "match": {
+    "bundle": [
+     "AppLovinSDKResources.bundle"
+    ],
+    "framework": [
+     "AppLovinSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AppLovinSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "appodeal",
+   "name": "Appodeal",
+   "vendor": "Appodeal",
+   "category": "ads",
+   "purpose_zh": "Appodeal 广告聚合 SDK",
+   "purpose_en": "Appodeal ad mediation SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://appodeal.com",
+   "match": {
+    "framework": [
+     "Appodeal",
+     "AppodealMediationCore"
+    ],
+    "objc_prefix": [
+     "Appodeal"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Appodeal"
+   ]
+  },
+  {
+   "id": "appsflyer",
+   "name": "AppsFlyer",
+   "vendor": "AppsFlyer",
+   "category": "analytics",
+   "purpose_zh": "AppsFlyer 移动归因与营销分析 SDK",
+   "purpose_en": "AppsFlyer mobile attribution and marketing analytics SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://www.appsflyer.com",
+   "match": {
+    "bundle": [
+     "AppsFlyerLib_Privacy.bundle"
+    ],
+    "framework": [
+     "AppsFlyerLib",
+     "AppsFlyerFramework"
+    ],
+    "namespace": [
+     "AppsFlyerSDK"
+    ],
+    "objc_prefix": [
+     "AppsFlyerLib"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/AppsFlyerFramework",
+    "https://github.com/AppsFlyerSDK/AppsFlyerFramework",
+    "https://github.com/AppsFlyerSDK/appsflyer-unity-plugin"
+   ]
+  },
+  {
+   "id": "audience_network",
+   "name": "Meta Audience Network",
+   "vendor": "Meta",
+   "category": "ads",
+   "purpose_zh": "Meta(Facebook)Audience Network 广告 SDK",
+   "purpose_en": "Meta (Facebook) Audience Network ads SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://developers.facebook.com/docs/audience-network",
+   "match": {
+    "bundle": [
+     "FBAudienceNetwork.bundle"
+    ],
+    "framework": [
+     "FBAudienceNetwork"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FBAudienceNetwork",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "baidu_mobads",
+   "name": "Baidu Mobile Ads (百度广告)",
+   "vendor": "Baidu",
+   "category": "ads",
+   "purpose_zh": "百度移动联盟广告 SDK",
+   "purpose_en": "Baidu mobile ad union SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://github.com/baidumobsdk/iosmobsdk",
+   "match": {
+    "bundle": [
+     "baidumobadsdk.bundle"
+    ],
+    "framework": [
+     "BaiduMobAdSDK"
+    ],
+    "objc_prefix": [
+     "BaiduMobAd"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/BaiduMobAdSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "bass",
+   "name": "BASS",
+   "vendor": "Un4seen Developments",
+   "category": "media",
+   "purpose_zh": "BASS 音频库",
+   "purpose_en": "BASS audio library",
+   "tags": [],
+   "homepage": "https://www.un4seen.com/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://www.un4seen.com/"
+   ]
+  },
+  {
+   "id": "bidmachine",
+   "name": "BidMachine",
+   "vendor": "Stack (AppodealStack)",
+   "category": "ads",
+   "purpose_zh": "BidMachine 广告竞价 SDK",
+   "purpose_en": "BidMachine in-app bidding ad SDK",
+   "tags": [
+    "ads"
+   ],
+   "homepage": "https://bidmachine.io",
+   "match": {
+    "bundle": [
+     "BidMachine.bundle"
+    ],
+    "framework": [
+     "BidMachine"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/BidMachine",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "box2d",
+   "name": "Box2D",
+   "vendor": "Erin Catto",
+   "category": "engine",
+   "purpose_zh": "Box2D 2D 物理引擎",
+   "purpose_en": "Box2D 2D physics engine",
+   "tags": [],
+   "homepage": "https://box2d.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://box2d.org/"
+   ]
+  },
+  {
+   "id": "braintree",
+   "name": "Braintree",
+   "vendor": "PayPal (Braintree)",
+   "category": "payment",
+   "purpose_zh": "Braintree 支付 SDK(银行卡、PayPal、Venmo、Apple Pay)",
+   "purpose_en": "Braintree payments SDK (cards, PayPal, Venmo, Apple Pay)",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://developer.paypal.com/braintree",
+   "match": {
+    "bundle": [
+     "BraintreeCore_PrivacyInfo.bundle",
+     "BraintreeCard_PrivacyInfo.bundle",
+     "BraintreePayPal_PrivacyInfo.bundle",
+     "BraintreeApplePay_PrivacyInfo.bundle"
+    ],
+    "framework": [
+     "BraintreeCore",
+     "BraintreeCard",
+     "BraintreePayPal",
+     "BraintreeApplePay",
+     "BraintreeVenmo",
+     "BraintreeThreeDSecure",
+     "BraintreeDataCollector",
+     "Braintree*"
+    ],
+    "objc_prefix": [
+     "BTAPIClient"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Braintree",
+    "https://github.com/braintree/braintree_ios"
+   ]
+  },
+  {
+   "id": "branch",
+   "name": "Branch",
+   "vendor": "Branch Metrics",
+   "category": "analytics",
+   "purpose_zh": "Branch 深度链接与归因 SDK",
+   "purpose_en": "Branch deep linking and attribution SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://www.branch.io",
+   "match": {
+    "framework": [
+     "BranchSDK",
+     "Branch"
+    ],
+    "objc_prefix": [
+     "BNCPreferenceHelper",
+     "BranchUniversalObject"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Branch",
+    "https://github.com/BranchMetrics/ios-branch-deep-linking-attribution"
+   ]
+  },
+  {
+   "id": "braze",
+   "name": "Braze",
+   "vendor": "Braze",
+   "category": "push",
+   "purpose_zh": "Braze 推送与客户互动 SDK",
+   "purpose_en": "Braze push and customer engagement SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://braze.com",
+   "match": {
+    "bundle": [
+     "Appboy.bundle",
+     "BrazeKit.bundle"
+    ],
+    "framework": [
+     "BrazeKit",
+     "BrazeUI",
+     "BrazeLocation",
+     "AppboyKit"
+    ],
+    "objc_prefix": [
+     "ABKUser"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Appboy-iOS-SDK",
+    "https://cocoapods.org/pods/BrazeKit",
+    "https://github.com/Appboy/appboy-ios-sdk",
+    "https://github.com/braze-inc/braze-swift-sdk"
+   ]
+  },
+  {
+   "id": "bugly",
+   "name": "Bugly",
+   "vendor": "Tencent",
+   "category": "crash",
+   "purpose_zh": "腾讯 Bugly 崩溃监控与统计",
+   "purpose_en": "Tencent Bugly crash reporting",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "http://bugly.qq.com/",
+   "match": {
+    "framework": [
+     "Bugly"
+    ],
+    "objc_prefix": [
+     "Bugly"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Bugly"
+   ]
+  },
+  {
+   "id": "bugsnag",
+   "name": "Bugsnag",
+   "vendor": "Bugsnag (SmartBear)",
+   "category": "crash",
+   "purpose_zh": "Bugsnag 崩溃与错误监控",
+   "purpose_en": "Bugsnag crash and error monitoring",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://bugsnag.com",
+   "match": {
+    "framework": [
+     "Bugsnag",
+     "BugsnagNetworkRequestPlugin"
+    ],
+    "objc_prefix": [
+     "Bugsnag"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Bugsnag",
+    "https://github.com/bugsnag/bugsnag-cocoa"
+   ]
+  },
+  {
+   "id": "bullet",
+   "name": "Bullet Physics",
+   "vendor": "Erwin Coumans",
+   "category": "engine",
+   "purpose_zh": "Bullet 物理引擎",
+   "purpose_en": "Bullet physics engine",
+   "tags": [],
+   "homepage": "https://github.com/bulletphysics/bullet3",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/bulletphysics/bullet3"
+   ]
+  },
+  {
+   "id": "chartboost",
+   "name": "Chartboost",
+   "vendor": "Chartboost",
+   "category": "ads",
+   "purpose_zh": "Chartboost 广告 SDK",
+   "purpose_en": "Chartboost ads SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://chartboost.com/",
+   "match": {
+    "framework": [
+     "ChartboostSDK"
+    ],
+    "objc_prefix": [
+     "Chartboost"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/ChartboostSDK"
+   ]
+  },
+  {
+   "id": "charts",
+   "name": "Charts (DGCharts)",
+   "vendor": "Daniel Cohen Gindi / Danielgindi",
+   "category": "ui",
+   "purpose_zh": "Charts(DGCharts):图表库",
+   "purpose_en": "Charts (DGCharts), charting library",
+   "tags": [],
+   "homepage": "https://github.com/danielgindi/Charts",
+   "match": {
+    "framework": [
+     "DGCharts",
+     "Charts"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/DGCharts"
+   ]
+  },
+  {
+   "id": "chipmunk",
+   "name": "Chipmunk2D",
+   "vendor": "Howling Moon Software",
+   "category": "engine",
+   "purpose_zh": "Chipmunk 2D 物理引擎",
+   "purpose_en": "Chipmunk 2D physics engine",
+   "tags": [],
+   "homepage": "https://github.com/slembcke/Chipmunk2D",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/slembcke/Chipmunk2D"
+   ]
+  },
+  {
+   "id": "clevertap",
+   "name": "CleverTap",
+   "vendor": "CleverTap",
+   "category": "push",
+   "purpose_zh": "CleverTap 推送与用户分析 SDK",
+   "purpose_en": "CleverTap push and user analytics SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://clevertap.com",
+   "match": {
+    "bundle": [
+     "CleverTapSDK.bundle"
+    ],
+    "framework": [
+     "CleverTapSDK"
+    ],
+    "objc_prefix": [
+     "CleverTap"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/CleverTap-iOS-SDK"
+   ]
+  },
+  {
+   "id": "cocoaasyncsocket",
+   "name": "CocoaAsyncSocket",
+   "vendor": "Robbie Hanson",
+   "category": "network",
+   "purpose_zh": "CocoaAsyncSocket:异步 TCP/UDP socket 库",
+   "purpose_en": "CocoaAsyncSocket, asynchronous TCP/UDP socket library",
+   "tags": [],
+   "homepage": "https://github.com/robbiehanson/CocoaAsyncSocket",
+   "match": {
+    "framework": [
+     "CocoaAsyncSocket"
+    ],
+    "objc_prefix": [
+     "GCDAsyncSocket",
+     "GCDAsyncUdpSocket"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/CocoaAsyncSocket",
+    "https://github.com/robbiehanson/CocoaAsyncSocket"
+   ]
+  },
+  {
+   "id": "cocoalumberjack",
+   "name": "CocoaLumberjack",
+   "vendor": "CocoaLumberjack",
+   "category": "other",
+   "purpose_zh": "CocoaLumberjack:日志框架",
+   "purpose_en": "CocoaLumberjack, logging framework",
+   "tags": [],
+   "homepage": "https://github.com/CocoaLumberjack/CocoaLumberjack",
+   "match": {
+    "framework": [
+     "CocoaLumberjack",
+     "CocoaLumberjackSwift"
+    ],
+    "objc_prefix": [
+     "DDLog",
+     "DDFileLogger"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/CocoaLumberjack",
+    "https://github.com/CocoaLumberjack/CocoaLumberjack"
+   ]
+  },
+  {
+   "id": "cocos_creator_jsb",
+   "name": "Cocos Creator native (jsb-adapter)",
+   "vendor": "Cocos",
+   "category": "engine",
+   "purpose_zh": "Cocos Creator 原生发布包中的 JSB 适配层(jsb-adapter)",
+   "purpose_en": "Cocos Creator native build JSB adapter layer (jsb-adapter)",
+   "tags": [],
+   "homepage": "https://www.cocos.com/en/creator",
+   "match": {
+    "file": [
+     "jsb-adapter/*"
+    ]
+   },
+   "sources": [
+    "https://docs.cocos.com/creator/2.4/manual/en/advanced-topics/engine-customization.html",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "cronet",
+   "name": "Cronet",
+   "vendor": "Google (Chromium)",
+   "category": "network",
+   "purpose_zh": "Cronet:Chromium 网络栈(HTTP/2、QUIC)",
+   "purpose_en": "Cronet, Chromium network stack (HTTP/2, QUIC)",
+   "tags": [],
+   "homepage": "https://chromium.googlesource.com/chromium/src/+/main/components/cronet/",
+   "match": {
+    "framework": [
+     "Cronet"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Cronet"
+   ]
+  },
+  {
+   "id": "csj_ads",
+   "name": "CSJ / Pangle China (穿山甲)",
+   "vendor": "ByteDance",
+   "category": "ads",
+   "purpose_zh": "穿山甲(CSJ)广告联盟 SDK",
+   "purpose_en": "CSJ (Chuanshanjia) China ad network SDK by ByteDance",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.csjplatform.com/",
+   "match": {
+    "bundle": [
+     "CSJAdSDK.bundle"
+    ],
+    "framework": [
+     "BUAdSDK",
+     "CSJMediation",
+     "BUAdLive",
+     "CSJAdSDK"
+    ],
+    "objc_prefix": [
+     "CSJ"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Ads-CN",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "datadog",
+   "name": "Datadog RUM / Logs",
+   "vendor": "Datadog",
+   "category": "analytics",
+   "purpose_zh": "Datadog iOS SDK(RUM、日志、追踪)",
+   "purpose_en": "Datadog iOS SDK (RUM, logs, tracing)",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://www.datadoghq.com",
+   "match": {
+    "bundle": [
+     "DatadogCore.bundle"
+    ],
+    "framework": [
+     "DatadogCore",
+     "DatadogInternal",
+     "DatadogRUM",
+     "DatadogLogs",
+     "DatadogTrace"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/DatadogCore",
+    "https://github.com/DataDog/dd-sdk-ios"
+   ]
+  },
+  {
+   "id": "dotween",
+   "name": "DOTween",
+   "vendor": "Demigiant",
+   "category": "ui",
+   "purpose_zh": "DOTween:Unity 补间动画库",
+   "purpose_en": "DOTween, tweening engine for Unity",
+   "tags": [],
+   "homepage": "https://dotween.demigiant.com",
+   "match": {
+    "namespace": [
+     "DG.Tweening"
+    ]
+   },
+   "sources": [
+    "https://dotween.demigiant.com/getstarted.php"
+   ]
+  },
+  {
+   "id": "dragonbones",
+   "name": "DragonBones",
+   "vendor": "DragonBones",
+   "category": "engine",
+   "purpose_zh": "DragonBones 骨骼动画运行时",
+   "purpose_en": "DragonBones skeletal animation runtime",
+   "tags": [],
+   "homepage": "https://github.com/DragonBones/DragonBonesCPP",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/DragonBones/DragonBonesCPP"
+   ]
+  },
+  {
+   "id": "duktape",
+   "name": "Duktape",
+   "vendor": "Duktape",
+   "category": "hotfix",
+   "purpose_zh": "Duktape 嵌入式 JavaScript 引擎",
+   "purpose_en": "Duktape embeddable JavaScript engine",
+   "tags": [],
+   "homepage": "https://duktape.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://duktape.org/"
+   ]
+  },
+  {
+   "id": "enet",
+   "name": "ENet",
+   "vendor": "Lee Salzman",
+   "category": "network",
+   "purpose_zh": "ENet 可靠 UDP 网络库",
+   "purpose_en": "ENet reliable UDP networking library",
+   "tags": [],
+   "homepage": "http://enet.bespin.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "http://enet.bespin.org/"
+   ]
+  },
+  {
+   "id": "fabric_crashlytics",
+   "name": "Fabric / Crashlytics (legacy)",
+   "vendor": "Google (Fabric)",
+   "category": "crash",
+   "purpose_zh": "Fabric / 旧版 Crashlytics 崩溃上报(已被 Firebase Crashlytics 取代)",
+   "purpose_en": "Legacy Fabric / Crashlytics crash reporting (replaced by Firebase Crashlytics)",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://fabric.io",
+   "match": {
+    "framework": [
+     "Crashlytics",
+     "Fabric"
+    ],
+    "objc_prefix": [
+     "Crashlytics"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Crashlytics",
+    "https://cocoapods.org/pods/Fabric"
+   ]
+  },
+  {
+   "id": "facebook_sdk",
+   "name": "Facebook SDK for iOS",
+   "vendor": "Meta",
+   "category": "social",
+   "purpose_zh": "Facebook SDK(登录、分享、应用事件与归因)",
+   "purpose_en": "Facebook SDK (login, share, app events and attribution)",
+   "tags": [
+    "social",
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://developers.facebook.com/docs/ios/",
+   "match": {
+    "framework": [
+     "FBSDKCoreKit",
+     "FBSDKCoreKit_Basics",
+     "FBSDKLoginKit",
+     "FBSDKShareKit",
+     "FBAEMKit",
+     "FBSDKGamingServicesKit"
+    ],
+    "namespace": [
+     "Facebook.Unity"
+    ],
+    "objc_prefix": [
+     "FBSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FBAEMKit",
+    "https://cocoapods.org/pods/FBSDKCoreKit",
+    "https://cocoapods.org/pods/FBSDKLoginKit",
+    "https://cocoapods.org/pods/FBSDKShareKit",
+    "https://github.com/facebook/facebook-ios-sdk",
+    "https://github.com/facebook/facebook-sdk-for-unity"
+   ]
+  },
+  {
+   "id": "ffmpegkit",
+   "name": "ffmpeg-kit / FFmpeg libraries",
+   "vendor": "FFmpeg project / ffmpeg-kit",
+   "category": "media",
+   "purpose_zh": "FFmpeg 音视频编解码库(libavcodec/libavformat 等)",
+   "purpose_en": "FFmpeg audio/video codec libraries (libavcodec/libavformat, etc.)",
+   "tags": [],
+   "homepage": "https://ffmpeg.org",
+   "match": {
+    "framework": [
+     "ffmpegkit",
+     "libavcodec",
+     "libavformat",
+     "libavutil",
+     "libswscale",
+     "libswresample",
+     "libavfilter",
+     "libavdevice"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/ffmpeg-kit-ios-full"
+   ]
+  },
+  {
+   "id": "firebase_analytics",
+   "name": "Firebase Analytics (Google Analytics for Firebase)",
+   "vendor": "Google",
+   "category": "analytics",
+   "purpose_zh": "Firebase / Google Analytics 应用分析",
+   "purpose_en": "Firebase / Google Analytics app analytics",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://firebase.google.com/products/analytics",
+   "match": {
+    "framework": [
+     "FirebaseAnalytics",
+     "GoogleAppMeasurement",
+     "GoogleAppMeasurementIdentitySupport"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseAnalytics",
+    "https://cocoapods.org/pods/GoogleAppMeasurement"
+   ]
+  },
+  {
+   "id": "firebase_appcheck",
+   "name": "Firebase App Check",
+   "vendor": "Google",
+   "category": "security",
+   "purpose_zh": "Firebase App Check(应用完整性校验,防滥用)",
+   "purpose_en": "Firebase App Check (app attestation against abuse)",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/app-check",
+   "match": {
+    "framework": [
+     "FirebaseAppCheck",
+     "FirebaseAppCheckInterop"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseAppCheck"
+   ]
+  },
+  {
+   "id": "firebase_auth",
+   "name": "Firebase Authentication",
+   "vendor": "Google",
+   "category": "social",
+   "purpose_zh": "Firebase 身份认证(登录)",
+   "purpose_en": "Firebase Authentication (sign-in)",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/auth",
+   "match": {
+    "bundle": [
+     "FirebaseAuth_Privacy.bundle"
+    ],
+    "framework": [
+     "FirebaseAuth"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseAuth"
+   ]
+  },
+  {
+   "id": "firebase_core",
+   "name": "Firebase Core",
+   "vendor": "Google",
+   "category": "other",
+   "purpose_zh": "Firebase 核心库(各 Firebase 产品的初始化与公共基础)",
+   "purpose_en": "Firebase core (initialization and shared infrastructure)",
+   "tags": [],
+   "homepage": "https://firebase.google.com",
+   "match": {
+    "bundle": [
+     "FirebaseCore_Privacy.bundle",
+     "FirebaseCoreInternal_Privacy.bundle",
+     "FirebaseCoreExtension_Privacy.bundle"
+    ],
+    "file": [
+     "GoogleService-Info.plist"
+    ],
+    "framework": [
+     "FirebaseCore",
+     "FirebaseCoreInternal",
+     "FirebaseCoreExtension"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseCore",
+    "https://cocoapods.org/pods/FirebaseCoreExtension",
+    "https://cocoapods.org/pods/FirebaseCoreInternal",
+    "https://firebase.google.com/docs/ios/setup",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "firebase_crashlytics",
+   "name": "Firebase Crashlytics",
+   "vendor": "Google",
+   "category": "crash",
+   "purpose_zh": "Firebase Crashlytics 崩溃上报与分析",
+   "purpose_en": "Firebase Crashlytics crash reporting",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://firebase.google.com/products/crashlytics",
+   "match": {
+    "bundle": [
+     "FirebaseCrashlytics_Privacy.bundle"
+    ],
+    "framework": [
+     "FirebaseCrashlytics"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseCrashlytics",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "firebase_database",
+   "name": "Firebase Realtime Database",
+   "vendor": "Google",
+   "category": "storage",
+   "purpose_zh": "Firebase 实时数据库",
+   "purpose_en": "Firebase Realtime Database",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/realtime-database",
+   "match": {
+    "framework": [
+     "FirebaseDatabase"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseDatabase"
+   ]
+  },
+  {
+   "id": "firebase_firestore",
+   "name": "Cloud Firestore",
+   "vendor": "Google",
+   "category": "storage",
+   "purpose_zh": "Cloud Firestore 云端文档数据库",
+   "purpose_en": "Cloud Firestore cloud document database",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/firestore",
+   "match": {
+    "bundle": [
+     "FirebaseFirestore_Privacy.bundle"
+    ],
+    "framework": [
+     "FirebaseFirestore",
+     "FirebaseFirestoreInternal"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseFirestore"
+   ]
+  },
+  {
+   "id": "firebase_installations",
+   "name": "Firebase Installations",
+   "vendor": "Google",
+   "category": "other",
+   "purpose_zh": "Firebase 安装标识(为各 Firebase 服务提供实例 ID)",
+   "purpose_en": "Firebase Installations (per-install identifiers for Firebase services)",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://firebase.google.com/docs/projects/manage-installations",
+   "match": {
+    "bundle": [
+     "FirebaseInstallations_Privacy.bundle"
+    ],
+    "framework": [
+     "FirebaseInstallations"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseInstallations",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "firebase_messaging",
+   "name": "Firebase Cloud Messaging",
+   "vendor": "Google",
+   "category": "push",
+   "purpose_zh": "Firebase 云消息(FCM)推送",
+   "purpose_en": "Firebase Cloud Messaging (FCM) push",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/cloud-messaging",
+   "match": {
+    "bundle": [
+     "FirebaseMessaging_Privacy.bundle"
+    ],
+    "framework": [
+     "FirebaseMessaging"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseMessaging",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "firebase_performance",
+   "name": "Firebase Performance Monitoring",
+   "vendor": "Google",
+   "category": "analytics",
+   "purpose_zh": "Firebase 性能监控",
+   "purpose_en": "Firebase Performance Monitoring",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://firebase.google.com/products/performance",
+   "match": {
+    "framework": [
+     "FirebasePerformance"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebasePerformance"
+   ]
+  },
+  {
+   "id": "firebase_remote_config",
+   "name": "Firebase Remote Config",
+   "vendor": "Google",
+   "category": "other",
+   "purpose_zh": "Firebase 远程配置(云端下发参数)",
+   "purpose_en": "Firebase Remote Config (cloud-delivered parameters)",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/remote-config",
+   "match": {
+    "bundle": [
+     "FirebaseRemoteConfig_Privacy.bundle"
+    ],
+    "framework": [
+     "FirebaseRemoteConfig",
+     "FirebaseRemoteConfigInterop"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseRemoteConfig",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "firebase_sessions",
+   "name": "Firebase Sessions",
+   "vendor": "Google",
+   "category": "analytics",
+   "purpose_zh": "Firebase 会话数据上报(供 Crashlytics / Performance 使用)",
+   "purpose_en": "Firebase Sessions (session telemetry for Crashlytics and Performance)",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://firebase.google.com",
+   "match": {
+    "framework": [
+     "FirebaseSessions"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseSessions",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "firebase_storage",
+   "name": "Cloud Storage for Firebase",
+   "vendor": "Google",
+   "category": "storage",
+   "purpose_zh": "Firebase 云存储(文件上传下载)",
+   "purpose_en": "Cloud Storage for Firebase (file upload/download)",
+   "tags": [],
+   "homepage": "https://firebase.google.com/products/storage",
+   "match": {
+    "framework": [
+     "FirebaseStorage"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FirebaseStorage"
+   ]
+  },
+  {
+   "id": "flanimatedimage",
+   "name": "FLAnimatedImage",
+   "vendor": "Flipboard",
+   "category": "ui",
+   "purpose_zh": "FLAnimatedImage:GIF 动图播放",
+   "purpose_en": "FLAnimatedImage, animated GIF playback",
+   "tags": [],
+   "homepage": "https://github.com/Flipboard/FLAnimatedImage",
+   "match": {
+    "framework": [
+     "FLAnimatedImage"
+    ],
+    "objc_prefix": [
+     "FLAnimatedImage"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FLAnimatedImage"
+   ]
+  },
+  {
+   "id": "flatbuffers",
+   "name": "FlatBuffers",
+   "vendor": "Google",
+   "category": "storage",
+   "purpose_zh": "FlatBuffers 序列化库",
+   "purpose_en": "FlatBuffers serialization library",
+   "tags": [],
+   "homepage": "https://flatbuffers.dev/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://flatbuffers.dev/"
+   ]
+  },
+  {
+   "id": "flurry",
+   "name": "Flurry Analytics",
+   "vendor": "Yahoo / Flurry",
+   "category": "analytics",
+   "purpose_zh": "Flurry 应用分析 SDK",
+   "purpose_en": "Flurry app analytics SDK",
+   "tags": [
+    "analytics",
+    "tracking",
+    "ads"
+   ],
+   "homepage": "https://www.flurry.com",
+   "match": {
+    "framework": [
+     "Flurry",
+     "Flurry_iOS_SDK"
+    ],
+    "objc_prefix": [
+     "Flurry"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Flurry-iOS-SDK"
+   ]
+  },
+  {
+   "id": "flutter",
+   "name": "Flutter",
+   "vendor": "Google",
+   "category": "engine",
+   "purpose_zh": "Flutter 跨平台 UI 框架引擎",
+   "purpose_en": "Flutter cross-platform UI framework engine",
+   "tags": [],
+   "homepage": "https://flutter.dev",
+   "match": {
+    "framework": [
+     "Flutter",
+     "FlutterPluginRegistrant"
+    ]
+   },
+   "sources": [
+    "https://docs.flutter.dev/add-to-app/ios/project-setup"
+   ]
+  },
+  {
+   "id": "fmdb",
+   "name": "FMDB",
+   "vendor": "ccgus (Gus Mueller)",
+   "category": "storage",
+   "purpose_zh": "FMDB:SQLite 的 Objective-C 封装",
+   "purpose_en": "FMDB, Objective-C wrapper around SQLite",
+   "tags": [],
+   "homepage": "https://github.com/ccgus/fmdb",
+   "match": {
+    "framework": [
+     "FMDB"
+    ],
+    "objc_prefix": [
+     "FMDatabase",
+     "FMResultSet"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/FMDB",
+    "https://github.com/ccgus/fmdb"
+   ]
+  },
+  {
+   "id": "fmod",
+   "name": "FMOD",
+   "vendor": "Firelight Technologies",
+   "category": "media",
+   "purpose_zh": "FMOD 音频中间件",
+   "purpose_en": "FMOD audio middleware",
+   "tags": [],
+   "homepage": "https://en.wikipedia.org/wiki/FMOD",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://en.wikipedia.org/wiki/FMOD"
+   ]
+  },
+  {
+   "id": "gdt",
+   "name": "Tencent GDT / 优量汇",
+   "vendor": "Tencent",
+   "category": "ads",
+   "purpose_zh": "腾讯优量汇(GDT)广告联盟 SDK",
+   "purpose_en": "Tencent Youlianghui (GDT) ad network SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://e.qq.com/dev/index.html",
+   "match": {
+    "framework": [
+     "GDTMobSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GDTMobSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "geetest",
+   "name": "Geetest (极验)",
+   "vendor": "Geetest (极验)",
+   "category": "security",
+   "purpose_zh": "极验验证码(行为验证,防机器人)",
+   "purpose_en": "Geetest CAPTCHA (behavioral verification against bots)",
+   "tags": [],
+   "homepage": "https://docs.geetest.com/install/deploy/client/ios",
+   "match": {
+    "framework": [
+     "GT3Captcha"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GT3Captcha"
+   ]
+  },
+  {
+   "id": "getui",
+   "name": "Getui (个推)",
+   "vendor": "Getui (个推)",
+   "category": "push",
+   "purpose_zh": "个推消息推送 SDK",
+   "purpose_en": "Getui push notification SDK",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://www.getui.com/",
+   "match": {
+    "framework": [
+     "GTSDK",
+     "GTCommonSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GTSDK"
+   ]
+  },
+  {
+   "id": "google_data_transport",
+   "name": "GoogleDataTransport",
+   "vendor": "Google",
+   "category": "other",
+   "purpose_zh": "Google SDK 数据上报传输库(Firebase/Crashlytics 使用)",
+   "purpose_en": "Google data transport library used by Firebase and Crashlytics",
+   "tags": [],
+   "homepage": "https://github.com/google/GoogleDataTransport",
+   "match": {
+    "bundle": [
+     "GoogleDataTransport_Privacy.bundle"
+    ],
+    "framework": [
+     "GoogleDataTransport"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GoogleDataTransport",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "google_promises",
+   "name": "Promises (Google)",
+   "vendor": "Google",
+   "category": "other",
+   "purpose_zh": "Google Promises 异步编程库(ObjC/Swift)",
+   "purpose_en": "Google Promises asynchronous programming library",
+   "tags": [],
+   "homepage": "https://github.com/google/promises",
+   "match": {
+    "bundle": [
+     "FBLPromises_Privacy.bundle",
+     "Promises_Privacy.bundle"
+    ],
+    "framework": [
+     "FBLPromises",
+     "Promises"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/PromisesObjC",
+    "https://cocoapods.org/pods/PromisesSwift",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "google_signin",
+   "name": "Google Sign-In",
+   "vendor": "Google",
+   "category": "social",
+   "purpose_zh": "Google 账号登录",
+   "purpose_en": "Sign in with Google",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://developers.google.com/identity/sign-in/ios/",
+   "match": {
+    "bundle": [
+     "GoogleSignIn.bundle"
+    ],
+    "framework": [
+     "GoogleSignIn"
+    ],
+    "objc_prefix": [
+     "GIDSignIn",
+     "GIDConfiguration"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GoogleSignIn",
+    "https://github.com/google/GoogleSignIn-iOS"
+   ]
+  },
+  {
+   "id": "google_ump",
+   "name": "Google User Messaging Platform",
+   "vendor": "Google",
+   "category": "ads",
+   "purpose_zh": "Google 用户消息平台(UMP),展示 GDPR/CCPA 同意表单",
+   "purpose_en": "Google User Messaging Platform (consent forms for GDPR/CCPA)",
+   "tags": [
+    "ads"
+   ],
+   "homepage": "https://developers.google.com/admob/ump/ios/quick-start",
+   "match": {
+    "bundle": [
+     "UserMessagingPlatformResources.bundle"
+    ],
+    "framework": [
+     "UserMessagingPlatform"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GoogleUserMessagingPlatform",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "google_utilities",
+   "name": "GoogleUtilities",
+   "vendor": "Google",
+   "category": "other",
+   "purpose_zh": "Google SDK 公共工具库(日志、网络、方法替换等)",
+   "purpose_en": "Shared utilities for Google SDKs (logging, networking, swizzling)",
+   "tags": [],
+   "homepage": "https://github.com/google/GoogleUtilities",
+   "match": {
+    "bundle": [
+     "GoogleUtilities_Privacy.bundle"
+    ],
+    "framework": [
+     "GoogleUtilities"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GoogleUtilities",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "gpuimage",
+   "name": "GPUImage",
+   "vendor": "Brad Larson",
+   "category": "media",
+   "purpose_zh": "GPUImage:GPU 加速图像/视频滤镜",
+   "purpose_en": "GPUImage, GPU-accelerated image and video filters",
+   "tags": [],
+   "homepage": "https://github.com/BradLarson/GPUImage",
+   "match": {
+    "framework": [
+     "GPUImage"
+    ],
+    "objc_prefix": [
+     "GPUImageFilter",
+     "GPUImageVideoCamera",
+     "GPUImageContext"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GPUImage",
+    "https://github.com/BradLarson/GPUImage"
+   ]
+  },
+  {
+   "id": "grdb",
+   "name": "GRDB.swift",
+   "vendor": "Gwendal Roué",
+   "category": "storage",
+   "purpose_zh": "GRDB:Swift SQLite 工具包",
+   "purpose_en": "GRDB, Swift SQLite toolkit",
+   "tags": [],
+   "homepage": "https://github.com/groue/GRDB.swift",
+   "match": {
+    "framework": [
+     "GRDB"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GRDB.swift"
+   ]
+  },
+  {
+   "id": "growingio",
+   "name": "GrowingIO",
+   "vendor": "GrowingIO",
+   "category": "analytics",
+   "purpose_zh": "GrowingIO 无埋点用户行为分析 SDK",
+   "purpose_en": "GrowingIO autotrack behavior analytics SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://www.growingio.com",
+   "match": {
+    "framework": [
+     "GrowingAnalytics",
+     "GrowingTracker",
+     "GrowingAutotracker",
+     "GrowingTrackerCore",
+     "GrowingAutotrackerCore"
+    ],
+    "objc_prefix": [
+     "Growing"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GrowingAnalytics",
+    "https://cocoapods.org/pods/GrowingIO"
+   ]
+  },
+  {
+   "id": "grpc",
+   "name": "gRPC",
+   "vendor": "Google / gRPC",
+   "category": "network",
+   "purpose_zh": "gRPC:远程过程调用框架",
+   "purpose_en": "gRPC remote procedure call framework",
+   "tags": [],
+   "homepage": "https://grpc.io",
+   "match": {
+    "framework": [
+     "grpc",
+     "grpcpp",
+     "gRPC-Core",
+     "gRPC-C++",
+     "GRPCClient"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/gRPC-Core",
+    "https://github.com/grpc/grpc"
+   ]
+  },
+  {
+   "id": "gtm_session_fetcher",
+   "name": "GTMSessionFetcher",
+   "vendor": "Google",
+   "category": "network",
+   "purpose_zh": "Google 会话获取库(NSURLSession 封装)",
+   "purpose_en": "Google Toolbox session fetcher (NSURLSession wrapper)",
+   "tags": [],
+   "homepage": "https://github.com/google/gtm-session-fetcher",
+   "match": {
+    "bundle": [
+     "GTMSessionFetcher_Core_Privacy.bundle",
+     "GTMSessionFetcher_Full_Privacy.bundle"
+    ],
+    "framework": [
+     "GTMSessionFetcher"
+    ],
+    "objc_prefix": [
+     "GTMSessionFetcher"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GTMSessionFetcher"
+   ]
+  },
+  {
+   "id": "hermes",
+   "name": "Hermes",
+   "vendor": "Meta",
+   "category": "engine",
+   "purpose_zh": "Hermes:React Native 使用的 JavaScript 引擎",
+   "purpose_en": "Hermes, JavaScript engine for React Native",
+   "tags": [],
+   "homepage": "https://hermesengine.dev",
+   "match": {
+    "framework": [
+     "hermes"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/hermes-engine"
+   ]
+  },
+  {
+   "id": "hybridclr",
+   "name": "HybridCLR",
+   "vendor": "Focus Creative Games",
+   "category": "hotfix",
+   "purpose_zh": "HybridCLR:Unity IL2CPP 的 C# 热更新方案",
+   "purpose_en": "HybridCLR, C# hot-update solution for Unity IL2CPP",
+   "tags": [],
+   "homepage": "https://github.com/focus-creative-games/hybridclr",
+   "match": {
+    "namespace": [
+     "HybridCLR"
+    ]
+   },
+   "sources": [
+    "https://github.com/focus-creative-games/hybridclr_unity"
+   ]
+  },
+  {
+   "id": "ifix",
+   "name": "InjectFix (IFix)",
+   "vendor": "Tencent",
+   "category": "hotfix",
+   "purpose_zh": "InjectFix:Unity 的 C# 热补丁方案",
+   "purpose_en": "InjectFix, C# hotfix solution for Unity",
+   "tags": [],
+   "homepage": "https://github.com/Tencent/InjectFix",
+   "match": {
+    "namespace": [
+     "IFix"
+    ]
+   },
+   "sources": [
+    "https://github.com/Tencent/InjectFix"
+   ]
+  },
+  {
+   "id": "iglistkit",
+   "name": "IGListKit",
+   "vendor": "Instagram",
+   "category": "ui",
+   "purpose_zh": "IGListKit:数据驱动的集合视图框架",
+   "purpose_en": "IGListKit, data-driven collection view framework",
+   "tags": [],
+   "homepage": "https://github.com/Instagram/IGListKit",
+   "match": {
+    "framework": [
+     "IGListKit",
+     "IGListDiffKit",
+     "IGListSwiftKit"
+    ],
+    "objc_prefix": [
+     "IGListAdapter"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/IGListKit",
+    "https://github.com/Instagram/IGListKit"
+   ]
+  },
+  {
+   "id": "ijkplayer",
+   "name": "ijkplayer",
+   "vendor": "Bilibili",
+   "category": "media",
+   "purpose_zh": "ijkplayer:基于 FFmpeg 的播放器",
+   "purpose_en": "ijkplayer, FFmpeg-based media player",
+   "tags": [],
+   "homepage": "https://github.com/bilibili/ijkplayer",
+   "match": {
+    "framework": [
+     "IJKMediaFramework"
+    ],
+    "objc_prefix": [
+     "IJKFFMoviePlayerController",
+     "IJKMediaPlayback"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/IJKMediaFramework",
+    "https://github.com/bilibili/ijkplayer"
+   ]
+  },
+  {
+   "id": "il2cpp",
+   "name": "IL2CPP",
+   "vendor": "Unity Technologies",
+   "category": "engine",
+   "purpose_zh": "IL2CPP:Unity 将 C# 转为 C++ 的脚本后端",
+   "purpose_en": "IL2CPP, Unity scripting backend converting C# to C++",
+   "tags": [],
+   "homepage": "https://docs.unity3d.com/Manual/IL2CPP.html",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://docs.unity3d.com/Manual/IL2CPP.html"
+   ]
+  },
+  {
+   "id": "ilruntime",
+   "name": "ILRuntime",
+   "vendor": "Ourpalm",
+   "category": "hotfix",
+   "purpose_zh": "ILRuntime:纯 C# 实现的 IL 解释器热更新方案",
+   "purpose_en": "ILRuntime, pure-C# IL interpreter for hot update",
+   "tags": [],
+   "homepage": "https://github.com/Ourpalm/ILRuntime",
+   "match": {
+    "namespace": [
+     "ILRuntime"
+    ]
+   },
+   "sources": [
+    "https://github.com/Ourpalm/ILRuntime"
+   ]
+  },
+  {
+   "id": "inmobi",
+   "name": "InMobi",
+   "vendor": "InMobi",
+   "category": "ads",
+   "purpose_zh": "InMobi 广告 SDK",
+   "purpose_en": "InMobi ads SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "http://www.inmobi.com/sdk",
+   "match": {
+    "framework": [
+     "InMobiSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/InMobiSDK"
+   ]
+  },
+  {
+   "id": "instabug",
+   "name": "Instabug",
+   "vendor": "Instabug",
+   "category": "crash",
+   "purpose_zh": "Instabug 错误反馈与崩溃上报",
+   "purpose_en": "Instabug bug reporting and crash reporting",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "http://instabug.com",
+   "match": {
+    "framework": [
+     "InstabugSDK",
+     "Instabug"
+    ],
+    "objc_prefix": [
+     "Instabug"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Instabug"
+   ]
+  },
+  {
+   "id": "ios_security_suite",
+   "name": "IOSSecuritySuite",
+   "vendor": "securing",
+   "category": "security",
+   "purpose_zh": "IOSSecuritySuite:越狱 / 调试 / 篡改检测开源库",
+   "purpose_en": "IOSSecuritySuite, open-source jailbreak / debugger / tamper detection library",
+   "tags": [],
+   "homepage": "https://github.com/securing/IOSSecuritySuite",
+   "match": {
+    "framework": [
+     "IOSSecuritySuite"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/IOSSecuritySuite",
+    "https://github.com/securing/IOSSecuritySuite"
+   ]
+  },
+  {
+   "id": "iqkeyboardmanager",
+   "name": "IQKeyboardManager",
+   "vendor": "Mohd Iftekhar Qurashi",
+   "category": "ui",
+   "purpose_zh": "IQKeyboardManager:键盘遮挡自动处理",
+   "purpose_en": "IQKeyboardManager, automatic keyboard avoidance",
+   "tags": [],
+   "homepage": "https://github.com/hackiftekhar/IQKeyboardManager",
+   "match": {
+    "framework": [
+     "IQKeyboardManager",
+     "IQKeyboardManagerSwift"
+    ],
+    "objc_prefix": [
+     "IQKeyboardManager"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/IQKeyboardManager",
+    "https://github.com/hackiftekhar/IQKeyboardManager"
+   ]
+  },
+  {
+   "id": "ironsource",
+   "name": "ironSource / Unity LevelPlay",
+   "vendor": "Unity Technologies (ironSource)",
+   "category": "ads",
+   "purpose_zh": "ironSource(Unity LevelPlay)广告变现与聚合 SDK",
+   "purpose_en": "ironSource (Unity LevelPlay) ad monetization and mediation SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.is.com/",
+   "match": {
+    "bundle": [
+     "IronSourcePrivacyInfo.bundle",
+     "IronSourceAdQualityPrivacyInfo.bundle"
+    ],
+    "framework": [
+     "IronSource"
+    ],
+    "objc_prefix": [
+     "IronSource"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/IronSourceSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "jolt",
+   "name": "Jolt Physics",
+   "vendor": "Jorrit Rouwé",
+   "category": "engine",
+   "purpose_zh": "Jolt 物理引擎",
+   "purpose_en": "Jolt physics engine",
+   "tags": [],
+   "homepage": "https://github.com/jrouwe/JoltPhysics",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/jrouwe/JoltPhysics"
+   ]
+  },
+  {
+   "id": "jpush",
+   "name": "JPush / JCore (极光推送)",
+   "vendor": "Jiguang (极光)",
+   "category": "push",
+   "purpose_zh": "极光推送与极光核心库 SDK",
+   "purpose_en": "Jiguang (JPush) push and JCore SDK",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://www.jiguang.cn/",
+   "match": {
+    "framework": [
+     "JPush",
+     "JCore"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/JCore",
+    "https://cocoapods.org/pods/JPush"
+   ]
+  },
+  {
+   "id": "jspatch",
+   "name": "JSPatch",
+   "vendor": "bang590",
+   "category": "hotfix",
+   "purpose_zh": "JSPatch:用 JavaScript 动态修补 Objective-C 的热修复库(已停止维护)",
+   "purpose_en": "JSPatch, JavaScript hotfix for Objective-C (discontinued)",
+   "tags": [],
+   "homepage": "https://github.com/bang590/JSPatch",
+   "match": {
+    "framework": [
+     "JSPatch"
+    ],
+    "objc_prefix": [
+     "JPEngine"
+    ]
+   },
+   "sources": [
+    "https://github.com/bang590/JSPatch"
+   ]
+  },
+  {
+   "id": "kakao_sdk",
+   "name": "Kakao SDK",
+   "vendor": "Kakao",
+   "category": "social",
+   "purpose_zh": "Kakao 登录、分享与用户 API SDK",
+   "purpose_en": "Kakao login, sharing and user API SDK",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://developers.kakao.com",
+   "match": {
+    "framework": [
+     "KakaoSDKCommon",
+     "KakaoSDKAuth",
+     "KakaoSDKUser",
+     "KakaoSDKShare",
+     "KakaoSDKTemplate",
+     "KakaoSDK*"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/KakaoSDK"
+   ]
+  },
+  {
+   "id": "kcp",
+   "name": "KCP",
+   "vendor": "skywind3000",
+   "category": "network",
+   "purpose_zh": "KCP 可靠 UDP 协议库",
+   "purpose_en": "KCP reliable UDP protocol library",
+   "tags": [],
+   "homepage": "https://github.com/skywind3000/kcp",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/skywind3000/kcp"
+   ]
+  },
+  {
+   "id": "keychainaccess",
+   "name": "KeychainAccess",
+   "vendor": "kishikawa katsumi",
+   "category": "other",
+   "purpose_zh": "KeychainAccess:Keychain 封装",
+   "purpose_en": "KeychainAccess, Keychain wrapper",
+   "tags": [],
+   "homepage": "https://github.com/kishikawakatsumi/KeychainAccess",
+   "match": {
+    "framework": [
+     "KeychainAccess"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/KeychainAccess"
+   ]
+  },
+  {
+   "id": "kingfisher",
+   "name": "Kingfisher",
+   "vendor": "onevcat",
+   "category": "ui",
+   "purpose_zh": "Kingfisher:Swift 图片下载与缓存",
+   "purpose_en": "Kingfisher, Swift image downloading and caching",
+   "tags": [],
+   "homepage": "https://github.com/onevcat/Kingfisher",
+   "match": {
+    "framework": [
+     "Kingfisher"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Kingfisher"
+   ]
+  },
+  {
+   "id": "kochava",
+   "name": "Kochava",
+   "vendor": "Kochava",
+   "category": "analytics",
+   "purpose_zh": "Kochava 移动归因 SDK",
+   "purpose_en": "Kochava mobile attribution SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://www.kochava.com",
+   "match": {
+    "framework": [
+     "KochavaTracker"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/KochavaTracker"
+   ]
+  },
+  {
+   "id": "ksad",
+   "name": "Kuaishou Ads (快手联盟)",
+   "vendor": "Kuaishou",
+   "category": "ads",
+   "purpose_zh": "快手联盟广告 SDK",
+   "purpose_en": "Kuaishou union ad network SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://u.kuaishou.com",
+   "match": {
+    "bundle": [
+     "KSU*Resource.bundle",
+     "KSU*Resources.bundle"
+    ],
+    "framework": [
+     "KSAdSDK"
+    ],
+    "objc_prefix": [
+     "KSAdSDK",
+     "KSAd"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/KSAdSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "kscrash",
+   "name": "KSCrash",
+   "vendor": "Karl Stenerud",
+   "category": "crash",
+   "purpose_zh": "KSCrash 开源崩溃上报库",
+   "purpose_en": "KSCrash open-source crash reporter",
+   "tags": [],
+   "homepage": "https://github.com/kstenerud/KSCrash",
+   "match": {
+    "bundle": [
+     "KSCrashRecording.bundle"
+    ],
+    "framework": [
+     "KSCrash",
+     "KSCrashRecording",
+     "KSCrashCore"
+    ],
+    "objc_prefix": [
+     "KSCrash"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/KSCrash"
+   ]
+  },
+  {
+   "id": "libwebp",
+   "name": "libwebp (WebP)",
+   "vendor": "Google",
+   "category": "media",
+   "purpose_zh": "libwebp:WebP 图片编解码",
+   "purpose_en": "libwebp, WebP image codec",
+   "tags": [],
+   "homepage": "https://developers.google.com/speed/webp",
+   "match": {
+    "framework": [
+     "WebP",
+     "libwebp",
+     "webp"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/libwebp"
+   ]
+  },
+  {
+   "id": "line_sdk",
+   "name": "LINE SDK",
+   "vendor": "LINE",
+   "category": "social",
+   "purpose_zh": "LINE 登录与分享 SDK",
+   "purpose_en": "LINE login and sharing SDK",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://developers.line.biz/",
+   "match": {
+    "bundle": [
+     "LineSDK.bundle"
+    ],
+    "framework": [
+     "LineSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/LineSDKSwift"
+   ]
+  },
+  {
+   "id": "live2d",
+   "name": "Live2D Cubism",
+   "vendor": "Live2D Inc.",
+   "category": "engine",
+   "purpose_zh": "Live2D Cubism 2D 模型动画 SDK",
+   "purpose_en": "Live2D Cubism 2D model animation SDK",
+   "tags": [],
+   "homepage": "https://www.live2d.com/en/sdk/about/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://www.live2d.com/en/sdk/about/"
+   ]
+  },
+  {
+   "id": "livekit",
+   "name": "LiveKit",
+   "vendor": "LiveKit",
+   "category": "media",
+   "purpose_zh": "LiveKit 实时音视频 SDK",
+   "purpose_en": "LiveKit real-time audio/video SDK",
+   "tags": [],
+   "homepage": "https://livekit.io",
+   "match": {
+    "framework": [
+     "LiveKit",
+     "LiveKitWebRTC"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/LiveKitClient"
+   ]
+  },
+  {
+   "id": "lottie",
+   "name": "Lottie",
+   "vendor": "Airbnb",
+   "category": "ui",
+   "purpose_zh": "Lottie:After Effects 矢量动画播放",
+   "purpose_en": "Lottie, After Effects vector animation playback",
+   "tags": [],
+   "homepage": "https://github.com/airbnb/lottie-ios",
+   "match": {
+    "framework": [
+     "Lottie"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/lottie-ios",
+    "https://github.com/airbnb/lottie-ios"
+   ]
+  },
+  {
+   "id": "lua",
+   "name": "Lua",
+   "vendor": "PUC-Rio",
+   "category": "hotfix",
+   "purpose_zh": "Lua 脚本运行时(PUC-Lua)",
+   "purpose_en": "Lua scripting runtime (PUC-Lua)",
+   "tags": [],
+   "homepage": "https://www.lua.org/about.html",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://www.lua.org/about.html"
+   ]
+  },
+  {
+   "id": "luajit",
+   "name": "LuaJIT",
+   "vendor": "Mike Pall",
+   "category": "hotfix",
+   "purpose_zh": "LuaJIT 即时编译 Lua 运行时",
+   "purpose_en": "LuaJIT just-in-time compiled Lua runtime",
+   "tags": [],
+   "homepage": "https://luajit.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://luajit.org/"
+   ]
+  },
+  {
+   "id": "masonry",
+   "name": "Masonry",
+   "vendor": "Masonry",
+   "category": "ui",
+   "purpose_zh": "Masonry:Objective-C Auto Layout DSL",
+   "purpose_en": "Masonry, Objective-C Auto Layout DSL",
+   "tags": [],
+   "homepage": "https://github.com/SnapKit/Masonry",
+   "match": {
+    "framework": [
+     "Masonry"
+    ],
+    "objc_prefix": [
+     "MASConstraintMaker",
+     "MASViewAttribute"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Masonry",
+    "https://github.com/SnapKit/Masonry"
+   ]
+  },
+  {
+   "id": "mbprogresshud",
+   "name": "MBProgressHUD",
+   "vendor": "Matej Bukovinski",
+   "category": "ui",
+   "purpose_zh": "MBProgressHUD:加载提示 HUD",
+   "purpose_en": "MBProgressHUD, loading HUD",
+   "tags": [],
+   "homepage": "https://github.com/jdg/MBProgressHUD",
+   "match": {
+    "framework": [
+     "MBProgressHUD"
+    ],
+    "objc_prefix": [
+     "MBProgressHUD"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MBProgressHUD"
+   ]
+  },
+  {
+   "id": "miniaudio",
+   "name": "miniaudio",
+   "vendor": "David Reid",
+   "category": "media",
+   "purpose_zh": "miniaudio 单文件音频库",
+   "purpose_en": "miniaudio single-file audio library",
+   "tags": [],
+   "homepage": "https://miniaud.io/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://miniaud.io/"
+   ]
+  },
+  {
+   "id": "mintegral",
+   "name": "Mintegral SDK",
+   "vendor": "Mintegral",
+   "category": "ads",
+   "purpose_zh": "Mintegral(汇量)广告 SDK",
+   "purpose_en": "Mintegral ad network SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.mintegral.com/",
+   "match": {
+    "bundle": [
+     "MTGResources.bundle",
+     "MTGSDK.bundle"
+    ],
+    "framework": [
+     "MTGSDK",
+     "MTGSDK*"
+    ],
+    "objc_prefix": [
+     "MTGSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MintegralAdSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "mirror",
+   "name": "Mirror Networking",
+   "vendor": "Mirror",
+   "category": "network",
+   "purpose_zh": "Mirror:Unity 多人联网库",
+   "purpose_en": "Mirror, Unity multiplayer networking library",
+   "tags": [],
+   "homepage": "https://github.com/MirrorNetworking/Mirror",
+   "match": {
+    "namespace": [
+     "Mirror"
+    ]
+   },
+   "sources": [
+    "https://github.com/MirrorNetworking/Mirror"
+   ]
+  },
+  {
+   "id": "mixpanel",
+   "name": "Mixpanel",
+   "vendor": "Mixpanel",
+   "category": "analytics",
+   "purpose_zh": "Mixpanel 用户行为分析 SDK",
+   "purpose_en": "Mixpanel product analytics SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://mixpanel.com",
+   "match": {
+    "framework": [
+     "Mixpanel"
+    ],
+    "objc_prefix": [
+     "Mixpanel"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Mixpanel",
+    "https://github.com/mixpanel/mixpanel-swift"
+   ]
+  },
+  {
+   "id": "mjextension",
+   "name": "MJExtension",
+   "vendor": "Li Mingjie",
+   "category": "other",
+   "purpose_zh": "MJExtension:字典与模型互转",
+   "purpose_en": "MJExtension, dictionary/model conversion",
+   "tags": [],
+   "homepage": "https://github.com/CoderMJLee/MJExtension",
+   "match": {
+    "framework": [
+     "MJExtension"
+    ],
+    "objc_prefix": [
+     "MJExtension"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MJExtension"
+   ]
+  },
+  {
+   "id": "mjrefresh",
+   "name": "MJRefresh",
+   "vendor": "Li Mingjie",
+   "category": "ui",
+   "purpose_zh": "MJRefresh:下拉刷新/上拉加载",
+   "purpose_en": "MJRefresh, pull-to-refresh and load-more",
+   "tags": [],
+   "homepage": "https://github.com/CoderMJLee/MJRefresh",
+   "match": {
+    "bundle": [
+     "MJRefresh.bundle"
+    ],
+    "framework": [
+     "MJRefresh"
+    ],
+    "objc_prefix": [
+     "MJRefreshHeader",
+     "MJRefreshFooter"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MJRefresh",
+    "https://github.com/CoderMJLee/MJRefresh"
+   ]
+  },
+  {
+   "id": "mmkv",
+   "name": "MMKV",
+   "vendor": "Tencent",
+   "category": "storage",
+   "purpose_zh": "MMKV:腾讯 mmap 键值存储",
+   "purpose_en": "MMKV, Tencent mmap-based key-value storage",
+   "tags": [],
+   "homepage": "https://github.com/Tencent/MMKV",
+   "match": {
+    "framework": [
+     "MMKV",
+     "MMKVCore"
+    ],
+    "objc_prefix": [
+     "MMKV"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MMKV",
+    "https://github.com/Tencent/MMKV"
+   ]
+  },
+  {
+   "id": "mobilevlckit",
+   "name": "MobileVLCKit (libVLC)",
+   "vendor": "VideoLAN",
+   "category": "media",
+   "purpose_zh": "VLC 媒体播放引擎(MobileVLCKit)",
+   "purpose_en": "VLC media playback engine (MobileVLCKit)",
+   "tags": [],
+   "homepage": "https://code.videolan.org/videolan/VLCKit",
+   "match": {
+    "framework": [
+     "MobileVLCKit",
+     "VLCKit"
+    ],
+    "objc_prefix": [
+     "VLCMediaPlayer"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MobileVLCKit",
+    "https://github.com/videolan/vlckit"
+   ]
+  },
+  {
+   "id": "moengage",
+   "name": "MoEngage",
+   "vendor": "MoEngage",
+   "category": "push",
+   "purpose_zh": "MoEngage 推送与用户互动 SDK",
+   "purpose_en": "MoEngage push and engagement SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://www.moengage.com",
+   "match": {
+    "framework": [
+     "MoEngageSDK",
+     "MoEngageCore",
+     "MoEngageInApps",
+     "MoEngageCards",
+     "MoEngage*"
+    ],
+    "objc_prefix": [
+     "MoEngageSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MoEngage-iOS-SDK"
+   ]
+  },
+  {
+   "id": "moloco",
+   "name": "Moloco SDK",
+   "vendor": "Moloco",
+   "category": "ads",
+   "purpose_zh": "Moloco 广告 SDK",
+   "purpose_en": "Moloco ads SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.moloco.com",
+   "match": {
+    "bundle": [
+     "MolocoSDK.bundle"
+    ],
+    "framework": [
+     "MolocoSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/MolocoSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "mono",
+   "name": "Mono runtime",
+   "vendor": "Mono Project / Microsoft",
+   "category": "engine",
+   "purpose_zh": "Mono .NET 运行时",
+   "purpose_en": "Mono .NET runtime",
+   "tags": [],
+   "homepage": "https://www.mono-project.com/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://www.mono-project.com/"
+   ]
+  },
+  {
+   "id": "moonsharp",
+   "name": "MoonSharp",
+   "vendor": "Marco Mastropaolo",
+   "category": "hotfix",
+   "purpose_zh": "MoonSharp:纯 C# 的 Lua 解释器",
+   "purpose_en": "MoonSharp, Lua interpreter written in C#",
+   "tags": [],
+   "homepage": "https://www.moonsharp.org",
+   "match": {
+    "namespace": [
+     "MoonSharp.Interpreter"
+    ]
+   },
+   "sources": [
+    "https://github.com/moonsharp-devs/moonsharp"
+   ]
+  },
+  {
+   "id": "moya",
+   "name": "Moya",
+   "vendor": "Moya",
+   "category": "network",
+   "purpose_zh": "Moya:基于 Alamofire 的 Swift 网络抽象层",
+   "purpose_en": "Moya, network abstraction layer over Alamofire",
+   "tags": [],
+   "homepage": "https://github.com/Moya/Moya",
+   "match": {
+    "framework": [
+     "Moya"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Moya"
+   ]
+  },
+  {
+   "id": "mruby",
+   "name": "mruby",
+   "vendor": "mruby developers",
+   "category": "hotfix",
+   "purpose_zh": "mruby 轻量 Ruby 实现",
+   "purpose_en": "mruby lightweight Ruby implementation",
+   "tags": [],
+   "homepage": "https://mruby.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://mruby.org/"
+   ]
+  },
+  {
+   "id": "nanopb",
+   "name": "nanopb",
+   "vendor": "nanopb (Petteri Aimonen)",
+   "category": "storage",
+   "purpose_zh": "nanopb 轻量 Protocol Buffers 实现(C)",
+   "purpose_en": "nanopb, small-footprint Protocol Buffers in C",
+   "tags": [],
+   "homepage": "https://github.com/nanopb/nanopb",
+   "match": {
+    "bundle": [
+     "nanopb_Privacy.bundle"
+    ],
+    "framework": [
+     "nanopb"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/nanopb",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "netease_im",
+   "name": "NetEase IM / NERtc",
+   "vendor": "NetEase (网易云信)",
+   "category": "media",
+   "purpose_zh": "网易云信即时通讯与音视频 SDK",
+   "purpose_en": "NetEase Cloud Communication IM and RTC SDK",
+   "tags": [],
+   "homepage": "https://yunxin.163.com",
+   "match": {
+    "framework": [
+     "NIMSDK",
+     "NERtcSDK"
+    ],
+    "objc_prefix": [
+     "NIMSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/NERtcSDK",
+    "https://cocoapods.org/pods/NIMSDK"
+   ]
+  },
+  {
+   "id": "netease_yidun",
+   "name": "NetEase Yidun (网易易盾)",
+   "vendor": "NetEase (网易易盾)",
+   "category": "security",
+   "purpose_zh": "网易易盾(验证码、一键登录、活体检测等安全服务)",
+   "purpose_en": "NetEase Yidun security services (captcha, one-tap login, liveness detection)",
+   "tags": [],
+   "homepage": "https://dun.163.com",
+   "match": {
+    "framework": [
+     "NTESVerifyCode",
+     "NTESQuickPass"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/NTESQuickPass",
+    "https://cocoapods.org/pods/NTESVerifyCode"
+   ]
+  },
+  {
+   "id": "newrelic",
+   "name": "New Relic Mobile",
+   "vendor": "New Relic",
+   "category": "analytics",
+   "purpose_zh": "New Relic 移动端性能监控",
+   "purpose_en": "New Relic mobile performance monitoring",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "http://newrelic.com/mobile-monitoring",
+   "match": {
+    "framework": [
+     "NewRelic"
+    ],
+    "objc_prefix": [
+     "NewRelic"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/NewRelicAgent"
+   ]
+  },
+  {
+   "id": "newtonsoft_json",
+   "name": "Newtonsoft.Json (Json.NET)",
+   "vendor": "James Newton-King",
+   "category": "other",
+   "purpose_zh": "Json.NET:.NET JSON 序列化库",
+   "purpose_en": "Json.NET, JSON serialization library for .NET",
+   "tags": [],
+   "homepage": "https://www.newtonsoft.com/json",
+   "match": {
+    "namespace": [
+     "Newtonsoft.Json"
+    ]
+   },
+   "sources": [
+    "https://github.com/JamesNK/Newtonsoft.Json"
+   ]
+  },
+  {
+   "id": "onesignal",
+   "name": "OneSignal",
+   "vendor": "OneSignal",
+   "category": "push",
+   "purpose_zh": "OneSignal 推送与消息 SDK",
+   "purpose_en": "OneSignal push and messaging SDK",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://onesignal.com",
+   "match": {
+    "framework": [
+     "OneSignal*",
+     "OneSignalFramework",
+     "OneSignalCore",
+     "OneSignalNotifications"
+    ],
+    "objc_prefix": [
+     "OneSignal"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/OneSignalXCFramework"
+   ]
+  },
+  {
+   "id": "openal",
+   "name": "OpenAL / OpenAL Soft",
+   "vendor": "OpenAL Soft",
+   "category": "media",
+   "purpose_zh": "OpenAL 3D 音频 API",
+   "purpose_en": "OpenAL 3D audio API",
+   "tags": [],
+   "homepage": "https://openal-soft.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://openal-soft.org/"
+   ]
+  },
+  {
+   "id": "openssl",
+   "name": "OpenSSL",
+   "vendor": "OpenSSL Project",
+   "category": "security",
+   "purpose_zh": "OpenSSL:TLS 与密码学库",
+   "purpose_en": "OpenSSL, TLS and cryptography library",
+   "tags": [],
+   "homepage": "https://www.openssl.org",
+   "match": {
+    "framework": [
+     "OpenSSL",
+     "openssl"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/OpenSSL-Universal"
+   ]
+  },
+  {
+   "id": "pangle",
+   "name": "Pangle (TikTok Audience Network)",
+   "vendor": "ByteDance",
+   "category": "ads",
+   "purpose_zh": "Pangle(海外版穿山甲)广告 SDK",
+   "purpose_en": "Pangle (international Bytedance ad network) SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.pangleglobal.com/",
+   "match": {
+    "bundle": [
+     "PAGAdSDK.bundle",
+     "AdsGlobalSDK.bundle"
+    ],
+    "framework": [
+     "PAGAdSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Ads-Global",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "paypal",
+   "name": "PayPal SDK",
+   "vendor": "PayPal",
+   "category": "payment",
+   "purpose_zh": "PayPal 移动支付 SDK",
+   "purpose_en": "PayPal mobile payments SDK",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://developer.paypal.com/",
+   "match": {
+    "framework": [
+     "PayPalCheckout",
+     "PayPalMobile",
+     "PayPalNativePayments"
+    ],
+    "objc_prefix": [
+     "PayPalMobile"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/PayPal-iOS-SDK",
+    "https://cocoapods.org/pods/PayPalCheckout",
+    "https://github.com/paypal/paypal-ios"
+   ]
+  },
+  {
+   "id": "physx",
+   "name": "NVIDIA PhysX",
+   "vendor": "NVIDIA",
+   "category": "engine",
+   "purpose_zh": "PhysX 物理引擎",
+   "purpose_en": "NVIDIA PhysX physics engine",
+   "tags": [],
+   "homepage": "https://github.com/NVIDIA-Omniverse/PhysX",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://github.com/NVIDIA-Omniverse/PhysX"
+   ]
+  },
+  {
+   "id": "plcrashreporter",
+   "name": "PLCrashReporter",
+   "vendor": "Microsoft (PLCrashReporter)",
+   "category": "crash",
+   "purpose_zh": "PLCrashReporter 开源崩溃捕获库",
+   "purpose_en": "PLCrashReporter open-source crash reporting library",
+   "tags": [],
+   "homepage": "https://github.com/microsoft/plcrashreporter",
+   "match": {
+    "framework": [
+     "CrashReporter"
+    ],
+    "objc_prefix": [
+     "PLCrashReporter"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/PLCrashReporter"
+   ]
+  },
+  {
+   "id": "protobuf",
+   "name": "Protocol Buffers (Objective-C)",
+   "vendor": "Google",
+   "category": "storage",
+   "purpose_zh": "Protocol Buffers Objective-C 运行库",
+   "purpose_en": "Protocol Buffers Objective-C runtime",
+   "tags": [],
+   "homepage": "https://github.com/protocolbuffers/protobuf",
+   "match": {
+    "framework": [
+     "Protobuf"
+    ],
+    "objc_prefix": [
+     "GPBMessage"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Protobuf",
+    "https://github.com/protocolbuffers/protobuf"
+   ]
+  },
+  {
+   "id": "puerts",
+   "name": "puerts",
+   "vendor": "Tencent",
+   "category": "hotfix",
+   "purpose_zh": "puerts:Unity/Unreal 的 TypeScript/JavaScript 脚本方案",
+   "purpose_en": "puerts, TypeScript/JavaScript scripting for Unity and Unreal",
+   "tags": [],
+   "homepage": "https://github.com/Tencent/puerts",
+   "match": {
+    "namespace": [
+     "Puerts"
+    ]
+   },
+   "sources": [
+    "https://github.com/Tencent/puerts"
+   ]
+  },
+  {
+   "id": "qiniu_pili",
+   "name": "Qiniu PLPlayerKit",
+   "vendor": "Qiniu (七牛云)",
+   "category": "media",
+   "purpose_zh": "七牛云直播/点播播放 SDK",
+   "purpose_en": "Qiniu live/VOD player SDK",
+   "tags": [],
+   "homepage": "https://developer.qiniu.com/pili",
+   "match": {
+    "framework": [
+     "PLPlayerKit"
+    ],
+    "objc_prefix": [
+     "PLPlayer"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/PLPlayerKit"
+   ]
+  },
+  {
+   "id": "qonversion",
+   "name": "Qonversion",
+   "vendor": "Qonversion",
+   "category": "payment",
+   "purpose_zh": "Qonversion 订阅与应用内购买 SDK",
+   "purpose_en": "Qonversion subscription and in-app purchase SDK",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://qonversion.io",
+   "match": {
+    "bundle": [
+     "Qonversion.bundle"
+    ],
+    "framework": [
+     "Qonversion"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Qonversion"
+   ]
+  },
+  {
+   "id": "quickjs",
+   "name": "QuickJS",
+   "vendor": "Fabrice Bellard",
+   "category": "hotfix",
+   "purpose_zh": "QuickJS 嵌入式 JavaScript 引擎",
+   "purpose_en": "QuickJS embeddable JavaScript engine",
+   "tags": [],
+   "homepage": "https://bellard.org/quickjs/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://bellard.org/quickjs/"
+   ]
+  },
+  {
+   "id": "reachability",
+   "name": "Reachability",
+   "vendor": "Tony Million",
+   "category": "network",
+   "purpose_zh": "Reachability:网络可达性检测",
+   "purpose_en": "Reachability, network reachability monitoring",
+   "tags": [],
+   "homepage": "https://github.com/tonymillion/Reachability",
+   "match": {
+    "framework": [
+     "Reachability"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Reachability"
+   ]
+  },
+  {
+   "id": "react_native",
+   "name": "React Native",
+   "vendor": "Meta",
+   "category": "engine",
+   "purpose_zh": "React Native 跨平台应用框架",
+   "purpose_en": "React Native cross-platform app framework",
+   "tags": [],
+   "homepage": "https://reactnative.dev",
+   "match": {
+    "file": [
+     "main.jsbundle"
+    ]
+   },
+   "sources": [
+    "https://www.mintlify.com/facebook/react-native/cli/bundle"
+   ]
+  },
+  {
+   "id": "react_native_codepush",
+   "name": "React Native CodePush",
+   "vendor": "Microsoft",
+   "category": "hotfix",
+   "purpose_zh": "CodePush:React Native 的 JS 包热更新",
+   "purpose_en": "CodePush, over-the-air JS bundle updates for React Native",
+   "tags": [],
+   "homepage": "https://github.com/microsoft/react-native-code-push",
+   "match": {
+    "objc_prefix": [
+     "CodePush"
+    ]
+   },
+   "sources": [
+    "https://github.com/microsoft/react-native-code-push"
+   ]
+  },
+  {
+   "id": "reactivecocoa",
+   "name": "ReactiveCocoa",
+   "vendor": "ReactiveCocoa",
+   "category": "other",
+   "purpose_zh": "ReactiveCocoa / ReactiveObjC 响应式编程",
+   "purpose_en": "ReactiveCocoa / ReactiveObjC reactive programming",
+   "tags": [],
+   "homepage": "https://github.com/ReactiveCocoa/ReactiveObjC",
+   "match": {
+    "framework": [
+     "ReactiveObjC",
+     "ReactiveCocoa",
+     "ReactiveSwift"
+    ],
+    "objc_prefix": [
+     "RACSignal"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/ReactiveObjC",
+    "https://github.com/ReactiveCocoa/ReactiveObjC",
+    "https://github.com/ReactiveCocoa/ReactiveSwift"
+   ]
+  },
+  {
+   "id": "realm",
+   "name": "Realm",
+   "vendor": "MongoDB (Realm)",
+   "category": "storage",
+   "purpose_zh": "Realm 移动端数据库",
+   "purpose_en": "Realm mobile database",
+   "tags": [],
+   "homepage": "https://realm.io",
+   "match": {
+    "framework": [
+     "Realm",
+     "RealmSwift"
+    ],
+    "objc_prefix": [
+     "RLMRealm",
+     "RLMObject"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Realm",
+    "https://cocoapods.org/pods/RealmSwift"
+   ]
+  },
+  {
+   "id": "recaptcha_enterprise",
+   "name": "reCAPTCHA Enterprise",
+   "vendor": "Google",
+   "category": "security",
+   "purpose_zh": "reCAPTCHA Enterprise(风险评估与防滥用)",
+   "purpose_en": "reCAPTCHA Enterprise (risk assessment and abuse prevention)",
+   "tags": [],
+   "homepage": "https://cloud.google.com/recaptcha-enterprise",
+   "match": {
+    "framework": [
+     "RecaptchaEnterprise",
+     "RecaptchaInterop"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/RecaptchaEnterprise"
+   ]
+  },
+  {
+   "id": "revenuecat",
+   "name": "RevenueCat",
+   "vendor": "RevenueCat",
+   "category": "payment",
+   "purpose_zh": "RevenueCat 订阅与应用内购买后端服务 SDK",
+   "purpose_en": "RevenueCat subscription and in-app purchase backend SDK",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://www.revenuecat.com",
+   "match": {
+    "bundle": [
+     "RevenueCat.bundle"
+    ],
+    "framework": [
+     "RevenueCat",
+     "Purchases",
+     "RevenueCatUI"
+    ],
+    "objc_prefix": [
+     "RCPurchases"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Purchases",
+    "https://cocoapods.org/pods/RevenueCat",
+    "https://github.com/RevenueCat/purchases-ios"
+   ]
+  },
+  {
+   "id": "rongcloud",
+   "name": "RongCloud IM",
+   "vendor": "RongCloud (融云)",
+   "category": "media",
+   "purpose_zh": "融云即时通讯 SDK",
+   "purpose_en": "RongCloud instant messaging SDK",
+   "tags": [],
+   "homepage": "https://www.rongcloud.cn",
+   "match": {
+    "framework": [
+     "RongIMLib",
+     "RongIMKit",
+     "RongChatRoom"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/RongCloudIM"
+   ]
+  },
+  {
+   "id": "rxswift",
+   "name": "RxSwift / RxCocoa",
+   "vendor": "ReactiveX",
+   "category": "other",
+   "purpose_zh": "RxSwift/RxCocoa:Swift 响应式编程",
+   "purpose_en": "RxSwift/RxCocoa, reactive programming for Swift",
+   "tags": [],
+   "homepage": "https://github.com/ReactiveX/RxSwift",
+   "match": {
+    "framework": [
+     "RxSwift",
+     "RxCocoa",
+     "RxRelay"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/RxCocoa",
+    "https://cocoapods.org/pods/RxSwift"
+   ]
+  },
+  {
+   "id": "sdl",
+   "name": "SDL",
+   "vendor": "SDL (libsdl.org)",
+   "category": "engine",
+   "purpose_zh": "SDL 跨平台多媒体与窗口库",
+   "purpose_en": "SDL cross-platform multimedia and windowing library",
+   "tags": [],
+   "homepage": "https://www.libsdl.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://www.libsdl.org/"
+   ]
+  },
+  {
+   "id": "sdwebimage",
+   "name": "SDWebImage",
+   "vendor": "SDWebImage",
+   "category": "storage",
+   "purpose_zh": "SDWebImage:异步图片下载与缓存",
+   "purpose_en": "SDWebImage, asynchronous image downloading and caching",
+   "tags": [],
+   "homepage": "https://github.com/SDWebImage/SDWebImage",
+   "match": {
+    "framework": [
+     "SDWebImage",
+     "SDWebImageWebPCoder",
+     "SDWebImageSwiftUI"
+    ],
+    "objc_prefix": [
+     "SDWebImageManager",
+     "SDImageCache"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SDWebImage",
+    "https://github.com/SDWebImage/SDWebImage",
+    "https://github.com/SDWebImage/SDWebImageSwiftUI",
+    "https://github.com/SDWebImage/SDWebImageWebPCoder"
+   ]
+  },
+  {
+   "id": "segment",
+   "name": "Segment Analytics",
+   "vendor": "Twilio Segment",
+   "category": "analytics",
+   "purpose_zh": "Segment 客户数据采集 SDK",
+   "purpose_en": "Segment customer data collection SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://segment.com",
+   "match": {
+    "framework": [
+     "Segment"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Analytics"
+   ]
+  },
+  {
+   "id": "sensors",
+   "name": "Sensors Analytics (神策)",
+   "vendor": "Sensors Data (神策数据)",
+   "category": "analytics",
+   "purpose_zh": "神策分析 SDK(用户行为埋点)",
+   "purpose_en": "Sensors Analytics SDK (behavior tracking)",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "http://www.sensorsdata.cn",
+   "match": {
+    "bundle": [
+     "SensorsAnalyticsSDK.bundle"
+    ],
+    "framework": [
+     "SensorsAnalyticsSDK"
+    ],
+    "objc_prefix": [
+     "SensorsAnalyticsSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SensorsAnalyticsSDK"
+   ]
+  },
+  {
+   "id": "sentry",
+   "name": "Sentry",
+   "vendor": "Sentry",
+   "category": "crash",
+   "purpose_zh": "Sentry 崩溃与性能监控",
+   "purpose_en": "Sentry crash and performance monitoring",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://sentry.io",
+   "match": {
+    "framework": [
+     "Sentry"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Sentry"
+   ]
+  },
+  {
+   "id": "singular",
+   "name": "Singular",
+   "vendor": "Singular Labs",
+   "category": "analytics",
+   "purpose_zh": "Singular 移动归因与营销分析 SDK",
+   "purpose_en": "Singular mobile attribution and marketing analytics SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://www.singular.net/",
+   "match": {
+    "bundle": [
+     "Singular.bundle"
+    ],
+    "framework": [
+     "Singular"
+    ],
+    "objc_prefix": [
+     "Singular"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Singular-SDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "slua",
+   "name": "SLua",
+   "vendor": "pangweiwei",
+   "category": "hotfix",
+   "purpose_zh": "SLua:Unity 的 Lua 脚本绑定",
+   "purpose_en": "SLua, Lua scripting binding for Unity",
+   "tags": [],
+   "homepage": "https://github.com/pangweiwei/slua",
+   "match": {
+    "namespace": [
+     "SLua"
+    ]
+   },
+   "sources": [
+    "https://github.com/pangweiwei/slua"
+   ]
+  },
+  {
+   "id": "snapkit",
+   "name": "SnapKit",
+   "vendor": "SnapKit",
+   "category": "ui",
+   "purpose_zh": "SnapKit:Swift Auto Layout DSL",
+   "purpose_en": "SnapKit, Swift Auto Layout DSL",
+   "tags": [],
+   "homepage": "https://github.com/SnapKit/SnapKit",
+   "match": {
+    "framework": [
+     "SnapKit"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SnapKit"
+   ]
+  },
+  {
+   "id": "socketio",
+   "name": "Socket.IO client (Swift)",
+   "vendor": "Socket.IO",
+   "category": "network",
+   "purpose_zh": "Socket.IO 客户端(Swift)",
+   "purpose_en": "Socket.IO client for Swift",
+   "tags": [],
+   "homepage": "https://github.com/socketio/socket.io-client-swift",
+   "match": {
+    "framework": [
+     "SocketIO"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Socket.IO-Client-Swift"
+   ]
+  },
+  {
+   "id": "socketrocket",
+   "name": "SocketRocket",
+   "vendor": "Facebook / Square",
+   "category": "network",
+   "purpose_zh": "SocketRocket:Objective-C WebSocket 客户端",
+   "purpose_en": "SocketRocket, Objective-C WebSocket client",
+   "tags": [],
+   "homepage": "https://github.com/facebookincubator/SocketRocket",
+   "match": {
+    "framework": [
+     "SocketRocket"
+    ],
+    "objc_prefix": [
+     "SRWebSocket"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SocketRocket",
+    "https://github.com/facebookincubator/SocketRocket"
+   ]
+  },
+  {
+   "id": "solarengine",
+   "name": "SolarEngine",
+   "vendor": "SolarEngine (Solar Engine)",
+   "category": "analytics",
+   "purpose_zh": "SolarEngine 归因与数据分析 SDK",
+   "purpose_en": "SolarEngine attribution and analytics SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://www.solar-engine.com",
+   "match": {
+    "bundle": [
+     "SolarEngineSDK.bundle"
+    ],
+    "framework": [
+     "SolarEngineSDK"
+    ],
+    "objc_prefix": [
+     "SolarEngineSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SolarEngineSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "spine",
+   "name": "Spine runtimes",
+   "vendor": "Esoteric Software",
+   "category": "engine",
+   "purpose_zh": "Spine 2D 骨骼动画运行时",
+   "purpose_en": "Spine 2D skeletal animation runtimes",
+   "tags": [],
+   "homepage": "http://esotericsoftware.com",
+   "match": {
+    "namespace": [
+     "Spine",
+     "Spine.Unity"
+    ]
+   },
+   "sources": [
+    "https://github.com/EsotericSoftware/spine-runtimes"
+   ]
+  },
+  {
+   "id": "sqlcipher",
+   "name": "SQLCipher",
+   "vendor": "Zetetic",
+   "category": "storage",
+   "purpose_zh": "SQLCipher:加密 SQLite 数据库",
+   "purpose_en": "SQLCipher, encrypted SQLite database",
+   "tags": [
+    "security"
+   ],
+   "homepage": "https://www.zetetic.net/sqlcipher/",
+   "match": {
+    "framework": [
+     "SQLCipher"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SQLCipher"
+   ]
+  },
+  {
+   "id": "squirrel",
+   "name": "Squirrel",
+   "vendor": "Alberto Demichelis",
+   "category": "hotfix",
+   "purpose_zh": "Squirrel 脚本语言虚拟机",
+   "purpose_en": "Squirrel scripting language VM",
+   "tags": [],
+   "homepage": "http://www.squirrel-lang.org/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "http://www.squirrel-lang.org/"
+   ]
+  },
+  {
+   "id": "ssziparchive",
+   "name": "SSZipArchive (ZipArchive)",
+   "vendor": "ZipArchive",
+   "category": "other",
+   "purpose_zh": "SSZipArchive:ZIP 压缩/解压",
+   "purpose_en": "SSZipArchive, ZIP compression/extraction",
+   "tags": [],
+   "homepage": "https://github.com/ZipArchive/ZipArchive",
+   "match": {
+    "framework": [
+     "SSZipArchive"
+    ],
+    "objc_prefix": [
+     "SSZipArchive"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SSZipArchive"
+   ]
+  },
+  {
+   "id": "starscream",
+   "name": "Starscream",
+   "vendor": "Dalton Cherry",
+   "category": "network",
+   "purpose_zh": "Starscream:Swift WebSocket 客户端",
+   "purpose_en": "Starscream, Swift WebSocket client",
+   "tags": [],
+   "homepage": "https://github.com/daltoniam/Starscream",
+   "match": {
+    "framework": [
+     "Starscream"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Starscream"
+   ]
+  },
+  {
+   "id": "stripe",
+   "name": "Stripe iOS SDK",
+   "vendor": "Stripe",
+   "category": "payment",
+   "purpose_zh": "Stripe 支付 SDK(银行卡、Apple Pay、PaymentSheet)",
+   "purpose_en": "Stripe payments SDK (cards, Apple Pay, PaymentSheet)",
+   "tags": [
+    "payment"
+   ],
+   "homepage": "https://stripe.com/docs/mobile/ios",
+   "match": {
+    "framework": [
+     "Stripe",
+     "StripeCore",
+     "StripeApplePay",
+     "StripePaymentSheet",
+     "StripePayments",
+     "StripePaymentsUI",
+     "StripeUICore",
+     "StripeCameraCore"
+    ],
+    "objc_prefix": [
+     "STPAPIClient"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Stripe",
+    "https://cocoapods.org/pods/StripeApplePay",
+    "https://cocoapods.org/pods/StripePaymentSheet",
+    "https://github.com/stripe/stripe-ios"
+   ]
+  },
+  {
+   "id": "svgaplayer",
+   "name": "SVGAPlayer",
+   "vendor": "YY (SVGA)",
+   "category": "ui",
+   "purpose_zh": "SVGAPlayer:SVGA 动画播放",
+   "purpose_en": "SVGAPlayer, SVGA animation player",
+   "tags": [],
+   "homepage": "https://github.com/svga/SVGAPlayer-iOS",
+   "match": {
+    "framework": [
+     "SVGAPlayer"
+    ],
+    "objc_prefix": [
+     "SVGAPlayer",
+     "SVGAParser"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SVGAPlayer",
+    "https://github.com/svga/SVGAPlayer-iOS"
+   ]
+  },
+  {
+   "id": "svprogresshud",
+   "name": "SVProgressHUD",
+   "vendor": "SVProgressHUD",
+   "category": "ui",
+   "purpose_zh": "SVProgressHUD:加载提示 HUD",
+   "purpose_en": "SVProgressHUD, loading HUD",
+   "tags": [],
+   "homepage": "https://github.com/SVProgressHUD/SVProgressHUD",
+   "match": {
+    "bundle": [
+     "SVProgressHUD.bundle"
+    ],
+    "framework": [
+     "SVProgressHUD"
+    ],
+    "objc_prefix": [
+     "SVProgressHUD"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SVProgressHUD"
+   ]
+  },
+  {
+   "id": "swift_protobuf",
+   "name": "SwiftProtobuf",
+   "vendor": "Apple",
+   "category": "storage",
+   "purpose_zh": "SwiftProtobuf:Swift 的 Protocol Buffers 运行库",
+   "purpose_en": "SwiftProtobuf, Protocol Buffers runtime for Swift",
+   "tags": [],
+   "homepage": "https://github.com/apple/swift-protobuf",
+   "match": {
+    "framework": [
+     "SwiftProtobuf"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SwiftProtobuf"
+   ]
+  },
+  {
+   "id": "swift_runtime",
+   "name": "Swift runtime libraries",
+   "vendor": "Apple",
+   "category": "system",
+   "purpose_zh": "Swift 运行时动态库(libswift*,随 App 内嵌或由系统提供)",
+   "purpose_en": "Swift runtime dylibs (libswift*, bundled with the app or provided by the OS)",
+   "tags": [],
+   "homepage": "https://www.swift.org",
+   "match": {
+    "dylib": [
+     "libswift*.dylib"
+    ]
+   },
+   "sources": [
+    "https://www.swift.org/blog/abi-stability-and-more/",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "swiftyjson",
+   "name": "SwiftyJSON",
+   "vendor": "SwiftyJSON",
+   "category": "other",
+   "purpose_zh": "SwiftyJSON:Swift JSON 解析",
+   "purpose_en": "SwiftyJSON, JSON parsing for Swift",
+   "tags": [],
+   "homepage": "https://github.com/SwiftyJSON/SwiftyJSON",
+   "match": {
+    "framework": [
+     "SwiftyJSON"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/SwiftyJSON"
+   ]
+  },
+  {
+   "id": "talkingdata",
+   "name": "TalkingData",
+   "vendor": "TalkingData",
+   "category": "analytics",
+   "purpose_zh": "TalkingData 移动应用统计分析 SDK",
+   "purpose_en": "TalkingData mobile analytics SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://www.talkingdata.com",
+   "match": {
+    "objc_prefix": [
+     "TalkingData"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TalkingData"
+   ]
+  },
+  {
+   "id": "tapsdk",
+   "name": "TapTap SDK (TapSDK)",
+   "vendor": "TapTap (Xindong Network)",
+   "category": "social",
+   "purpose_zh": "TapTap 开发者服务 SDK(登录、动态、合规认证等)",
+   "purpose_en": "TapTap developer-services SDK (login, moments, compliance, etc.)",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://developer.taptap.cn/",
+   "match": {
+    "bundle": [
+     "TapCommonResource.bundle",
+     "TapLoginResource.bundle",
+     "TapMomentResource.bundle",
+     "TapTapLoginResource.bundle",
+     "TapTapMomentResource.bundle",
+     "TapTapComplianceResource.bundle"
+    ],
+    "framework": [
+     "TapTapLoginSDK",
+     "TapTapCoreSDK",
+     "TapTapMomentSDK",
+     "TapTapSDKBridgeCore",
+     "TapTapComplianceSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TapTapSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "tencent_open_sdk",
+   "name": "Tencent Open SDK (QQ/TIM)",
+   "vendor": "Tencent",
+   "category": "social",
+   "purpose_zh": "腾讯开放平台 SDK(QQ 登录与分享)",
+   "purpose_en": "Tencent Open SDK (QQ login and sharing)",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://wiki.connect.qq.com/",
+   "match": {
+    "framework": [
+     "TencentOpenAPI"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TencentOpenAPI"
+   ]
+  },
+  {
+   "id": "tencent_trtc",
+   "name": "Tencent TRTC / LiteAV",
+   "vendor": "Tencent Cloud",
+   "category": "media",
+   "purpose_zh": "腾讯云实时音视频(TRTC)与 LiteAV 直播/点播 SDK",
+   "purpose_en": "Tencent Cloud TRTC and LiteAV live/VOD SDK",
+   "tags": [],
+   "homepage": "https://cloud.tencent.com/product/trtc",
+   "match": {
+    "framework": [
+     "TXLiteAVSDK_TRTC",
+     "TXLiteAVSDK_Professional",
+     "TXLiteAVSDK_*"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TXLiteAVSDK_Professional",
+    "https://cocoapods.org/pods/TXLiteAVSDK_TRTC"
+   ]
+  },
+  {
+   "id": "tenjin",
+   "name": "Tenjin",
+   "vendor": "Tenjin",
+   "category": "analytics",
+   "purpose_zh": "Tenjin 移动归因 SDK",
+   "purpose_en": "Tenjin mobile attribution SDK",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://tenjin.com",
+   "match": {
+    "framework": [
+     "TenjinSDK"
+    ],
+    "objc_prefix": [
+     "TenjinSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TenjinSDK"
+   ]
+  },
+  {
+   "id": "texture",
+   "name": "Texture (AsyncDisplayKit)",
+   "vendor": "Texture Group (Pinterest)",
+   "category": "ui",
+   "purpose_zh": "Texture:异步 UI 框架(AsyncDisplayKit)",
+   "purpose_en": "Texture, asynchronous UI framework (AsyncDisplayKit)",
+   "tags": [],
+   "homepage": "https://github.com/TextureGroup/Texture",
+   "match": {
+    "framework": [
+     "AsyncDisplayKit",
+     "Texture"
+    ],
+    "objc_prefix": [
+     "ASDisplayNode",
+     "ASButtonNode"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Texture",
+    "https://github.com/TextureGroup/Texture"
+   ]
+  },
+  {
+   "id": "tiktok_business",
+   "name": "TikTok Business SDK",
+   "vendor": "TikTok / ByteDance",
+   "category": "analytics",
+   "purpose_zh": "TikTok 营销转化事件归因 SDK",
+   "purpose_en": "TikTok Business SDK for app event attribution",
+   "tags": [
+    "analytics",
+    "attribution",
+    "tracking"
+   ],
+   "homepage": "https://business-api.tiktok.com/",
+   "match": {
+    "bundle": [
+     "TikTokBusinessSDK.bundle"
+    ],
+    "framework": [
+     "TikTokBusinessSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/Ads-Global",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "tolua",
+   "name": "ToLua#",
+   "vendor": "topameng",
+   "category": "hotfix",
+   "purpose_zh": "ToLua#:Unity 的 Lua 绑定与脚本方案",
+   "purpose_en": "ToLua#, Lua binding and scripting for Unity",
+   "tags": [],
+   "homepage": "https://github.com/topameng/tolua",
+   "match": {
+    "namespace": [
+     "LuaInterface"
+    ]
+   },
+   "sources": [
+    "https://github.com/topameng/tolua"
+   ]
+  },
+  {
+   "id": "tradplus",
+   "name": "TradPlus",
+   "vendor": "TradPlus",
+   "category": "ads",
+   "purpose_zh": "TradPlus 广告聚合(mediation)SDK",
+   "purpose_en": "TradPlus ad mediation SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://www.tradplus.com",
+   "match": {
+    "bundle": [
+     "TradPlusAds.bundle",
+     "TradPlusADX.bundle"
+    ],
+    "framework": [
+     "TradPlusAds",
+     "TradPlusADX"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TradPlusAdSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "twilio_video",
+   "name": "Twilio Video",
+   "vendor": "Twilio",
+   "category": "media",
+   "purpose_zh": "Twilio 实时视频 SDK",
+   "purpose_en": "Twilio real-time video SDK",
+   "tags": [],
+   "homepage": "https://www.twilio.com/video",
+   "match": {
+    "framework": [
+     "TwilioVideo"
+    ],
+    "objc_prefix": [
+     "TwilioVideo"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TwilioVideo"
+   ]
+  },
+  {
+   "id": "umeng",
+   "name": "Umeng+ (UMCommon/Analytics/APM)",
+   "vendor": "Alibaba Umeng (友盟)",
+   "category": "analytics",
+   "purpose_zh": "友盟+ 统计、设备标识与应用性能监控 SDK",
+   "purpose_en": "Umeng+ analytics, device identity and APM SDK",
+   "tags": [
+    "analytics",
+    "tracking"
+   ],
+   "homepage": "https://developer.umeng.com",
+   "match": {
+    "framework": [
+     "UMCommon",
+     "UMDevice",
+     "UMAPM"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/UMAPM",
+    "https://cocoapods.org/pods/UMCommon",
+    "https://cocoapods.org/pods/UMDevice"
+   ]
+  },
+  {
+   "id": "umeng_push",
+   "name": "Umeng+ Push",
+   "vendor": "Alibaba Umeng (友盟)",
+   "category": "push",
+   "purpose_zh": "友盟+ 消息推送 SDK",
+   "purpose_en": "Umeng+ push notification SDK",
+   "tags": [
+    "analytics"
+   ],
+   "homepage": "https://developer.umeng.com/docs/66632/detail/66734",
+   "match": {
+    "bundle": [
+     "UMPushResource.bundle"
+    ],
+    "framework": [
+     "UMPush"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/UMPush",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "unitask",
+   "name": "UniTask",
+   "vendor": "Cysharp",
+   "category": "other",
+   "purpose_zh": "UniTask:Unity 的高性能 async/await 库",
+   "purpose_en": "UniTask, allocation-free async/await for Unity",
+   "tags": [],
+   "homepage": "https://github.com/Cysharp/UniTask",
+   "match": {
+    "namespace": [
+     "Cysharp.Threading.Tasks"
+    ]
+   },
+   "sources": [
+    "https://github.com/Cysharp/UniTask"
+   ]
+  },
+  {
+   "id": "unity",
+   "name": "Unity (UnityFramework)",
+   "vendor": "Unity Technologies",
+   "category": "engine",
+   "purpose_zh": "Unity 游戏引擎运行时(iOS 以 UnityFramework 形式内嵌)",
+   "purpose_en": "Unity game engine runtime (embedded as UnityFramework on iOS)",
+   "tags": [],
+   "homepage": "https://unity.com",
+   "match": {
+    "file": [
+     "Data/Managed/Metadata/global-metadata.dat",
+     "Data/Resources/unity default resources"
+    ],
+    "framework": [
+     "UnityFramework"
+    ]
+   },
+   "sources": [
+    "https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html",
+    "https://github.com/Perfare/Il2CppDumper",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "unity_ads",
+   "name": "Unity Ads",
+   "vendor": "Unity Technologies",
+   "category": "ads",
+   "purpose_zh": "Unity Ads 广告 SDK(激励视频、插屏、横幅)",
+   "purpose_en": "Unity Ads SDK (rewarded, interstitial, banner ads)",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://unity.com/products/unity-ads",
+   "match": {
+    "bundle": [
+     "UnityAdsResources.bundle"
+    ],
+    "framework": [
+     "UnityAds"
+    ],
+    "objc_prefix": [
+     "UnityAds"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/UnityAds",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "v8",
+   "name": "V8",
+   "vendor": "Google",
+   "category": "hotfix",
+   "purpose_zh": "V8 JavaScript 引擎",
+   "purpose_en": "V8 JavaScript engine",
+   "tags": [],
+   "homepage": "https://v8.dev/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://v8.dev/"
+   ]
+  },
+  {
+   "id": "volc_ttsdk",
+   "name": "Volcengine TTSDK (video / live player)",
+   "vendor": "ByteDance Volcengine (火山引擎)",
+   "category": "media",
+   "purpose_zh": "火山引擎音视频点播/直播播放 SDK(TTSDK 系列)",
+   "purpose_en": "Volcengine VOD/live player SDK family (TTSDK)",
+   "tags": [],
+   "homepage": "https://www.volcengine.com/product/vod",
+   "match": {
+    "bundle": [
+     "VeLive.bundle"
+    ],
+    "framework": [
+     "TTSDK*",
+     "TTFFmpeg",
+     "VolcBaseLog"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/TTSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "vungle",
+   "name": "Vungle / Liftoff Ads",
+   "vendor": "Liftoff (Vungle)",
+   "category": "ads",
+   "purpose_zh": "Vungle(Liftoff)视频广告 SDK",
+   "purpose_en": "Vungle (Liftoff) video ads SDK",
+   "tags": [
+    "ads",
+    "tracking"
+   ],
+   "homepage": "https://vungle.com/",
+   "match": {
+    "bundle": [
+     "VungleAds.bundle"
+    ],
+    "framework": [
+     "VungleAdsSDK",
+     "VungleAds"
+    ],
+    "objc_prefix": [
+     "VungleAds"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/VungleAds",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "wcdb",
+   "name": "WCDB",
+   "vendor": "Tencent",
+   "category": "storage",
+   "purpose_zh": "WCDB:腾讯 SQLite 数据库框架",
+   "purpose_en": "WCDB, Tencent SQLite database framework",
+   "tags": [],
+   "homepage": "https://github.com/Tencent/wcdb",
+   "match": {
+    "framework": [
+     "WCDB"
+    ],
+    "objc_prefix": [
+     "WCTDatabase"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/WCDB"
+   ]
+  },
+  {
+   "id": "webrtc",
+   "name": "WebRTC",
+   "vendor": "Google (WebRTC project)",
+   "category": "media",
+   "purpose_zh": "WebRTC 实时通信库",
+   "purpose_en": "WebRTC real-time communication library",
+   "tags": [],
+   "homepage": "https://webrtc.org",
+   "match": {
+    "framework": [
+     "WebRTC"
+    ],
+    "objc_prefix": [
+     "RTCPeerConnection",
+     "RTCPeerConnectionFactory"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/GoogleWebRTC",
+    "https://github.com/webrtc-sdk/webrtc"
+   ]
+  },
+  {
+   "id": "wechat_sdk",
+   "name": "WeChat Open SDK (微信开放平台)",
+   "vendor": "Tencent",
+   "category": "social",
+   "purpose_zh": "微信开放平台 SDK(微信登录、分享、微信支付)",
+   "purpose_en": "WeChat Open SDK (WeChat login, sharing, WeChat Pay)",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://developers.weixin.qq.com/doc/oplatform/Mobile_App/Access_Guide/iOS.html",
+   "match": {
+    "framework": [
+     "WechatOpenSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/WechatOpenSDK",
+    "https://cocoapods.org/pods/WechatOpenSDK-XCFramework"
+   ]
+  },
+  {
+   "id": "weibo_sdk",
+   "name": "Weibo SDK (新浪微博)",
+   "vendor": "Sina Weibo",
+   "category": "social",
+   "purpose_zh": "新浪微博开放平台 SDK(微博登录与分享)",
+   "purpose_en": "Sina Weibo SDK (login and sharing)",
+   "tags": [
+    "social"
+   ],
+   "homepage": "https://github.com/sinaweibosdk/weibo_ios_sdk",
+   "match": {
+    "bundle": [
+     "WeiboSDK.bundle",
+     "libWeiboSDK.bundle"
+    ],
+    "objc_prefix": [
+     "WeiboSDK"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/WeiboSDK",
+    "observed:real-app-store-ipa"
+   ]
+  },
+  {
+   "id": "wren",
+   "name": "Wren",
+   "vendor": "Bob Nystrom",
+   "category": "hotfix",
+   "purpose_zh": "Wren 嵌入式脚本语言",
+   "purpose_en": "Wren embeddable scripting language",
+   "tags": [],
+   "homepage": "https://wren.io/",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://wren.io/"
+   ]
+  },
+  {
+   "id": "wwise",
+   "name": "Wwise",
+   "vendor": "Audiokinetic",
+   "category": "media",
+   "purpose_zh": "Wwise 音频中间件",
+   "purpose_en": "Wwise audio middleware",
+   "tags": [],
+   "homepage": "https://en.wikipedia.org/wiki/Wwise",
+   "merge_only": true,
+   "match": {},
+   "sources": [
+    "https://en.wikipedia.org/wiki/Wwise"
+   ]
+  },
+  {
+   "id": "xlua",
+   "name": "xLua",
+   "vendor": "Tencent",
+   "category": "hotfix",
+   "purpose_zh": "xLua:Unity 的 Lua 脚本与热补丁方案",
+   "purpose_en": "xLua, Lua scripting and hotfix for Unity",
+   "tags": [],
+   "homepage": "https://github.com/Tencent/xLua",
+   "match": {
+    "namespace": [
+     "XLua"
+    ]
+   },
+   "sources": [
+    "https://github.com/Tencent/xLua"
+   ]
+  },
+  {
+   "id": "yooasset",
+   "name": "YooAsset",
+   "vendor": "Tuyoo (YooAsset)",
+   "category": "hotfix",
+   "purpose_zh": "YooAsset:Unity 资源管理与资源热更新系统",
+   "purpose_en": "YooAsset, Unity asset management and resource hot-update system",
+   "tags": [],
+   "homepage": "https://github.com/tuyoogame/YooAsset",
+   "match": {
+    "namespace": [
+     "YooAsset"
+    ]
+   },
+   "sources": [
+    "https://github.com/tuyoogame/YooAsset"
+   ]
+  },
+  {
+   "id": "yycache",
+   "name": "YYCache",
+   "vendor": "ibireme",
+   "category": "storage",
+   "purpose_zh": "YYCache:内存/磁盘缓存",
+   "purpose_en": "YYCache, memory and disk cache",
+   "tags": [],
+   "homepage": "https://github.com/ibireme/YYCache",
+   "match": {
+    "framework": [
+     "YYCache"
+    ],
+    "objc_prefix": [
+     "YYCache",
+     "YYDiskCache",
+     "YYMemoryCache"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/YYCache",
+    "https://github.com/ibireme/YYCache"
+   ]
+  },
+  {
+   "id": "yymodel",
+   "name": "YYModel",
+   "vendor": "ibireme",
+   "category": "other",
+   "purpose_zh": "YYModel:高性能 JSON 与模型互转",
+   "purpose_en": "YYModel, fast JSON/model conversion",
+   "tags": [],
+   "homepage": "https://github.com/ibireme/YYModel",
+   "match": {
+    "framework": [
+     "YYModel"
+    ],
+    "objc_prefix": [
+     "YYModel"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/YYModel"
+   ]
+  },
+  {
+   "id": "zego",
+   "name": "ZEGO Express",
+   "vendor": "ZEGO (即构)",
+   "category": "media",
+   "purpose_zh": "即构 ZEGO 实时音视频 SDK",
+   "purpose_en": "ZEGO Express real-time audio/video SDK",
+   "tags": [],
+   "homepage": "https://www.zegocloud.com",
+   "match": {
+    "framework": [
+     "ZegoExpressEngine"
+    ],
+    "objc_prefix": [
+     "ZegoExpressEngine"
+    ]
+   },
+   "sources": [
+    "https://cocoapods.org/pods/ZegoExpressEngine"
+   ]
+  }
+ ]
+}

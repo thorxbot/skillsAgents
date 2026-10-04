@@ -1,0 +1,32 @@
+{
+  "engine.cocos.variant": {
+    "title": "Cocos variant: {variant}",
+    "summary": "Cocos family variant {variant} (version hint: {version}), from file / directory layout markers.",
+    "remediation": ""
+  },
+  "engine.script.encrypted": {
+    "title": "{engine} script protection",
+    "summary": "{engine}: {total} script file(s) ({sampled} examined): {plain} plain, {bytecode} bytecode, {compressed} compressed, {suspected} suspected encrypted or obfuscated. Bytecode, compression and minification are not encryption; high entropy alone is not proof.",
+    "remediation": "Encrypted scripts need the key held by the app; this tool only reports the protection and never extracts keys or decrypts."
+  },
+  "engine.resource.encrypted": {
+    "title": "{engine} resource protection",
+    "summary": "{engine}: {sampled} resource file(s) examined; {encrypted} use a container that is encrypted by definition (e.g. CCZp), {suspected} are suspected encrypted or custom-wrapped, {plain} are standard / plain. Files whose extension does not match their content and that share a custom header indicate a custom wrapper; no vendor is asserted.",
+    "remediation": "Resource keys are held by the app; this tool only reports the protection."
+  },
+  "engine.pak.encrypted": {
+    "title": "{engine} package encryption",
+    "summary": "{engine}: {containers} resource container(s) examined, {encrypted} with an encryption flag, {unknown} could not be judged (truncated or unrecognised). A missing index-encryption flag does not prove that every entry is unencrypted.",
+    "remediation": "Encrypted packages need the AES key held by the app; this tool does not extract keys."
+  },
+  "engine.hermes": {
+    "title": "Hermes bytecode",
+    "summary": "{engine}: {bundles} JS bundle(s); Hermes bytecode: {hermes} (bytecode version: {version}). Bytecode is compiled code, not encryption.",
+    "remediation": ""
+  },
+  "engine.flutter_aot": {
+    "title": "Flutter AOT snapshot",
+    "summary": "{engine}: AOT snapshot: {aot} (Dart version hint: {dart_version}, {assets} flutter_assets files). AOT is compiled code, not encryption.",
+    "remediation": ""
+  }
+}

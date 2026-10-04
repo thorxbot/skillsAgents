@@ -1,0 +1,47 @@
+{
+  "engine.fingerprint": {
+    "title": "Engine capability profile",
+    "summary": "{summary}",
+    "remediation": "The main binary is FairPlay-encrypted, so strings / symbols inside it cannot be read. Provide a decrypted IPA for binary-based detection; this tool never decrypts."
+  },
+  "engine.container.unknown": {
+    "title": "Unknown containers analysed",
+    "summary": "{candidates} large candidate file(s), {analyzed} analysed in depth, {clusters} custom header group(s); {suspicious} look custom or encrypted. Compressed is not encrypted: internal structure decides; conclusions are never stronger than 'suspected'.",
+    "remediation": "Start with the header evidence (magic, offset table, size field) and index files next to the container, then decide whether the payload is compressed or encrypted."
+  },
+  "engine.primary": {
+    "title": "Primary engine: {name}",
+    "summary": "{name} ({family}) confirmed with {signals} matching signal(s), confidence {confidence}. {version}",
+    "remediation": "The main binary is FairPlay-encrypted: binary-based traits are missing and the verdict relies on files, directories and linked libraries. A decrypted IPA improves accuracy."
+  },
+  "engine.language": {
+    "title": "Implementation languages",
+    "summary": "Detected languages: {languages}"
+  },
+  "engine.custom": {
+    "title": "In-house / modified engine judgement",
+    "summary": "Combined score {score}; {deviations}",
+    "remediation": "Follow the next steps in the report, then record confirmed traits in engines.user.d/<id>.json."
+  },
+  "engine.wrapper": {
+    "title": "Host / embedded engines",
+    "summary": "Host: {host}; embedded: {embedded}"
+  },
+  "engines.next.container": "Inspect {path} first ({verdict}): custom container, {where}.",
+  "engines.next.header_cluster": "{count} files share the custom header {header}: read one small and one large sample and check whether the bytes after the header are a standard format (see the payload evidence).",
+  "engines.next.script_vm": "Focus on the {vm} bindings / loader in the main binary and check whether scripts on disk are plain text, bytecode or encrypted.",
+  "engines.next.python_opcodes": "Python bytecode headers are non-standard: expect a customised interpreter (shuffled opcodes); standard disassemblers will not work.",
+  "engines.next.shader": "No shader files were recognised: confirm the shader format manually (embedded source, runtime-compiled MSL/GLSL or a custom binary).",
+  "engines.next.decrypted_ipa": "The main binary is FairPlay-encrypted, so symbol / string evidence is missing: provide a decrypted IPA to continue. This tool never decrypts.",
+  "engines.next.record_signature": "Once traits are confirmed, record them in <user data dir>/engines.user.d/<id>.json so the next run identifies the engine directly.",
+  "engines.summary.host_cpp": "Native C++ code",
+  "engines.summary.host_thin": "Thin UIKit shell",
+  "engines.summary.host_generic": "Native app",
+  "engines.summary.render": "on {names}",
+  "engines.summary.script_vms": "embedded {names}",
+  "engines.summary.physics": "{names} physics",
+  "engines.summary.audio": "{names} audio",
+  "engines.summary.containers": "{count} custom container(s) ({compression} blocks)",
+  "engines.summary.limited": "[binary FairPlay-encrypted: binary-based signals limited]",
+  "engines.limited_note": "Binary is encrypted: binary-based detection is limited"
+}

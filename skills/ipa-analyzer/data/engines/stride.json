@@ -1,0 +1,35 @@
+{
+  "id": "stride",
+  "name": "Stride",
+  "family": "stride",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/Stride.Engine.dll",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Stride.Graphics.dll",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Stride.Core.dll",
+      "weight": 0.3,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "csharp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): assembly names"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "phaser_pixi_webview",
+  "name": "Phaser / PixiJS (web game)",
+  "family": "web2d",
+  "kind": "web_hybrid",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "phaser.min.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "phaser.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "pixi.min.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "pixi.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "index.html",
+      "weight": 0.05,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): library file names inside a bundled web app"
+  ]
+}

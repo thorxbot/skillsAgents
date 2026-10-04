@@ -1,0 +1,41 @@
+{
+  "id": "filament",
+  "name": "Filament",
+  "family": "filament",
+  "kind": "open_source_lib",
+  "confirm_threshold": 0.5,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "*.filamat",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.filamesh",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN8filament*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "libfilament",
+      "weight": 0.4,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): material / mesh extensions, namespace filament"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+ "classify.category": {
+  "title": "项目类型",
+  "summary": "项目类型:{category_zh}(子类:{subcategory}),置信度 {confidence};竞争项:{runner_up};缺失的上游数据:{missing}。"
+ },
+ "classify.category.game": "游戏",
+ "classify.category.media": "影音",
+ "classify.category.lifestyle": "生活",
+ "classify.category.social": "社交",
+ "classify.category.utility": "工具 / 效率",
+ "classify.category.finance": "金融",
+ "classify.category.education": "教育",
+ "classify.category.health_fitness": "健康健身",
+ "classify.category.shopping": "购物",
+ "classify.category.travel": "出行",
+ "classify.category.news_reading": "新闻 / 阅读",
+ "classify.category.other": "其他",
+ "classify.category.unknown": "未知"
+}

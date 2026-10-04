@@ -1,0 +1,41 @@
+{
+  "id": "marmalade",
+  "name": "Marmalade",
+  "family": "marmalade",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "app.icf",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.group.bin",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "s3eDeviceYield",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "s3e",
+      "weight": 0.05,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): app.icf, resource group binaries, s3e API"
+  ]
+}

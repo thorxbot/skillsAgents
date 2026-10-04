@@ -1,0 +1,39 @@
+{
+ "libs.summary": {
+  "title": "库识别",
+  "summary": "识别出 {identified} 个第三方库、{system} 个系统库;{unknown} 个库未命中知识库;主要类别:{top_categories}。",
+  "remediation": "{remediation_zh}"
+ },
+ "libs.unknown": {
+  "title": "未识别的库",
+  "summary": "{count} 个库未命中任何知识库规则(用途未知):{names}。",
+  "remediation": "请联网查证这些库的用途,将确认过的条目写入 libs.user.json(格式见 references/libs-kb-format.md)。"
+ },
+ "libs.category.engine": "引擎 / 渲染",
+ "libs.category.network": "网络",
+ "libs.category.ads": "广告",
+ "libs.category.analytics": "归因 / 统计",
+ "libs.category.crash": "崩溃监控",
+ "libs.category.payment": "支付",
+ "libs.category.social": "社交 / 登录",
+ "libs.category.push": "推送",
+ "libs.category.media": "音视频 / RTC",
+ "libs.category.security": "安全 / 反作弊",
+ "libs.category.hotfix": "热更新 / 脚本",
+ "libs.category.storage": "存储 / 数据库",
+ "libs.category.ui": "UI",
+ "libs.category.system": "系统框架",
+ "libs.category.other": "其他",
+ "libs.kind.system": "系统库",
+ "libs.kind.bundled_dylib": "内嵌动态库",
+ "libs.kind.framework": "Framework",
+ "libs.kind.static_sdk": "静态链接 SDK",
+ "libs.kind.resource_bundle": "资源包",
+ "libs.kind.unity_namespace": "Unity 命名空间",
+ "libs.unknown_hint": "仅基于名称的猜测,未经核实",
+ "libs.limit.binary_encrypted": "二进制已加密,基于二进制的检测受限(仅能使用加载命令、导入符号与文件线索)",
+ "libs.privacy.ads": "广告",
+ "libs.privacy.analytics": "统计分析",
+ "libs.privacy.tracking": "追踪",
+ "libs.privacy.social": "社交"
+}

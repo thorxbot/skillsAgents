@@ -1,0 +1,42 @@
+{
+  "id": "love2d",
+  "name": "LOVE",
+  "family": "love2d",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "*.love",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "love.graphics",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "love.filesystem",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN4love*",
+      "weight": 0.4,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "lua",
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): love.* Lua module names and the love:: C++ namespace"
+  ]
+}

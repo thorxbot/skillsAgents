@@ -1,0 +1,64 @@
+{
+  "unity.detected": {
+    "title": "检测到 Unity 引擎",
+    "summary": "Unity {version},脚本后端:{backend}。",
+    "remediation": ""
+  },
+  "unity.version": {
+    "title": "Unity 版本",
+    "summary": "版本:{version}(采信来源 {sources} 个,来源类型:{kinds};存在分歧 {conflicts} 处,详见证据)。优先级:globalgamemanagers > 二进制字符串 > 其他 SerializedFile > AssetBundle 头 > unity default resources(后者常为旧编辑器版本,仅作参考)。",
+    "remediation": ""
+  },
+  "unity.backend": {
+    "title": "脚本后端",
+    "summary": "判定结果:{backend}(il2cpp:存在 global-metadata.dat 且无散落托管程序集;mono:存在 Data/Managed 程序集且无 metadata;并存或皆无则为 unknown)。",
+    "remediation": ""
+  },
+  "unity.metadata.present": {
+    "title": "global-metadata.dat 是否存在",
+    "summary": "路径:{path}。",
+    "remediation": ""
+  },
+  "unity.metadata.encrypted": {
+    "title": "global-metadata.dat 加密 / 魔改判定",
+    "summary": "metadata 版本 {version},抽样熵 {entropy};判定依据:{reasons};头部自洽:{header_ok};文件:{path}。该结论为启发式,不是确证;版本超出 Il2CppDumper 范围不等于加密。",
+    "remediation": "可对照 references/unity-il2cpp-metadata.md 人工复核;本工具不做解密。需要时可用 --force-dump 强制尝试 dump。"
+  },
+  "unity.binary.fairplay": {
+    "title": "il2cpp 承载二进制的 FairPlay 状态",
+    "summary": "二进制:{path}。FairPlay 加密的代码段无法被任何 dumper 读取,本工具不会尝试解密。",
+    "remediation": "请提供已由其所有者解密的 IPA 后重新分析。"
+  },
+  "unity.il2cpp.precheck": {
+    "title": "il2cpp dump 前置检查",
+    "summary": "错误码:{error_code};依据:{reasons};支持该 metadata 版本的后端:{backends}。",
+    "remediation": ""
+  },
+  "unity.il2cpp.dump": {
+    "title": "il2cpp dump 结果",
+    "summary": "状态:{state};后端:{backend} {backend_version};类 {classes} / 方法 {methods};输出目录:{out_dir};错误码:{error_code};{message}",
+    "remediation": "请参考错误码对应的处理建议与 references/il2cpp-troubleshooting.md。"
+  },
+  "unity.il2cpp.names_obfuscated": {
+    "title": "标识符混淆度",
+    "summary": "混淆等级:{level}(得分 {score},来源:{source};dump 来源比 metadata 字符串区估计更可靠)。",
+    "remediation": ""
+  },
+  "unity.assetbundle.encryption": {
+    "title": "AssetBundle 加密判定",
+    "summary": "候选文件 {total} 个(计入判定 {population} 个),分类:{counts};深度校验抽样 {sampled} 个。压缩不等于加密;结论为启发式。",
+    "remediation": "参见 references/unity-assetbundle.md 了解各分类含义与人工复核方法。"
+  },
+  "unity.mono.dll_encrypted": {
+    "title": "托管程序集(Mono)完整性",
+    "summary": "共 {total} 个托管程序集,其中无效(非 PE/CLI){invalid} 个;疑似混淆器标记:{hints}(低置信度)。",
+    "remediation": ""
+  },
+  "unity.class.standard": "标准 UnityFS 头",
+  "unity.class.offset_prefix": "签名前带偏移前缀",
+  "unity.class.xor_simple": "头部被简单 XOR",
+  "unity.class.high_entropy_unknown": "无已知头且高熵",
+  "unity.class.block_encrypted_suspected": "疑似数据块级加密",
+  "unity.class.other": "其他已知格式",
+  "unity.class.unknown": "无法识别"
+}

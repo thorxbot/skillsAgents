@@ -1,0 +1,60 @@
+{
+  "id": "layaair",
+  "name": "LayaAir",
+  "family": "layaair",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "laya.core.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "laya.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.lh",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.lmat",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.ls",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "layabox",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "conch",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript",
+    "typescript"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): Laya runtime script names and scene/material extensions"
+  ]
+}

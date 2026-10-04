@@ -1,0 +1,35 @@
+{
+  "id": "bgfx",
+  "name": "bgfx",
+  "family": "bgfx",
+  "kind": "open_source_lib",
+  "confirm_threshold": 0.5,
+  "signals": [
+    {
+      "type": "symbol",
+      "pattern": "bgfx_init",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN4bgfx*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "bgfx",
+      "weight": 0.1,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "Rendering library: never decides the primary engine over a real engine.",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): C API name bgfx_init, namespace bgfx"
+  ]
+}

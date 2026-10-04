@@ -1,0 +1,41 @@
+{
+  "id": "gdevelop",
+  "name": "GDevelop",
+  "family": "gdevelop",
+  "kind": "web_hybrid",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "runtimegame.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "code0.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "gd.js",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "data.js",
+      "weight": 0.1,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): web export file names (iOS builds are web apps in a native shell)"
+  ]
+}

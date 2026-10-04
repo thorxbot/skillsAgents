@@ -1,0 +1,38 @@
+{
+  "id": "native_uikit",
+  "name": "Native app (UIKit)",
+  "family": "native",
+  "kind": "native",
+  "confirm_threshold": 0.5,
+  "signals": [
+    {
+      "type": "dylib",
+      "pattern": "UIKit.framework/UIKit",
+      "weight": 0.3,
+      "note": "iPhoneOS SDK"
+    },
+    {
+      "type": "plist_key",
+      "pattern": "UIMainStoryboardFile",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "Main.storyboardc",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "objc",
+    "swift"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED/LOCAL: iPhoneOS26.2.sdk .tbd files (Xcode on the analysis host) for system framework / class / function names",
+    "MEMORY, not re-checked this session (signals flagged unverified): UIMainStoryboardFile Info.plist key, Main.storyboardc"
+  ],
+  "role": "fallback"
+}

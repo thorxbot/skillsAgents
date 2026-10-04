@@ -1,0 +1,59 @@
+{
+  "id": "cocos2d_iphone",
+  "name": "cocos2d-iphone (Objective-C)",
+  "family": "cocos",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "objc_prefix",
+      "pattern": "CCDirector",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "CCSprite",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "CCNode",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.ccbi",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz#50",
+      "weight": 0.15
+    }
+  ],
+  "exclusive_with": [
+    "cocos2dx_cpp",
+    "cocos2dx_js",
+    "cocos2dx_lua",
+    "cocos_creator_2x",
+    "cocos_creator_3x"
+  ],
+  "language_hints": [
+    "objc"
+  ],
+  "notes": "",
+  "sources": [
+    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)",
+    "MEMORY, not re-checked this session (signals flagged unverified): CCDirector / CCSprite / CCNode class names, .ccbi (CocosBuilder)"
+  ],
+  "open_source_base": "cocos2d-iphone"
+}

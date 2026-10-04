@@ -1,0 +1,35 @@
+{
+  "id": "haxe_heaps_flixel",
+  "name": "Haxe (HashLink / Heaps / OpenFL)",
+  "family": "haxe",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "hlboot.dat",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.hl",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "**/manifest/default.json",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "haxe"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): file-level signals only; HashLink/C builds carry no bytecode file"
+  ]
+}

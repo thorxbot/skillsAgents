@@ -1,0 +1,47 @@
+{
+  "engine.fingerprint": {
+    "title": "引擎能力画像",
+    "summary": "{summary}",
+    "remediation": "主程序已被 FairPlay 加密,二进制内的字符串 / 符号无法读取;请提供已解密的 IPA 以获得基于二进制的检测。本工具不会解密。"
+  },
+  "engine.container.unknown": {
+    "title": "未知容器分析",
+    "summary": "共 {candidates} 个候选大文件,深度分析 {analyzed} 个,{clusters} 组自定义文件头;其中 {suspicious} 项疑似自定义格式 / 疑似加密。已压缩不等于加密,以内部结构为准;结论至多为“疑似”。",
+    "remediation": "优先查看证据中的文件头(魔数、偏移表、大小字段)和同目录的索引文件,再确认载荷是压缩还是加密。"
+  },
+  "engine.primary": {
+    "title": "主引擎:{name}",
+    "summary": "{name}({family})已确认,命中 {signals} 个信号,置信度 {confidence}。{version}",
+    "remediation": "主程序已被 FairPlay 加密,基于二进制的特征缺失,结论主要来自文件 / 目录 / 链接库;提供已解密 IPA 可提高准确度。"
+  },
+  "engine.language": {
+    "title": "实现语言",
+    "summary": "检测到的语言:{languages}"
+  },
+  "engine.custom": {
+    "title": "自研 / 魔改引擎判定",
+    "summary": "综合得分 {score};{deviations}",
+    "remediation": "按报告中的“下一步建议”继续人工 / Agent 分析,确认后把特征写入 engines.user.d/<id>.json。"
+  },
+  "engine.wrapper": {
+    "title": "宿主 / 嵌入引擎",
+    "summary": "宿主:{host};嵌入:{embedded}"
+  },
+  "engines.next.container": "优先检查 {path}({verdict}):自定义容器,{where}。",
+  "engines.next.header_cluster": "有 {count} 个文件共享自定义文件头 {header}:各读一个小文件和一个大文件,确认文件头之后的字节是否为标准格式(见载荷证据)。",
+  "engines.next.script_vm": "重点分析主程序中 {vm} 的绑定 / 加载器,并确认磁盘上的脚本是明文、字节码还是加密。",
+  "engines.next.python_opcodes": "Python 字节码头部不标准:可能使用了定制解释器(opcode 被打乱),标准反汇编器不可用。",
+  "engines.next.shader": "未识别到着色器文件:请人工确认着色器格式(内嵌源码、运行时编译的 MSL/GLSL 或自定义二进制)。",
+  "engines.next.decrypted_ipa": "主程序被 FairPlay 加密,缺少符号 / 字符串证据:请提供已解密的 IPA 后继续。本工具不会解密。",
+  "engines.next.record_signature": "确认特征后,请写入 <用户数据目录>/engines.user.d/<id>.json,下次运行即可直接识别该引擎。",
+  "engines.summary.host_cpp": "以 C++ 为主的原生代码",
+  "engines.summary.host_thin": "轻量 UIKit 壳",
+  "engines.summary.host_generic": "原生应用",
+  "engines.summary.render": "运行于 {names}",
+  "engines.summary.script_vms": "内嵌 {names}",
+  "engines.summary.physics": "{names} 物理",
+  "engines.summary.audio": "{names} 音频",
+  "engines.summary.containers": "{count} 个自定义容器({compression} 块)",
+  "engines.summary.limited": "[二进制已被 FairPlay 加密,基于二进制的特征受限]",
+  "engines.limited_note": "二进制已加密,基于二进制的检测受限"
+}

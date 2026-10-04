@@ -1,0 +1,64 @@
+{
+  "unity.detected": {
+    "title": "Unity engine detected",
+    "summary": "Unity {version}, scripting backend: {backend}.",
+    "remediation": ""
+  },
+  "unity.version": {
+    "title": "Unity version",
+    "summary": "Version: {version} ({sources} source(s) of kinds: {kinds}; {conflicts} disagreement(s), see evidence). Priority: globalgamemanagers > binary strings > other SerializedFiles > AssetBundle headers > unity default resources (often a stale editor version).",
+    "remediation": ""
+  },
+  "unity.backend": {
+    "title": "Scripting backend",
+    "summary": "Result: {backend} (il2cpp: global-metadata.dat present and no loose managed assemblies; mono: Data/Managed assemblies and no metadata; both or neither: unknown).",
+    "remediation": ""
+  },
+  "unity.metadata.present": {
+    "title": "global-metadata.dat present",
+    "summary": "Path: {path}.",
+    "remediation": ""
+  },
+  "unity.metadata.encrypted": {
+    "title": "global-metadata.dat encryption / tampering check",
+    "summary": "Metadata version {version}, sampled entropy {entropy}; reasons: {reasons}; header consistent: {header_ok}; file: {path}. This is a heuristic, not proof; a version beyond Il2CppDumper's range is not evidence of encryption.",
+    "remediation": "Verify manually with references/unity-il2cpp-metadata.md; this tool never decrypts. --force-dump forces a dump attempt."
+  },
+  "unity.binary.fairplay": {
+    "title": "FairPlay status of the il2cpp binary",
+    "summary": "Binary: {path}. FairPlay-encrypted code cannot be read by any dumper and this tool never decrypts it.",
+    "remediation": "Provide an IPA that its owner has already decrypted and analyse again."
+  },
+  "unity.il2cpp.precheck": {
+    "title": "il2cpp dump pre-check",
+    "summary": "Error code: {error_code}; reasons: {reasons}; backends supporting this metadata version: {backends}.",
+    "remediation": ""
+  },
+  "unity.il2cpp.dump": {
+    "title": "il2cpp dump result",
+    "summary": "State: {state}; backend: {backend} {backend_version}; classes {classes} / methods {methods}; output: {out_dir}; error code: {error_code}; {message}",
+    "remediation": "See the remediation for the error code and references/il2cpp-troubleshooting.md."
+  },
+  "unity.il2cpp.names_obfuscated": {
+    "title": "Identifier obfuscation",
+    "summary": "Obfuscation level: {level} (score {score}, source: {source}; a dump-based result is more reliable than the metadata string-table estimate).",
+    "remediation": ""
+  },
+  "unity.assetbundle.encryption": {
+    "title": "AssetBundle encryption check",
+    "summary": "{total} candidate file(s) ({population} counted); classes: {counts}; deep-checked sample: {sampled}. Compression is not encryption; the verdict is a heuristic.",
+    "remediation": "See references/unity-assetbundle.md for the meaning of each class and how to verify manually."
+  },
+  "unity.mono.dll_encrypted": {
+    "title": "Managed assembly (Mono) integrity",
+    "summary": "{total} managed assembly(ies), {invalid} invalid (not PE/CLI); possible obfuscator markers: {hints} (low confidence).",
+    "remediation": ""
+  },
+  "unity.class.standard": "Standard UnityFS header",
+  "unity.class.offset_prefix": "Signature behind a prefix",
+  "unity.class.xor_simple": "Header XORed with a short key",
+  "unity.class.high_entropy_unknown": "No known header, high entropy",
+  "unity.class.block_encrypted_suspected": "Block-level encryption suspected",
+  "unity.class.other": "Other known format",
+  "unity.class.unknown": "Unrecognised"
+}

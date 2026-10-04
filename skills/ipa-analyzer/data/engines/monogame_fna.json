@@ -1,0 +1,47 @@
+{
+  "id": "monogame_fna",
+  "name": "MonoGame / FNA / XNA",
+  "family": "xna",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/MonoGame.Framework.dll",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/FNA.dll",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.xnb",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Xamarin.iOS.dll",
+      "weight": 0.1,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Microsoft.Xna.Framework.dll",
+      "weight": 0.3,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "csharp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): assembly / content file names"
+  ]
+}

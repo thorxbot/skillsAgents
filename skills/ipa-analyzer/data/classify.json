@@ -1,0 +1,867 @@
+{
+ "_comment": "Classification rules. genre ids/names verified against Apple's genres service (itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres, root 36 'App Store', en/cn/tw); LSApplicationCategoryType values verified against Apple's Information Property List documentation JSON. The mapping from Apple categories to this tool's internal categories, and all signal weights, are this project's own heuristics (UNVERIFIED against ground truth).",
+ "version": 1,
+ "categories": [
+  "game",
+  "media",
+  "lifestyle",
+  "social",
+  "utility",
+  "finance",
+  "education",
+  "health_fitness",
+  "shopping",
+  "travel",
+  "news_reading",
+  "other"
+ ],
+ "genre_names": {
+  "13001": {
+   "en": "News & Politics",
+   "zh-Hans": "新闻及政治",
+   "zh-Hant": "新聞與政治"
+  },
+  "13002": {
+   "en": "Fashion & Style",
+   "zh-Hans": "流行与时尚",
+   "zh-Hant": "流行與時尚"
+  },
+  "13003": {
+   "en": "Home & Garden",
+   "zh-Hans": "家居与园艺",
+   "zh-Hant": "家庭與園藝"
+  },
+  "13004": {
+   "en": "Outdoors & Nature",
+   "zh-Hans": "户外与自然",
+   "zh-Hant": "戶外與自然"
+  },
+  "13005": {
+   "en": "Sports & Leisure",
+   "zh-Hans": "运动与休闲",
+   "zh-Hant": "運動與休閒"
+  },
+  "13006": {
+   "en": "Automotive",
+   "zh-Hans": "汽车",
+   "zh-Hant": "汽車"
+  },
+  "13007": {
+   "en": "Arts & Photography",
+   "zh-Hans": "艺术与摄影",
+   "zh-Hant": "藝術與攝影"
+  },
+  "13008": {
+   "en": "Brides & Weddings",
+   "zh-Hans": "新娘与婚礼",
+   "zh-Hant": "新娘與婚禮"
+  },
+  "13009": {
+   "en": "Business & Investing",
+   "zh-Hans": "商务与投资",
+   "zh-Hant": "商務與投資"
+  },
+  "13010": {
+   "en": "Children's Magazines",
+   "zh-Hans": "儿童杂志",
+   "zh-Hant": "兒童雜誌"
+  },
+  "13011": {
+   "en": "Computers & Internet",
+   "zh-Hans": "电脑与网络",
+   "zh-Hant": "電腦與網路"
+  },
+  "13012": {
+   "en": "Cooking, Food & Drink",
+   "zh-Hans": "烹饪与饮食",
+   "zh-Hant": "烹飪與飲食"
+  },
+  "13013": {
+   "en": "Crafts & Hobbies",
+   "zh-Hans": "手工艺与爱好",
+   "zh-Hant": "手工藝與愛好"
+  },
+  "13014": {
+   "en": "Electronics & Audio",
+   "zh-Hans": "电子产品与音响",
+   "zh-Hant": "電子產品與音響"
+  },
+  "13015": {
+   "en": "Entertainment",
+   "zh-Hans": "娱乐",
+   "zh-Hant": "娛樂"
+  },
+  "13017": {
+   "en": "Health, Mind & Body",
+   "zh-Hans": "健康、心理与生理",
+   "zh-Hant": "健康、心理與生理"
+  },
+  "13018": {
+   "en": "History",
+   "zh-Hans": "历史",
+   "zh-Hant": "歷史"
+  },
+  "13019": {
+   "en": "Literary Magazines & Journals",
+   "zh-Hans": "文学杂志与期刊",
+   "zh-Hant": "文學雜誌與期刊"
+  },
+  "13020": {
+   "en": "Men's Interest",
+   "zh-Hans": "男士兴趣",
+   "zh-Hant": "男士興趣"
+  },
+  "13021": {
+   "en": "Movies & Music",
+   "zh-Hans": "电影与音乐",
+   "zh-Hant": "電影與音樂"
+  },
+  "13023": {
+   "en": "Parenting & Family",
+   "zh-Hans": "子女教养与家庭",
+   "zh-Hant": "子女教養與家庭"
+  },
+  "13024": {
+   "en": "Pets",
+   "zh-Hans": "宠物",
+   "zh-Hant": "寵物"
+  },
+  "13025": {
+   "en": "Professional & Trade",
+   "zh-Hans": "职业与技能",
+   "zh-Hant": "職業與技能"
+  },
+  "13026": {
+   "en": "Regional News",
+   "zh-Hans": "地方新闻",
+   "zh-Hant": "地方新聞"
+  },
+  "13027": {
+   "en": "Science",
+   "zh-Hans": "科学",
+   "zh-Hant": "科學"
+  },
+  "13028": {
+   "en": "Teens",
+   "zh-Hans": "青少年",
+   "zh-Hant": "青少年"
+  },
+  "13029": {
+   "en": "Travel & Regional",
+   "zh-Hans": "旅游与地域",
+   "zh-Hant": "旅行與地域"
+  },
+  "13030": {
+   "en": "Women's Interest",
+   "zh-Hans": "女士兴趣",
+   "zh-Hant": "女士興趣"
+  },
+  "16001": {
+   "en": "Emoji & Expressions",
+   "zh-Hans": "表情与用语",
+   "zh-Hant": "表情與用語"
+  },
+  "16003": {
+   "en": "Animals & Nature",
+   "zh-Hans": "动物与自然",
+   "zh-Hant": "動物與自然"
+  },
+  "16005": {
+   "en": "Art",
+   "zh-Hans": "艺术",
+   "zh-Hant": "藝術"
+  },
+  "16006": {
+   "en": "Celebrations",
+   "zh-Hans": "节庆",
+   "zh-Hant": "節慶"
+  },
+  "16007": {
+   "en": "Celebrities",
+   "zh-Hans": "名人明星",
+   "zh-Hant": "名人明星"
+  },
+  "16008": {
+   "en": "Comics & Cartoons",
+   "zh-Hans": "卡通动漫",
+   "zh-Hant": "卡通漫畫"
+  },
+  "16009": {
+   "en": "Eating & Drinking",
+   "zh-Hans": "饮食",
+   "zh-Hant": "飲食"
+  },
+  "16010": {
+   "en": "Gaming",
+   "zh-Hans": "游戏",
+   "zh-Hant": "遊戲"
+  },
+  "16014": {
+   "en": "Movies & TV",
+   "zh-Hans": "影视",
+   "zh-Hant": "電影電視"
+  },
+  "16015": {
+   "en": "Music",
+   "zh-Hans": "音乐",
+   "zh-Hant": "音樂"
+  },
+  "16017": {
+   "en": "People",
+   "zh-Hans": "人物",
+   "zh-Hant": "人物"
+  },
+  "16019": {
+   "en": "Places & Objects",
+   "zh-Hans": "地点与物品",
+   "zh-Hant": "地點與物品"
+  },
+  "16021": {
+   "en": "Sports & Activities",
+   "zh-Hans": "体育与活动",
+   "zh-Hant": "運動休閒"
+  },
+  "16025": {
+   "en": "Kids & Family",
+   "zh-Hans": "儿童与家庭",
+   "zh-Hant": "兒童與家庭"
+  },
+  "16026": {
+   "en": "Fashion",
+   "zh-Hans": "时尚",
+   "zh-Hant": "時尚"
+  },
+  "6000": {
+   "en": "Business",
+   "zh-Hans": "商务",
+   "zh-Hant": "商業"
+  },
+  "6001": {
+   "en": "Weather",
+   "zh-Hans": "天气",
+   "zh-Hant": "天氣"
+  },
+  "6002": {
+   "en": "Utilities",
+   "zh-Hans": "工具",
+   "zh-Hant": "工具程式"
+  },
+  "6003": {
+   "en": "Travel",
+   "zh-Hans": "旅游",
+   "zh-Hant": "旅遊"
+  },
+  "6004": {
+   "en": "Sports",
+   "zh-Hans": "体育",
+   "zh-Hant": "運動"
+  },
+  "6005": {
+   "en": "Social Networking",
+   "zh-Hans": "社交",
+   "zh-Hant": "社交"
+  },
+  "6006": {
+   "en": "Reference",
+   "zh-Hans": "参考资料",
+   "zh-Hant": "參考"
+  },
+  "6007": {
+   "en": "Productivity",
+   "zh-Hans": "效率",
+   "zh-Hant": "生產力工具"
+  },
+  "6008": {
+   "en": "Photo & Video",
+   "zh-Hans": "摄影与录像",
+   "zh-Hant": "照片和影片"
+  },
+  "6009": {
+   "en": "News",
+   "zh-Hans": "新闻",
+   "zh-Hant": "新聞"
+  },
+  "6010": {
+   "en": "Navigation",
+   "zh-Hans": "导航",
+   "zh-Hant": "導航"
+  },
+  "6011": {
+   "en": "Music",
+   "zh-Hans": "音乐",
+   "zh-Hant": "音樂"
+  },
+  "6012": {
+   "en": "Lifestyle",
+   "zh-Hans": "生活",
+   "zh-Hant": "生活風格"
+  },
+  "6013": {
+   "en": "Health & Fitness",
+   "zh-Hans": "健康健美",
+   "zh-Hant": "健康與健身"
+  },
+  "6014": {
+   "en": "Games",
+   "zh-Hans": "游戏",
+   "zh-Hant": "遊戲"
+  },
+  "6015": {
+   "en": "Finance",
+   "zh-Hans": "财务",
+   "zh-Hant": "財經"
+  },
+  "6016": {
+   "en": "Entertainment",
+   "zh-Hans": "娱乐",
+   "zh-Hant": "娛樂"
+  },
+  "6017": {
+   "en": "Education",
+   "zh-Hans": "教育",
+   "zh-Hant": "教育"
+  },
+  "6018": {
+   "en": "Books",
+   "zh-Hans": "图书",
+   "zh-Hant": "書籍"
+  },
+  "6020": {
+   "en": "Medical",
+   "zh-Hans": "医疗",
+   "zh-Hant": "醫藥"
+  },
+  "6021": {
+   "en": "Magazines & Newspapers",
+   "zh-Hans": "报刊杂志",
+   "zh-Hant": "報章雜誌"
+  },
+  "6022": {
+   "en": "Catalogs",
+   "zh-Hans": "商品指南",
+   "zh-Hant": "目錄"
+  },
+  "6023": {
+   "en": "Food & Drink",
+   "zh-Hans": "美食佳饮",
+   "zh-Hant": "美食佳飲"
+  },
+  "6024": {
+   "en": "Shopping",
+   "zh-Hans": "购物",
+   "zh-Hant": "購物"
+  },
+  "6025": {
+   "en": "Stickers",
+   "zh-Hans": "贴纸",
+   "zh-Hant": "貼圖"
+  },
+  "6026": {
+   "en": "Developer Tools",
+   "zh-Hans": "软件开发工具",
+   "zh-Hant": "開發者工具"
+  },
+  "6027": {
+   "en": "Graphics & Design",
+   "zh-Hans": "图形与设计",
+   "zh-Hant": "圖像與設計"
+  },
+  "7001": {
+   "en": "Action",
+   "zh-Hans": "动作",
+   "zh-Hant": "動作"
+  },
+  "7002": {
+   "en": "Adventure",
+   "zh-Hans": "冒险",
+   "zh-Hant": "冒險"
+  },
+  "7003": {
+   "en": "Casual",
+   "zh-Hans": "休闲",
+   "zh-Hant": "休閒"
+  },
+  "7004": {
+   "en": "Board",
+   "zh-Hans": "桌面",
+   "zh-Hant": "桌遊"
+  },
+  "7005": {
+   "en": "Card",
+   "zh-Hans": "卡牌",
+   "zh-Hant": "卡牌"
+  },
+  "7006": {
+   "en": "Casino",
+   "zh-Hans": "娱乐场",
+   "zh-Hant": "博弈"
+  },
+  "7007": {
+   "en": "Dice",
+   "zh-Hans": "骰子",
+   "zh-Hant": "骰子"
+  },
+  "7008": {
+   "en": "Educational",
+   "zh-Hans": "教育类",
+   "zh-Hant": "教育"
+  },
+  "7009": {
+   "en": "Family",
+   "zh-Hans": "家庭聚会",
+   "zh-Hant": "家庭"
+  },
+  "7011": {
+   "en": "Music",
+   "zh-Hans": "音乐",
+   "zh-Hant": "音樂"
+  },
+  "7012": {
+   "en": "Puzzle",
+   "zh-Hans": "益智解谜",
+   "zh-Hant": "解謎"
+  },
+  "7013": {
+   "en": "Racing",
+   "zh-Hans": "竞速",
+   "zh-Hant": "競速"
+  },
+  "7014": {
+   "en": "Roleplaying",
+   "zh-Hans": "角色扮演",
+   "zh-Hant": "角色扮演"
+  },
+  "7015": {
+   "en": "Simulation",
+   "zh-Hans": "模拟",
+   "zh-Hant": "模擬"
+  },
+  "7016": {
+   "en": "Sports",
+   "zh-Hans": "体育",
+   "zh-Hant": "運動"
+  },
+  "7017": {
+   "en": "Strategy",
+   "zh-Hans": "策略",
+   "zh-Hant": "策略"
+  },
+  "7018": {
+   "en": "Trivia",
+   "zh-Hans": "益智问答",
+   "zh-Hant": "知識問答"
+  },
+  "7019": {
+   "en": "Word",
+   "zh-Hans": "字谜",
+   "zh-Hant": "文字"
+  }
+ },
+ "genre_id_map": {
+  "6000": "utility",
+  "6001": "utility",
+  "6002": "utility",
+  "6003": "travel",
+  "6004": "lifestyle",
+  "6005": "social",
+  "6006": "education",
+  "6007": "utility",
+  "6008": "media",
+  "6009": "news_reading",
+  "6010": "travel",
+  "6011": "media",
+  "6012": "lifestyle",
+  "6013": "health_fitness",
+  "6014": "game",
+  "6015": "finance",
+  "6016": "media",
+  "6017": "education",
+  "6018": "news_reading",
+  "6020": "health_fitness",
+  "6021": "news_reading",
+  "6022": "shopping",
+  "6023": "lifestyle",
+  "6024": "shopping",
+  "6025": "other",
+  "6026": "utility",
+  "6027": "utility"
+ },
+ "game_subgenre_ids": {
+  "7001": "action",
+  "7002": "adventure",
+  "7003": "casual",
+  "7004": "board",
+  "7005": "card",
+  "7006": "casino",
+  "7007": "dice",
+  "7008": "educational",
+  "7009": "family",
+  "7011": "music",
+  "7012": "puzzle",
+  "7013": "racing",
+  "7014": "role_playing",
+  "7015": "simulation",
+  "7016": "sports",
+  "7017": "strategy",
+  "7018": "trivia",
+  "7019": "word"
+ },
+ "ls_category_map": {
+  "public.app-category.games": "game",
+  "public.app-category.business": "utility",
+  "public.app-category.developer-tools": "utility",
+  "public.app-category.education": "education",
+  "public.app-category.entertainment": "media",
+  "public.app-category.finance": "finance",
+  "public.app-category.graphics-design": "utility",
+  "public.app-category.healthcare-fitness": "health_fitness",
+  "public.app-category.lifestyle": "lifestyle",
+  "public.app-category.medical": "health_fitness",
+  "public.app-category.music": "media",
+  "public.app-category.news": "news_reading",
+  "public.app-category.photography": "media",
+  "public.app-category.productivity": "utility",
+  "public.app-category.reference": "education",
+  "public.app-category.social-networking": "social",
+  "public.app-category.sports": "lifestyle",
+  "public.app-category.travel": "travel",
+  "public.app-category.utilities": "utility",
+  "public.app-category.video": "media",
+  "public.app-category.weather": "utility"
+ },
+ "ls_game_subcategories": {
+  "action-games": "action",
+  "adventure-games": "adventure",
+  "arcade-games": "arcade",
+  "board-games": "board",
+  "card-games": "card",
+  "casino-games": "casino",
+  "dice-games": "dice",
+  "educational-games": "educational",
+  "family-games": "family",
+  "kids-games": "kids",
+  "music-games": "music",
+  "puzzle-games": "puzzle",
+  "racing-games": "racing",
+  "role-playing-games": "role_playing",
+  "simulation-games": "simulation",
+  "sports-games": "sports",
+  "strategy-games": "strategy",
+  "trivia-games": "trivia",
+  "word-games": "word"
+ },
+ "weights": {
+  "itunes_genre": 0.95,
+  "itunes_genre_name_only": 0.85,
+  "ls_category": 0.9,
+  "agreement_bonus": 0.03,
+  "engine_exclusive_game": 0.75,
+  "engine_game": 0.6,
+  "engine_custom_yes": 0.45,
+  "engine_custom_suspected": 0.3,
+  "fingerprint_render": 0.1,
+  "fingerprint_physics_anim_audio": 0.15,
+  "fingerprint_script_vm": 0.05,
+  "fingerprint_cap": 0.3,
+  "lib_ads_game": 0.1,
+  "lib_ads_cap": 0.2,
+  "system_signal_cap": 0.45,
+  "inventory_cap": 0.4,
+  "permission_cap": 0.25,
+  "close_gap": 0.15,
+  "close_gap_penalty": 0.75,
+  "max_confidence": 0.98,
+  "non_exclusive_engine_runner_up": 0.2
+ },
+ "exclusive_game_engines": [
+  "cocos",
+  "cocos2dx",
+  "cocos_creator",
+  "egret",
+  "laya",
+  "godot",
+  "gamemaker",
+  "defold",
+  "solar2d",
+  "love",
+  "unreal"
+ ],
+ "non_exclusive_engines": [
+  "unity",
+  "flutter",
+  "react_native",
+  "xamarin",
+  "cordova",
+  "web_hybrid",
+  "qt",
+  "sdl"
+ ],
+ "system_framework_signals": {
+  "GameKit": {
+   "game": 0.3
+  },
+  "GameController": {
+   "game": 0.25
+  },
+  "GameplayKit": {
+   "game": 0.3
+  },
+  "SpriteKit": {
+   "game": 0.3
+  },
+  "SceneKit": {
+   "game": 0.15
+  },
+  "Metal": {
+   "game": 0.05
+  },
+  "MetalFX": {
+   "game": 0.1
+  },
+  "GLKit": {
+   "game": 0.05
+  },
+  "OpenGLES": {
+   "game": 0.05
+  },
+  "ReplayKit": {
+   "game": 0.1
+  },
+  "CoreHaptics": {
+   "game": 0.05
+  },
+  "AVKit": {
+   "media": 0.25
+  },
+  "MediaPlayer": {
+   "media": 0.2
+  },
+  "VideoToolbox": {
+   "media": 0.15
+  },
+  "AVFoundation": {
+   "media": 0.1
+  },
+  "MusicKit": {
+   "media": 0.3
+  },
+  "PhotosUI": {
+   "media": 0.1
+  },
+  "Photos": {
+   "media": 0.1
+  },
+  "CoreMedia": {
+   "media": 0.05
+  },
+  "HealthKit": {
+   "health_fitness": 0.5
+  },
+  "HealthKitUI": {
+   "health_fitness": 0.2
+  },
+  "WorkoutKit": {
+   "health_fitness": 0.3
+  },
+  "CoreMotion": {
+   "health_fitness": 0.05
+  },
+  "MapKit": {
+   "travel": 0.25
+  },
+  "CoreLocation": {
+   "travel": 0.1
+  },
+  "WeatherKit": {
+   "utility": 0.2
+  },
+  "PassKit": {
+   "shopping": 0.1,
+   "finance": 0.15
+  },
+  "FinanceKit": {
+   "finance": 0.4
+  },
+  "ProximityReader": {
+   "finance": 0.2
+  },
+  "Contacts": {
+   "social": 0.1
+  },
+  "ContactsUI": {
+   "social": 0.1
+  },
+  "MessageUI": {
+   "social": 0.05
+  },
+  "Messages": {
+   "social": 0.1
+  },
+  "CallKit": {
+   "social": 0.15
+  },
+  "SafariServices": {
+   "utility": 0.03
+  },
+  "NetworkExtension": {
+   "utility": 0.2
+  },
+  "CryptoTokenKit": {
+   "utility": 0.05
+  },
+  "WidgetKit": {
+   "utility": 0.02
+  },
+  "NaturalLanguage": {
+   "education": 0.05
+  },
+  "Speech": {
+   "education": 0.1
+  },
+  "ClassKit": {
+   "education": 0.4
+  },
+  "PDFKit": {
+   "news_reading": 0.1
+  },
+  "NewsstandKit": {
+   "news_reading": 0.3
+  }
+ },
+ "lib_category_signals": {
+  "payment": {
+   "shopping": 0.05,
+   "finance": 0.05
+  },
+  "social": {
+   "social": 0.05
+  },
+  "push": {},
+  "media": {
+   "media": 0.1
+  }
+ },
+ "lib_id_signals": {
+  "ffmpegkit": {
+   "media": 0.2
+  },
+  "ijkplayer": {
+   "media": 0.2
+  },
+  "mobilevlckit": {
+   "media": 0.25
+  },
+  "volc_ttsdk": {
+   "media": 0.25
+  },
+  "aliyun_player": {
+   "media": 0.2
+  },
+  "tencent_trtc": {
+   "social": 0.1,
+   "media": 0.1
+  },
+  "agora": {
+   "social": 0.1,
+   "media": 0.1
+  },
+  "zego": {
+   "social": 0.1,
+   "media": 0.1
+  },
+  "rongcloud": {
+   "social": 0.25
+  },
+  "netease_im": {
+   "social": 0.2
+  },
+  "wechat_sdk": {
+   "social": 0.05
+  },
+  "stripe": {
+   "shopping": 0.1,
+   "finance": 0.1
+  },
+  "box2d": {
+   "game": 0.15
+  },
+  "chipmunk": {
+   "game": 0.15
+  },
+  "bullet": {
+   "game": 0.15
+  },
+  "physx": {
+   "game": 0.15
+  },
+  "jolt": {
+   "game": 0.15
+  },
+  "spine": {
+   "game": 0.15
+  },
+  "live2d": {
+   "game": 0.2
+  },
+  "dragonbones": {
+   "game": 0.15
+  },
+  "fmod": {
+   "game": 0.1
+  },
+  "wwise": {
+   "game": 0.15
+  },
+  "hybridclr": {
+   "game": 0.1
+  },
+  "xlua": {
+   "game": 0.1
+  },
+  "ilruntime": {
+   "game": 0.1
+  },
+  "tapsdk": {
+   "game": 0.3
+  }
+ },
+ "permission_signals": {
+  "NSHealthShareUsageDescription": {
+   "health_fitness": 0.25
+  },
+  "NSHealthUpdateUsageDescription": {
+   "health_fitness": 0.25
+  },
+  "NSLocationWhenInUseUsageDescription": {
+   "travel": 0.05
+  },
+  "NSContactsUsageDescription": {
+   "social": 0.1
+  },
+  "NSPhotoLibraryUsageDescription": {
+   "media": 0.05
+  },
+  "NSMotionUsageDescription": {
+   "health_fitness": 0.05
+  },
+  "NSMicrophoneUsageDescription": {
+   "social": 0.03,
+   "media": 0.03
+  }
+ },
+ "inventory_signals": {
+  "video_share_media": 0.3,
+  "video_share_media_weight": 0.35,
+  "audio_share_media": 0.3,
+  "audio_share_media_weight": 0.2,
+  "game_asset_categories": [
+   "model_3d",
+   "shader",
+   "engine_data",
+   "assetbundle",
+   "packed_archive"
+  ],
+  "game_asset_share": 0.4,
+  "game_asset_weight": 0.2
+ }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "hermes",
+  "name": "Hermes (JS engine)",
+  "family": "react_native",
+  "kind": "open_source_lib",
+  "confirm_threshold": 0.5,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "magic:hermes_bytecode",
+      "weight": 0.9,
+      "strong": true,
+      "note": "bytecode file header (BytecodeFileFormat.h)"
+    },
+    {
+      "type": "dir",
+      "pattern": "/Frameworks/hermes.framework",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "HermesInternal",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN6hermes*",
+      "weight": 0.4,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript"
+  ],
+  "notes": "JS engine, usually under React Native.",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/facebook/hermes/main/include/hermes/BCGen/HBC/BytecodeFileFormat.h - MAGIC 0x1F1903C103BC1FC6 (stored little-endian)",
+    "MEMORY, not re-checked this session (signals flagged unverified): framework name, HermesInternal global, hermes:: namespace"
+  ]
+}

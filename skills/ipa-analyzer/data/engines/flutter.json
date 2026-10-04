@@ -1,0 +1,72 @@
+{
+  "id": "flutter",
+  "name": "Flutter",
+  "family": "flutter",
+  "kind": "cross_platform_ui",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "dir",
+      "pattern": "/Frameworks/App.framework",
+      "weight": 0.6,
+      "note": "AOT app framework ('Frameworks/App.framework' literal in FlutterDartProject.mm)"
+    },
+    {
+      "type": "file",
+      "pattern": "kernel_blob.bin",
+      "weight": 0.4
+    },
+    {
+      "type": "file",
+      "pattern": "icudtl.dat",
+      "weight": 0.4
+    },
+    {
+      "type": "dir",
+      "pattern": "**/flutter_assets",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "dir",
+      "pattern": "/Frameworks/Flutter.framework",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "Flutter.framework/Flutter",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "FlutterAppDelegate",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "FlutterViewController",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "io.flutter",
+      "weight": 0.3,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "dart",
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/flutter/flutter/master/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterDartProject.mm - literals 'kernel_blob.bin', 'icudtl.dat', 'Frameworks/App.framework', bundle id 'io.flutter.flutter.app'",
+    "MEMORY, not re-checked this session (signals flagged unverified): Flutter.framework, flutter_assets directory, FlutterAppDelegate"
+  ],
+  "wrapper_host": true
+}

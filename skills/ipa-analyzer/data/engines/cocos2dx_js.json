@@ -1,0 +1,64 @@
+{
+  "id": "cocos2dx_js",
+  "name": "cocos2d-x (JavaScript / JSB)",
+  "family": "cocos",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "symbol",
+      "pattern": "_ZN13ScriptingCore*",
+      "weight": 0.5,
+      "note": "ScriptingCore (global namespace class)"
+    },
+    {
+      "type": "file",
+      "pattern": "jsb_boot.js",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "cocos/scripting/js-bindings/script/jsb_boot.js; placement in the app bundle not verified"
+    },
+    {
+      "type": "file",
+      "pattern": "*.jsc",
+      "weight": 0.35,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/project.json",
+      "weight": 0.1,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/main.js",
+      "weight": 0.1,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz",
+      "weight": 0.3
+    }
+  ],
+  "exclusive_with": [
+    "cocos2d_iphone",
+    "cocos2dx_cpp",
+    "cocos2dx_lua",
+    "cocos_creator_2x",
+    "cocos_creator_3x"
+  ],
+  "language_hints": [
+    "javascript",
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/scripting/js-bindings/manual/ScriptingCore.h (class ScriptingCore) and .../js-bindings/script/jsb_boot.js ('// cocos2d boot')",
+    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)",
+    "MEMORY, not re-checked this session (signals flagged unverified): .jsc, project.json / main.js layout of JSB templates"
+  ],
+  "open_source_base": "cocos2d-x",
+  "layout_expected": true
+}

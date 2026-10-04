@@ -1,0 +1,56 @@
+{
+  "id": "solar2d",
+  "name": "Solar2D / Corona",
+  "family": "solar2d",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/resource.car",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "Corona archive (not Assets.car)"
+    },
+    {
+      "type": "file",
+      "pattern": "*.lu",
+      "weight": 0.3,
+      "unverified": true,
+      "note": "compiled Lua"
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "CoronaViewController",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "CoronaView",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "Solar2D",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "Corona Labs",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "lua",
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): resource.car, *.lu, Corona* class names"
+  ]
+}

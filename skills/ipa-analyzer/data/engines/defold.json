@@ -1,0 +1,61 @@
+{
+  "id": "defold",
+  "name": "Defold",
+  "family": "defold",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/game.projectc",
+      "weight": 0.9,
+      "strong": true,
+      "note": "compiled project file"
+    },
+    {
+      "type": "file",
+      "pattern": "/game.arcd",
+      "weight": 0.9,
+      "strong": true,
+      "note": "archive data"
+    },
+    {
+      "type": "file",
+      "pattern": "/game.arci",
+      "weight": 0.5
+    },
+    {
+      "type": "file",
+      "pattern": "/game.dmanifest",
+      "weight": 0.5
+    },
+    {
+      "type": "file",
+      "pattern": "/game.public.der",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN8dmEngine*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "dmGameSystem",
+      "weight": 0.3,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "lua",
+    "cpp"
+  ],
+  "notes": "Lua scripts are compiled into game.arcd.",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/defold/defold/dev/engine/engine/src/engine.cpp - string literals game.projectc, game.arcd, game.arci, game.dmanifest",
+    "MEMORY, not re-checked this session (signals flagged unverified): game.public.der, dmEngine / dmGameSystem names"
+  ]
+}

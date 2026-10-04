@@ -1,0 +1,48 @@
+{
+  "id": "gamemaker",
+  "name": "GameMaker",
+  "family": "gamemaker",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/game.ios",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "data file of GameMaker iOS exports"
+    },
+    {
+      "type": "string",
+      "pattern": "YoYo Games",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "YYGame",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/*.ogg",
+      "weight": 0.1,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "YoYo",
+      "weight": 0.3,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "Low recall by design (everything unverified).",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): only the iOS data file name 'game.ios' and 'YoYo' naming; engine signatures are weak and need several signals together"
+  ]
+}

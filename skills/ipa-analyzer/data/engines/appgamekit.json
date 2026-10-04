@@ -1,0 +1,35 @@
+{
+  "id": "appgamekit",
+  "name": "AppGameKit",
+  "family": "agk",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "bytecode.byc",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN3AGK*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "dir",
+      "pattern": "media",
+      "weight": 0.1,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): compiled bytecode name, AGK namespace"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "xamarin_maui",
+  "name": "Xamarin / .NET MAUI",
+  "family": "dotnet",
+  "kind": "cross_platform_ui",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/Xamarin.iOS.dll",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Microsoft.iOS.dll",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/Microsoft.Maui.dll",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/mscorlib.dll",
+      "weight": 0.15,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "libmonosgen-2.0",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "dylib",
+      "pattern": "libxamarin",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "Xamarin.iOS",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "csharp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): assembly names in the app root; Unity's Mono assemblies live under Data/Managed and do not match the root-anchored patterns"
+  ]
+}

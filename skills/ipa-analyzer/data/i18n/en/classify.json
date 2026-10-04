@@ -1,0 +1,19 @@
+{
+ "classify.category": {
+  "title": "Project type",
+  "summary": "Project type: {category_en} (subcategory: {subcategory}), confidence {confidence}; runner-up: {runner_up}; missing upstream data: {missing}."
+ },
+ "classify.category.game": "Games",
+ "classify.category.media": "Media",
+ "classify.category.lifestyle": "Lifestyle",
+ "classify.category.social": "Social",
+ "classify.category.utility": "Utilities / productivity",
+ "classify.category.finance": "Finance",
+ "classify.category.education": "Education",
+ "classify.category.health_fitness": "Health & fitness",
+ "classify.category.shopping": "Shopping",
+ "classify.category.travel": "Travel",
+ "classify.category.news_reading": "News & reading",
+ "classify.category.other": "Other",
+ "classify.category.unknown": "Unknown"
+}

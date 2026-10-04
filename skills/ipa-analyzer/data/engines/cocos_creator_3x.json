@@ -1,0 +1,73 @@
+{
+  "id": "cocos_creator_3x",
+  "name": "Cocos Creator 3.x",
+  "family": "cocos",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/src/cocos-js/cc.js",
+      "weight": 0.5
+    },
+    {
+      "type": "file",
+      "pattern": "/application.js",
+      "weight": 0.4
+    },
+    {
+      "type": "file",
+      "pattern": "/src/system.bundle.js",
+      "weight": 0.4
+    },
+    {
+      "type": "file",
+      "pattern": "/src/chunks/bundle.js",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "/jsb-adapter/engine-adapter.js",
+      "weight": 0.3
+    },
+    {
+      "type": "file",
+      "pattern": "/jsb-adapter/web-adapter.js",
+      "weight": 0.2
+    },
+    {
+      "type": "file",
+      "pattern": "/src/import-map.json",
+      "weight": 0.25
+    },
+    {
+      "type": "file",
+      "pattern": "/src/settings.json",
+      "weight": 0.1
+    },
+    {
+      "type": "file",
+      "pattern": "assets/*/index.js#3",
+      "weight": 0.15
+    }
+  ],
+  "exclusive_with": [
+    "cocos2d_iphone",
+    "cocos2dx_cpp",
+    "cocos2dx_js",
+    "cocos2dx_lua",
+    "cocos_creator_2x"
+  ],
+  "language_hints": [
+    "javascript",
+    "typescript",
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "REAL-SAMPLE: SeaWorld.app (user supplied IPA, read-only, 2026-10-04): src/cocos-js/cc.js, src/system.bundle.js, src/chunks/bundle.js, application.js, jsb-adapter/{engine,web}-adapter.js, src/import-map.json, src/settings.json, assets/<bundle>/index.js",
+    "single real sample: layout may differ between 3.0 ... 3.8"
+  ],
+  "open_source_base": "cocos-engine",
+  "layout_expected": true
+}

@@ -1,0 +1,53 @@
+{
+  "id": "ogre3d",
+  "name": "OGRE",
+  "family": "ogre",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "resources.cfg",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "plugins.cfg",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.material",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.mesh",
+      "weight": 0.15,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN4Ogre*",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "OGRE",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): Ogre config files, namespace Ogre"
+  ]
+}

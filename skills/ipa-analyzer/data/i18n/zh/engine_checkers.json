@@ -1,0 +1,32 @@
+{
+  "engine.cocos.variant": {
+    "title": "Cocos 引擎变体:{variant}",
+    "summary": "识别为 Cocos 家族变体 {variant}(版本线索:{version}),依据文件 / 目录结构特征。",
+    "remediation": ""
+  },
+  "engine.script.encrypted": {
+    "title": "{engine} 脚本保护情况",
+    "summary": "{engine}:共 {total} 个脚本文件(已检查 {sampled} 个):明文 {plain}、字节码 {bytecode}、压缩容器 {compressed}、疑似加密或混淆 {suspected}。字节码、压缩、代码压缩(minify)都不等于加密;高熵也不一定是加密。",
+    "remediation": "加密脚本需要应用内的密钥才能读取;本工具只报告保护情况,不提取密钥、不解密。"
+  },
+  "engine.resource.encrypted": {
+    "title": "{engine} 资源保护情况",
+    "summary": "{engine}:已检查 {sampled} 个资源文件,其中 {encrypted} 个使用按定义即加密的容器(如 CCZp)、{suspected} 个疑似加密或自定义封装、{plain} 个为标准格式 / 明文。扩展名与内容不符且共用自定义头部,说明存在自定义封装,不据此断言厂商。",
+    "remediation": "资源密钥由应用持有;本工具只报告保护情况,不提取密钥、不解密。"
+  },
+  "engine.pak.encrypted": {
+    "title": "{engine} 资源包加密情况",
+    "summary": "{engine}:检查了 {containers} 个资源容器,其中 {encrypted} 个带有加密标志,{unknown} 个无法判断(截断或格式未识别)。未设置索引加密标志不代表包内每个条目都未加密。",
+    "remediation": "加密资源包需要应用内的 AES 密钥;本工具不提取密钥。"
+  },
+  "engine.hermes": {
+    "title": "Hermes 字节码",
+    "summary": "{engine}:JS bundle 共 {bundles} 个,Hermes 字节码判定为 {hermes}(字节码版本:{version})。字节码是编译产物,不等于加密。",
+    "remediation": ""
+  },
+  "engine.flutter_aot": {
+    "title": "Flutter AOT 快照",
+    "summary": "{engine}:AOT 快照判定为 {aot}(Dart 版本线索:{dart_version},flutter_assets 文件 {assets} 个)。AOT 是编译产物,不等于加密。",
+    "remediation": ""
+  }
+}

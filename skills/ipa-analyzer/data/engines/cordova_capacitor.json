@@ -1,0 +1,79 @@
+{
+  "id": "cordova_capacitor",
+  "name": "Cordova / Capacitor (web hybrid)",
+  "family": "web_hybrid",
+  "kind": "web_hybrid",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/capacitor.config.json",
+      "weight": 0.6,
+      "note": "read by CAPBridgeViewController ('Unable to find capacitor.config.json')"
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "CAPBridgeViewController",
+      "weight": 0.5,
+      "note": "class name in CAPBridgeViewController.swift"
+    },
+    {
+      "type": "file",
+      "pattern": "/www/cordova.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/www/cordova_plugins.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/www/index.html",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/public/index.html",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/public/native-bridge.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/config.xml",
+      "weight": 0.2,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "CDVViewController",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "cordova.js",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "javascript"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/ionic-team/capacitor/main/ios/Capacitor/Capacitor/CAPBridgeViewController.swift - class CAPBridgeViewController, capacitor.config.json / config.xml warnings",
+    "MEMORY, not re-checked this session (signals flagged unverified): Cordova layout (www/cordova.js, CDVViewController), Capacitor public/ folder"
+  ],
+  "wrapper_host": true
+}

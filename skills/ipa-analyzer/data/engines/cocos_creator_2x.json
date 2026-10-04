@@ -1,0 +1,74 @@
+{
+  "id": "cocos_creator_2x",
+  "name": "Cocos Creator 2.x",
+  "family": "cocos",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "/jsb-adapter/jsb-builtin.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/jsb-adapter/jsb-engine.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/src/cocos2d-jsb.js",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/src/project.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/src/project.jsc",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "/src/settings.js",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "dir",
+      "pattern": "/jsb-adapter",
+      "weight": 0.15
+    },
+    {
+      "type": "file",
+      "pattern": "magic:ccz",
+      "weight": 0.3
+    }
+  ],
+  "exclusive_with": [
+    "cocos2d_iphone",
+    "cocos2dx_cpp",
+    "cocos2dx_js",
+    "cocos2dx_lua",
+    "cocos_creator_3x"
+  ],
+  "language_hints": [
+    "javascript",
+    "typescript",
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): 2.x native build layout (jsb-adapter/jsb-builtin.js, src/cocos2d-jsb.js, src/project.js[c]); contrasted with the verified 3.x layout in cocos_creator_3x",
+    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)"
+  ],
+  "open_source_base": "cocos-engine",
+  "layout_expected": true
+}

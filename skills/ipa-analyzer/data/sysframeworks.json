@@ -1,0 +1,1026 @@
+{
+ "_comment": "System frameworks and /usr/lib dylibs. Framework and dylib names verified against the iPhoneOS 26.2 SDK listing (System/Library/Frameworks, usr/lib/*.tbd); purposes are this project's own short descriptions. 'sensitive' = the framework exists mainly to access a permission-gated or identifying capability (capability id names it); dual-use frameworks (e.g. AVFoundation) are not flagged.",
+ "version": 1,
+ "frameworks": {
+  "ARKit": {
+   "purpose_zh": "增强现实(AR)会话与相机追踪",
+   "purpose_en": "Augmented reality sessions and camera tracking",
+   "sensitive": true,
+   "capability": "camera"
+  },
+  "AVFAudio": {
+   "purpose_zh": "音频播放、录制与音频会话(AVFoundation 的音频部分)",
+   "purpose_en": "Audio playback, recording and audio sessions",
+   "sensitive": false
+  },
+  "AVFoundation": {
+   "purpose_zh": "音视频播放、采集与编辑(相机、麦克风、媒体)",
+   "purpose_en": "Audio/video playback, capture and editing (camera, microphone, media)",
+   "sensitive": false
+  },
+  "AVKit": {
+   "purpose_zh": "系统视频播放器界面",
+   "purpose_en": "System video player UI",
+   "sensitive": false
+  },
+  "AVRouting": {
+   "purpose_zh": "音视频输出路由选择",
+   "purpose_en": "Audio/video output routing",
+   "sensitive": false
+  },
+  "Accelerate": {
+   "purpose_zh": "高性能数学、信号与图像处理",
+   "purpose_en": "High-performance math, signal and image processing",
+   "sensitive": false
+  },
+  "Accessibility": {
+   "purpose_zh": "辅助功能 API",
+   "purpose_en": "Accessibility APIs",
+   "sensitive": false
+  },
+  "Accounts": {
+   "purpose_zh": "系统账号(社交账号等)访问",
+   "purpose_en": "System account access (social accounts, etc.)",
+   "sensitive": true,
+   "capability": "accounts"
+  },
+  "ActivityKit": {
+   "purpose_zh": "实时活动(Live Activities)",
+   "purpose_en": "Live Activities",
+   "sensitive": false
+  },
+  "AdAttributionKit": {
+   "purpose_zh": "广告归因(隐私保护的广告转化测量)",
+   "purpose_en": "Ad attribution (privacy-preserving conversion measurement)",
+   "sensitive": true,
+   "capability": "tracking"
+  },
+  "AdServices": {
+   "purpose_zh": "Apple Search Ads 归因 token",
+   "purpose_en": "Apple Search Ads attribution token",
+   "sensitive": true,
+   "capability": "tracking"
+  },
+  "AdSupport": {
+   "purpose_zh": "读取广告标识符 IDFA",
+   "purpose_en": "Advertising identifier (IDFA) access",
+   "sensitive": true,
+   "capability": "advertising_id"
+  },
+  "AddressBook": {
+   "purpose_zh": "通讯录(已弃用 C API)",
+   "purpose_en": "Address book (deprecated C API)",
+   "sensitive": true,
+   "capability": "contacts"
+  },
+  "AddressBookUI": {
+   "purpose_zh": "通讯录选择界面(已弃用)",
+   "purpose_en": "Address book UI (deprecated)",
+   "sensitive": true,
+   "capability": "contacts"
+  },
+  "AppClip": {
+   "purpose_zh": "App Clip 支持",
+   "purpose_en": "App Clip support",
+   "sensitive": false
+  },
+  "AppIntents": {
+   "purpose_zh": "向 Siri / 快捷指令暴露应用操作",
+   "purpose_en": "Expose app actions to Siri and Shortcuts",
+   "sensitive": false
+  },
+  "AppTrackingTransparency": {
+   "purpose_zh": "跨应用追踪授权(ATT)",
+   "purpose_en": "App Tracking Transparency authorization",
+   "sensitive": true,
+   "capability": "tracking"
+  },
+  "AssetsLibrary": {
+   "purpose_zh": "照片库访问(已弃用,由 Photos 取代)",
+   "purpose_en": "Photo library access (deprecated, replaced by Photos)",
+   "sensitive": true,
+   "capability": "photos"
+  },
+  "AudioToolbox": {
+   "purpose_zh": "底层音频服务(音频文件、队列、编解码)",
+   "purpose_en": "Low-level audio services (files, queues, codecs)",
+   "sensitive": false
+  },
+  "AudioUnit": {
+   "purpose_zh": "音频单元(实时音频处理)",
+   "purpose_en": "Audio units (real-time audio processing)",
+   "sensitive": false
+  },
+  "AuthenticationServices": {
+   "purpose_zh": "登录与认证(Sign in with Apple、Passkeys、Web 认证会话)",
+   "purpose_en": "Authentication (Sign in with Apple, passkeys, web auth sessions)",
+   "sensitive": false
+  },
+  "BackgroundAssets": {
+   "purpose_zh": "后台资源下载",
+   "purpose_en": "Background asset downloads",
+   "sensitive": false
+  },
+  "BackgroundTasks": {
+   "purpose_zh": "后台任务调度",
+   "purpose_en": "Background task scheduling",
+   "sensitive": false
+  },
+  "BrowserKit": {
+   "purpose_zh": "浏览器应用支持",
+   "purpose_en": "Browser app support",
+   "sensitive": false
+  },
+  "BusinessChat": {
+   "purpose_zh": "Apple 商务聊天",
+   "purpose_en": "Apple Messages for Business",
+   "sensitive": false
+  },
+  "CFNetwork": {
+   "purpose_zh": "底层网络(HTTP、socket、Cookie)",
+   "purpose_en": "Low-level networking (HTTP, sockets, cookies)",
+   "sensitive": false
+  },
+  "CallKit": {
+   "purpose_zh": "通话界面集成与来电识别",
+   "purpose_en": "Call UI integration and call identification",
+   "sensitive": true,
+   "capability": "calls"
+  },
+  "CarKey": {
+   "purpose_zh": "数字车钥匙",
+   "purpose_en": "Digital car key",
+   "sensitive": false
+  },
+  "CarPlay": {
+   "purpose_zh": "CarPlay 车载界面",
+   "purpose_en": "CarPlay in-car UI",
+   "sensitive": false
+  },
+  "Charts": {
+   "purpose_zh": "SwiftUI 图表",
+   "purpose_en": "SwiftUI charts",
+   "sensitive": false
+  },
+  "ClassKit": {
+   "purpose_zh": "教育类应用课堂数据",
+   "purpose_en": "Classroom data for education apps",
+   "sensitive": false
+  },
+  "ClockKit": {
+   "purpose_zh": "watchOS 表盘复杂功能",
+   "purpose_en": "watchOS watch-face complications",
+   "sensitive": false
+  },
+  "CloudKit": {
+   "purpose_zh": "iCloud 数据库与同步",
+   "purpose_en": "iCloud database and sync",
+   "sensitive": false
+  },
+  "ColorSync": {
+   "purpose_zh": "色彩管理",
+   "purpose_en": "Color management",
+   "sensitive": false
+  },
+  "Combine": {
+   "purpose_zh": "响应式异步事件处理",
+   "purpose_en": "Reactive asynchronous event handling",
+   "sensitive": false
+  },
+  "Contacts": {
+   "purpose_zh": "通讯录访问",
+   "purpose_en": "Contacts access",
+   "sensitive": true,
+   "capability": "contacts"
+  },
+  "ContactsUI": {
+   "purpose_zh": "联系人选择与展示界面",
+   "purpose_en": "Contact picker and display UI",
+   "sensitive": true,
+   "capability": "contacts"
+  },
+  "CoreAudio": {
+   "purpose_zh": "核心音频数据类型与硬件接口",
+   "purpose_en": "Core audio data types and hardware interfaces",
+   "sensitive": false
+  },
+  "CoreAudioKit": {
+   "purpose_zh": "音频应用界面组件",
+   "purpose_en": "Audio app UI components",
+   "sensitive": false
+  },
+  "CoreAudioTypes": {
+   "purpose_zh": "核心音频类型定义",
+   "purpose_en": "Core audio type definitions",
+   "sensitive": false
+  },
+  "CoreBluetooth": {
+   "purpose_zh": "蓝牙低功耗(BLE)通信",
+   "purpose_en": "Bluetooth Low Energy communication",
+   "sensitive": true,
+   "capability": "bluetooth"
+  },
+  "CoreData": {
+   "purpose_zh": "对象图与本地持久化",
+   "purpose_en": "Object graph and local persistence",
+   "sensitive": false
+  },
+  "CoreFoundation": {
+   "purpose_zh": "核心 C 基础类型",
+   "purpose_en": "Core C foundation types",
+   "sensitive": false
+  },
+  "CoreGraphics": {
+   "purpose_zh": "2D 绘图(Quartz 2D)",
+   "purpose_en": "2D drawing (Quartz 2D)",
+   "sensitive": false
+  },
+  "CoreHaptics": {
+   "purpose_zh": "触感反馈引擎",
+   "purpose_en": "Haptic feedback engine",
+   "sensitive": false
+  },
+  "CoreImage": {
+   "purpose_zh": "图像处理与滤镜",
+   "purpose_en": "Image processing and filters",
+   "sensitive": false
+  },
+  "CoreLocation": {
+   "purpose_zh": "定位服务(GPS、信标、地理围栏)",
+   "purpose_en": "Location services (GPS, beacons, geofencing)",
+   "sensitive": true,
+   "capability": "location"
+  },
+  "CoreLocationUI": {
+   "purpose_zh": "位置按钮界面",
+   "purpose_en": "Location button UI",
+   "sensitive": true,
+   "capability": "location"
+  },
+  "CoreMIDI": {
+   "purpose_zh": "MIDI 设备通信",
+   "purpose_en": "MIDI device communication",
+   "sensitive": false
+  },
+  "CoreML": {
+   "purpose_zh": "设备端机器学习推理",
+   "purpose_en": "On-device machine learning inference",
+   "sensitive": false
+  },
+  "CoreMedia": {
+   "purpose_zh": "媒体样本与时间的底层类型",
+   "purpose_en": "Low-level media sample and time types",
+   "sensitive": false
+  },
+  "CoreMediaIO": {
+   "purpose_zh": "媒体设备 IO",
+   "purpose_en": "Media device IO",
+   "sensitive": false
+  },
+  "CoreMotion": {
+   "purpose_zh": "加速度计、陀螺仪、计步等运动传感器",
+   "purpose_en": "Motion sensors (accelerometer, gyroscope, pedometer)",
+   "sensitive": true,
+   "capability": "motion"
+  },
+  "CoreNFC": {
+   "purpose_zh": "NFC 标签读写",
+   "purpose_en": "NFC tag reading and writing",
+   "sensitive": true,
+   "capability": "nfc"
+  },
+  "CoreServices": {
+   "purpose_zh": "底层系统服务",
+   "purpose_en": "Low-level system services",
+   "sensitive": false
+  },
+  "CoreSpotlight": {
+   "purpose_zh": "Spotlight 内容索引",
+   "purpose_en": "Spotlight content indexing",
+   "sensitive": false
+  },
+  "CoreTelephony": {
+   "purpose_zh": "运营商与蜂窝网络信息",
+   "purpose_en": "Carrier and cellular network information",
+   "sensitive": true,
+   "capability": "telephony"
+  },
+  "CoreText": {
+   "purpose_zh": "文字排版与渲染",
+   "purpose_en": "Text layout and rendering",
+   "sensitive": false
+  },
+  "CoreTransferable": {
+   "purpose_zh": "可传输数据类型(拖放、分享)",
+   "purpose_en": "Transferable data types (drag and drop, sharing)",
+   "sensitive": false
+  },
+  "CoreVideo": {
+   "purpose_zh": "视频帧缓冲与显示链接",
+   "purpose_en": "Video frame buffers and display links",
+   "sensitive": false
+  },
+  "CreateML": {
+   "purpose_zh": "训练机器学习模型",
+   "purpose_en": "Train machine learning models",
+   "sensitive": false
+  },
+  "CryptoKit": {
+   "purpose_zh": "现代密码学(哈希、签名、加密)",
+   "purpose_en": "Modern cryptography (hashing, signing, encryption)",
+   "sensitive": false
+  },
+  "CryptoTokenKit": {
+   "purpose_zh": "智能卡与安全令牌",
+   "purpose_en": "Smart cards and security tokens",
+   "sensitive": false
+  },
+  "DataDetection": {
+   "purpose_zh": "文本中的数据检测",
+   "purpose_en": "Data detection in text",
+   "sensitive": false
+  },
+  "DeviceActivity": {
+   "purpose_zh": "屏幕使用时间活动监测",
+   "purpose_en": "Screen Time device activity monitoring",
+   "sensitive": true,
+   "capability": "screen_time"
+  },
+  "DeviceCheck": {
+   "purpose_zh": "设备完整性与设备标记(DeviceCheck / App Attest)",
+   "purpose_en": "Device integrity and device tokens (DeviceCheck / App Attest)",
+   "sensitive": false
+  },
+  "EventKit": {
+   "purpose_zh": "日历与提醒事项访问",
+   "purpose_en": "Calendar and reminders access",
+   "sensitive": true,
+   "capability": "calendar"
+  },
+  "EventKitUI": {
+   "purpose_zh": "日历事件界面",
+   "purpose_en": "Calendar event UI",
+   "sensitive": true,
+   "capability": "calendar"
+  },
+  "ExposureNotification": {
+   "purpose_zh": "接触者通知",
+   "purpose_en": "Exposure notification",
+   "sensitive": true,
+   "capability": "health"
+  },
+  "ExternalAccessory": {
+   "purpose_zh": "外接配件通信(MFi)",
+   "purpose_en": "External accessory communication (MFi)",
+   "sensitive": true,
+   "capability": "accessory"
+  },
+  "FamilyControls": {
+   "purpose_zh": "家长控制授权",
+   "purpose_en": "Family controls authorization",
+   "sensitive": true,
+   "capability": "screen_time"
+  },
+  "FileProvider": {
+   "purpose_zh": "文件提供程序扩展",
+   "purpose_en": "File provider extensions",
+   "sensitive": false
+  },
+  "FinanceKit": {
+   "purpose_zh": "Apple Wallet 财务数据访问",
+   "purpose_en": "Apple Wallet financial data access",
+   "sensitive": true,
+   "capability": "finance"
+  },
+  "Foundation": {
+   "purpose_zh": "基础类型与系统服务",
+   "purpose_en": "Foundation types and system services",
+   "sensitive": false
+  },
+  "GLKit": {
+   "purpose_zh": "OpenGL ES 辅助库(已弃用)",
+   "purpose_en": "OpenGL ES helper library (deprecated)",
+   "sensitive": false
+  },
+  "GSS": {
+   "purpose_zh": "GSS-API 通用安全服务",
+   "purpose_en": "Generic Security Services API",
+   "sensitive": false
+  },
+  "GameController": {
+   "purpose_zh": "游戏手柄与控制器输入",
+   "purpose_en": "Game controller input",
+   "sensitive": false
+  },
+  "GameKit": {
+   "purpose_zh": "Game Center(排行榜、成就、联机匹配)",
+   "purpose_en": "Game Center (leaderboards, achievements, matchmaking)",
+   "sensitive": false
+  },
+  "GameplayKit": {
+   "purpose_zh": "游戏逻辑(AI、寻路、随机数)",
+   "purpose_en": "Gameplay logic (AI, pathfinding, random numbers)",
+   "sensitive": false
+  },
+  "GroupActivities": {
+   "purpose_zh": "共享体验(SharePlay)",
+   "purpose_en": "Shared experiences (SharePlay)",
+   "sensitive": false
+  },
+  "HealthKit": {
+   "purpose_zh": "健康与运动数据读写",
+   "purpose_en": "Health and fitness data read/write",
+   "sensitive": true,
+   "capability": "health"
+  },
+  "HealthKitUI": {
+   "purpose_zh": "健康数据授权界面",
+   "purpose_en": "Health data authorization UI",
+   "sensitive": true,
+   "capability": "health"
+  },
+  "HomeKit": {
+   "purpose_zh": "智能家居设备控制",
+   "purpose_en": "Smart home accessory control",
+   "sensitive": true,
+   "capability": "home"
+  },
+  "IOKit": {
+   "purpose_zh": "底层设备驱动访问",
+   "purpose_en": "Low-level device driver access",
+   "sensitive": false
+  },
+  "IOSurface": {
+   "purpose_zh": "跨进程共享图形缓冲",
+   "purpose_en": "Cross-process shared graphics buffers",
+   "sensitive": false
+  },
+  "IdentityLookup": {
+   "purpose_zh": "短信/来电过滤",
+   "purpose_en": "SMS and call filtering",
+   "sensitive": true,
+   "capability": "messages"
+  },
+  "ImageCaptureCore": {
+   "purpose_zh": "相机与扫描仪图像采集",
+   "purpose_en": "Camera and scanner image capture",
+   "sensitive": false
+  },
+  "ImageIO": {
+   "purpose_zh": "图像读写与元数据",
+   "purpose_en": "Image reading, writing and metadata",
+   "sensitive": false
+  },
+  "Intents": {
+   "purpose_zh": "Siri 与快捷指令意图",
+   "purpose_en": "Siri and Shortcuts intents",
+   "sensitive": true,
+   "capability": "siri"
+  },
+  "IntentsUI": {
+   "purpose_zh": "Siri 意图界面",
+   "purpose_en": "Siri intents UI",
+   "sensitive": true,
+   "capability": "siri"
+  },
+  "JavaScriptCore": {
+   "purpose_zh": "系统 JavaScript 引擎(嵌入脚本、热更新常用)",
+   "purpose_en": "System JavaScript engine (embedded scripting; common for hot updates)",
+   "sensitive": false
+  },
+  "LinkPresentation": {
+   "purpose_zh": "链接预览",
+   "purpose_en": "Link previews",
+   "sensitive": false
+  },
+  "LocalAuthentication": {
+   "purpose_zh": "Face ID / Touch ID 生物识别认证",
+   "purpose_en": "Face ID / Touch ID biometric authentication",
+   "sensitive": true,
+   "capability": "biometrics"
+  },
+  "MLCompute": {
+   "purpose_zh": "机器学习训练计算",
+   "purpose_en": "Machine learning training compute",
+   "sensitive": false
+  },
+  "MapKit": {
+   "purpose_zh": "地图展示与地点搜索",
+   "purpose_en": "Map display and place search",
+   "sensitive": false
+  },
+  "MediaAccessibility": {
+   "purpose_zh": "媒体辅助功能(字幕等)",
+   "purpose_en": "Media accessibility (captions, etc.)",
+   "sensitive": false
+  },
+  "MediaPlayer": {
+   "purpose_zh": "媒体播放与媒体库访问(Apple Music)",
+   "purpose_en": "Media playback and media library access (Apple Music)",
+   "sensitive": true,
+   "capability": "media_library"
+  },
+  "MediaToolbox": {
+   "purpose_zh": "媒体处理工具",
+   "purpose_en": "Media processing toolbox",
+   "sensitive": false
+  },
+  "MessageUI": {
+   "purpose_zh": "发送邮件与短信的系统界面",
+   "purpose_en": "System UI for composing mail and SMS",
+   "sensitive": false
+  },
+  "Messages": {
+   "purpose_zh": "iMessage 贴纸与应用扩展",
+   "purpose_en": "iMessage stickers and app extensions",
+   "sensitive": false
+  },
+  "Metal": {
+   "purpose_zh": "底层 GPU 渲染与计算",
+   "purpose_en": "Low-level GPU rendering and compute",
+   "sensitive": false
+  },
+  "MetalFX": {
+   "purpose_zh": "Metal 放大与插帧",
+   "purpose_en": "Metal upscaling and frame interpolation",
+   "sensitive": false
+  },
+  "MetalKit": {
+   "purpose_zh": "Metal 辅助库",
+   "purpose_en": "Metal helper library",
+   "sensitive": false
+  },
+  "MetalPerformanceShaders": {
+   "purpose_zh": "Metal 高性能图像与神经网络算子",
+   "purpose_en": "Metal performance shaders (image and neural network kernels)",
+   "sensitive": false
+  },
+  "MetalPerformanceShadersGraph": {
+   "purpose_zh": "Metal 计算图",
+   "purpose_en": "Metal compute graph",
+   "sensitive": false
+  },
+  "MetricKit": {
+   "purpose_zh": "应用性能与诊断指标收集",
+   "purpose_en": "App performance and diagnostics metrics",
+   "sensitive": false
+  },
+  "MobileCoreServices": {
+   "purpose_zh": "统一类型标识(UTI)等核心服务",
+   "purpose_en": "Uniform type identifiers and core services",
+   "sensitive": false
+  },
+  "ModelIO": {
+   "purpose_zh": "3D 模型导入与处理",
+   "purpose_en": "3D model import and processing",
+   "sensitive": false
+  },
+  "MultipeerConnectivity": {
+   "purpose_zh": "近场设备点对点通信",
+   "purpose_en": "Peer-to-peer nearby device communication",
+   "sensitive": true,
+   "capability": "local_network"
+  },
+  "MusicKit": {
+   "purpose_zh": "Apple Music 访问",
+   "purpose_en": "Apple Music access",
+   "sensitive": true,
+   "capability": "media_library"
+  },
+  "NaturalLanguage": {
+   "purpose_zh": "自然语言处理",
+   "purpose_en": "Natural language processing",
+   "sensitive": false
+  },
+  "NearbyInteraction": {
+   "purpose_zh": "近距离设备交互(UWB)",
+   "purpose_en": "Nearby device interaction (UWB)",
+   "sensitive": true,
+   "capability": "nearby"
+  },
+  "Network": {
+   "purpose_zh": "现代网络 API(连接、路径监控)",
+   "purpose_en": "Modern networking API (connections, path monitoring)",
+   "sensitive": false
+  },
+  "NetworkExtension": {
+   "purpose_zh": "VPN、内容过滤、热点配置",
+   "purpose_en": "VPN, content filtering and hotspot configuration",
+   "sensitive": true,
+   "capability": "network_config"
+  },
+  "NotificationCenter": {
+   "purpose_zh": "通知中心小组件",
+   "purpose_en": "Notification Center widgets",
+   "sensitive": false
+  },
+  "OSLog": {
+   "purpose_zh": "统一日志",
+   "purpose_en": "Unified logging",
+   "sensitive": false
+  },
+  "OpenAL": {
+   "purpose_zh": "OpenAL 3D 音频",
+   "purpose_en": "OpenAL 3D audio",
+   "sensitive": false
+  },
+  "OpenGLES": {
+   "purpose_zh": "OpenGL ES 图形 API(已弃用)",
+   "purpose_en": "OpenGL ES graphics API (deprecated)",
+   "sensitive": false
+  },
+  "PDFKit": {
+   "purpose_zh": "PDF 展示与编辑",
+   "purpose_en": "PDF display and editing",
+   "sensitive": false
+  },
+  "PHASE": {
+   "purpose_zh": "空间音频引擎",
+   "purpose_en": "Spatial audio engine",
+   "sensitive": false
+  },
+  "PassKit": {
+   "purpose_zh": "Apple Pay 与钱包通行证",
+   "purpose_en": "Apple Pay and Wallet passes",
+   "sensitive": true,
+   "capability": "payment"
+  },
+  "PencilKit": {
+   "purpose_zh": "Apple Pencil 手绘",
+   "purpose_en": "Apple Pencil drawing",
+   "sensitive": false
+  },
+  "Photos": {
+   "purpose_zh": "照片库访问",
+   "purpose_en": "Photo library access",
+   "sensitive": true,
+   "capability": "photos"
+  },
+  "PhotosUI": {
+   "purpose_zh": "照片选择器与界面",
+   "purpose_en": "Photo picker and UI",
+   "sensitive": true,
+   "capability": "photos"
+  },
+  "ProximityReader": {
+   "purpose_zh": "近场读卡(Tap to Pay)",
+   "purpose_en": "Proximity reader (Tap to Pay)",
+   "sensitive": true,
+   "capability": "payment"
+  },
+  "PushKit": {
+   "purpose_zh": "VoIP 推送",
+   "purpose_en": "VoIP push notifications",
+   "sensitive": false
+  },
+  "PushToTalk": {
+   "purpose_zh": "对讲功能",
+   "purpose_en": "Push to Talk",
+   "sensitive": false
+  },
+  "QuartzCore": {
+   "purpose_zh": "Core Animation 动画与图层",
+   "purpose_en": "Core Animation layers and animations",
+   "sensitive": false
+  },
+  "QuickLook": {
+   "purpose_zh": "文件快速预览",
+   "purpose_en": "File quick preview",
+   "sensitive": false
+  },
+  "QuickLookThumbnailing": {
+   "purpose_zh": "文件缩略图生成",
+   "purpose_en": "File thumbnail generation",
+   "sensitive": false
+  },
+  "RealityFoundation": {
+   "purpose_zh": "RealityKit 基础",
+   "purpose_en": "RealityKit foundation",
+   "sensitive": false
+  },
+  "RealityKit": {
+   "purpose_zh": "3D / AR 渲染引擎",
+   "purpose_en": "3D / AR rendering engine",
+   "sensitive": true,
+   "capability": "camera"
+  },
+  "ReplayKit": {
+   "purpose_zh": "屏幕录制与直播",
+   "purpose_en": "Screen recording and broadcasting",
+   "sensitive": true,
+   "capability": "screen_recording"
+  },
+  "RoomPlan": {
+   "purpose_zh": "房间 3D 扫描",
+   "purpose_en": "Room 3D scanning",
+   "sensitive": true,
+   "capability": "camera"
+  },
+  "SafariServices": {
+   "purpose_zh": "Safari 视图控制器与内容拦截",
+   "purpose_en": "Safari view controller and content blockers",
+   "sensitive": false
+  },
+  "SceneKit": {
+   "purpose_zh": "3D 场景渲染",
+   "purpose_en": "3D scene rendering",
+   "sensitive": false
+  },
+  "ScreenTime": {
+   "purpose_zh": "屏幕使用时间",
+   "purpose_en": "Screen Time",
+   "sensitive": true,
+   "capability": "screen_time"
+  },
+  "Security": {
+   "purpose_zh": "钥匙串、证书与加密服务",
+   "purpose_en": "Keychain, certificates and cryptographic services",
+   "sensitive": false
+  },
+  "SensitiveContentAnalysis": {
+   "purpose_zh": "敏感内容检测",
+   "purpose_en": "Sensitive content detection",
+   "sensitive": false
+  },
+  "SensorKit": {
+   "purpose_zh": "研究用传感器数据",
+   "purpose_en": "Research sensor data",
+   "sensitive": true,
+   "capability": "sensor_research"
+  },
+  "ShazamKit": {
+   "purpose_zh": "音频识别(Shazam)",
+   "purpose_en": "Audio recognition (Shazam)",
+   "sensitive": true,
+   "capability": "microphone"
+  },
+  "Social": {
+   "purpose_zh": "社交网络账号分享(已弃用)",
+   "purpose_en": "Social network sharing (deprecated)",
+   "sensitive": true,
+   "capability": "accounts"
+  },
+  "SoundAnalysis": {
+   "purpose_zh": "声音分类",
+   "purpose_en": "Sound classification",
+   "sensitive": false
+  },
+  "Speech": {
+   "purpose_zh": "语音识别",
+   "purpose_en": "Speech recognition",
+   "sensitive": true,
+   "capability": "speech"
+  },
+  "SpriteKit": {
+   "purpose_zh": "2D 游戏与动画引擎",
+   "purpose_en": "2D game and animation engine",
+   "sensitive": false
+  },
+  "StoreKit": {
+   "purpose_zh": "应用内购买、订阅与评分",
+   "purpose_en": "In-app purchases, subscriptions and ratings",
+   "sensitive": false
+  },
+  "SwiftData": {
+   "purpose_zh": "Swift 数据持久化",
+   "purpose_en": "Swift data persistence",
+   "sensitive": false
+  },
+  "SwiftUI": {
+   "purpose_zh": "声明式用户界面",
+   "purpose_en": "Declarative user interface",
+   "sensitive": false
+  },
+  "Symbols": {
+   "purpose_zh": "SF Symbols 图标",
+   "purpose_en": "SF Symbols icons",
+   "sensitive": false
+  },
+  "SystemConfiguration": {
+   "purpose_zh": "网络可达性与网络配置信息",
+   "purpose_en": "Network reachability and network configuration",
+   "sensitive": false
+  },
+  "TabularData": {
+   "purpose_zh": "表格数据处理",
+   "purpose_en": "Tabular data processing",
+   "sensitive": false
+  },
+  "TipKit": {
+   "purpose_zh": "功能提示",
+   "purpose_en": "Feature tips",
+   "sensitive": false
+  },
+  "Translation": {
+   "purpose_zh": "系统翻译",
+   "purpose_en": "System translation",
+   "sensitive": false
+  },
+  "Twitter": {
+   "purpose_zh": "Twitter 分享(已弃用)",
+   "purpose_en": "Twitter sharing (deprecated)",
+   "sensitive": true,
+   "capability": "accounts"
+  },
+  "UIKit": {
+   "purpose_zh": "iOS 用户界面框架",
+   "purpose_en": "iOS user interface framework",
+   "sensitive": false
+  },
+  "UniformTypeIdentifiers": {
+   "purpose_zh": "统一类型标识符",
+   "purpose_en": "Uniform type identifiers",
+   "sensitive": false
+  },
+  "UserNotifications": {
+   "purpose_zh": "本地与远程通知",
+   "purpose_en": "Local and remote notifications",
+   "sensitive": true,
+   "capability": "notifications"
+  },
+  "UserNotificationsUI": {
+   "purpose_zh": "通知内容扩展界面",
+   "purpose_en": "Notification content extension UI",
+   "sensitive": false
+  },
+  "VideoSubscriberAccount": {
+   "purpose_zh": "视频订阅账号单点登录",
+   "purpose_en": "Video subscriber single sign-on",
+   "sensitive": false
+  },
+  "VideoToolbox": {
+   "purpose_zh": "视频硬件编解码",
+   "purpose_en": "Hardware video encoding and decoding",
+   "sensitive": false
+  },
+  "Vision": {
+   "purpose_zh": "计算机视觉(人脸、文字、物体识别)",
+   "purpose_en": "Computer vision (face, text and object recognition)",
+   "sensitive": false
+  },
+  "VisionKit": {
+   "purpose_zh": "文档扫描与文字识别界面",
+   "purpose_en": "Document scanning and text recognition UI",
+   "sensitive": true,
+   "capability": "camera"
+  },
+  "WatchConnectivity": {
+   "purpose_zh": "iPhone 与 Apple Watch 通信",
+   "purpose_en": "iPhone and Apple Watch communication",
+   "sensitive": false
+  },
+  "WeatherKit": {
+   "purpose_zh": "天气数据",
+   "purpose_en": "Weather data",
+   "sensitive": false
+  },
+  "WebKit": {
+   "purpose_zh": "WKWebView 网页内容展示",
+   "purpose_en": "WKWebView web content display",
+   "sensitive": false
+  },
+  "WidgetKit": {
+   "purpose_zh": "小组件与锁屏组件",
+   "purpose_en": "Widgets and Lock Screen widgets",
+   "sensitive": false
+  },
+  "WorkoutKit": {
+   "purpose_zh": "运动训练计划",
+   "purpose_en": "Workout plans",
+   "sensitive": true,
+   "capability": "health"
+  },
+  "iAd": {
+   "purpose_zh": "iAd 广告(已弃用)",
+   "purpose_en": "iAd advertising (deprecated)",
+   "sensitive": true,
+   "capability": "advertising_id"
+  }
+ },
+ "usr_lib": {
+  "libAppleArchive": {
+   "purpose_zh": "Apple Archive 压缩归档库",
+   "purpose_en": "Apple Archive library",
+   "sensitive": false
+  },
+  "libMobileGestalt": {
+   "purpose_zh": "设备属性查询(MobileGestalt,常用于设备信息/指纹)",
+   "purpose_en": "Device property queries (MobileGestalt; often used for device info/fingerprinting)",
+   "sensitive": true,
+   "capability": "device_fingerprint"
+  },
+  "libSystem": {
+   "purpose_zh": "系统 C 库(libc、libm、pthread 等聚合)",
+   "purpose_en": "System C library umbrella (libc, libm, pthread, etc.)",
+   "sensitive": false
+  },
+  "libarchive": {
+   "purpose_zh": "归档库(tar/zip 等)",
+   "purpose_en": "Archive library (tar, zip, etc.)",
+   "sensitive": false
+  },
+  "libbz2": {
+   "purpose_zh": "bzip2 压缩库",
+   "purpose_en": "bzip2 compression library",
+   "sensitive": false
+  },
+  "libc++": {
+   "purpose_zh": "LLVM C++ 标准库",
+   "purpose_en": "LLVM C++ standard library",
+   "sensitive": false
+  },
+  "libc++abi": {
+   "purpose_zh": "C++ ABI 支持库",
+   "purpose_en": "C++ ABI support library",
+   "sensitive": false
+  },
+  "libcharset": {
+   "purpose_zh": "字符集检测库",
+   "purpose_en": "Character set library",
+   "sensitive": false
+  },
+  "libcompression": {
+   "purpose_zh": "系统压缩库(LZ4/LZFSE/zlib/LZMA)",
+   "purpose_en": "System compression library (LZ4, LZFSE, zlib, LZMA)",
+   "sensitive": false
+  },
+  "libexpat": {
+   "purpose_zh": "Expat XML 解析库",
+   "purpose_en": "Expat XML parser library",
+   "sensitive": false
+  },
+  "libiconv": {
+   "purpose_zh": "字符编码转换库",
+   "purpose_en": "Character encoding conversion library",
+   "sensitive": false
+  },
+  "libicucore": {
+   "purpose_zh": "ICU 国际化与文本处理库",
+   "purpose_en": "ICU internationalization and text processing library",
+   "sensitive": false
+  },
+  "liblzma": {
+   "purpose_zh": "xz/LZMA 压缩库",
+   "purpose_en": "xz/LZMA compression library",
+   "sensitive": false
+  },
+  "libnetwork": {
+   "purpose_zh": "系统网络库",
+   "purpose_en": "System networking library",
+   "sensitive": false
+  },
+  "libobjc": {
+   "purpose_zh": "Objective-C 运行时",
+   "purpose_en": "Objective-C runtime",
+   "sensitive": false
+  },
+  "libprotobuf": {
+   "purpose_zh": "系统内置 Protocol Buffers 库",
+   "purpose_en": "System-provided Protocol Buffers library",
+   "sensitive": false
+  },
+  "libprotobuf-lite": {
+   "purpose_zh": "系统内置 Protocol Buffers Lite 库",
+   "purpose_en": "System-provided Protocol Buffers Lite library",
+   "sensitive": false
+  },
+  "libresolv": {
+   "purpose_zh": "DNS 解析库",
+   "purpose_en": "DNS resolver library",
+   "sensitive": false
+  },
+  "libsandbox": {
+   "purpose_zh": "应用沙盒接口",
+   "purpose_en": "App sandbox interface",
+   "sensitive": false
+  },
+  "libsqlite3": {
+   "purpose_zh": "SQLite 数据库引擎",
+   "purpose_en": "SQLite database engine",
+   "sensitive": false
+  },
+  "libxml2": {
+   "purpose_zh": "libxml2 XML 解析库",
+   "purpose_en": "libxml2 XML parsing library",
+   "sensitive": false
+  },
+  "libxslt": {
+   "purpose_zh": "libxslt XSLT 转换库",
+   "purpose_en": "libxslt XSLT library",
+   "sensitive": false
+  },
+  "libz": {
+   "purpose_zh": "zlib 压缩库",
+   "purpose_en": "zlib compression library",
+   "sensitive": false
+  }
+ },
+ "usr_lib_patterns": [
+  {
+   "glob": "libswift*",
+   "purpose_zh": "Swift 运行时动态库",
+   "purpose_en": "Swift runtime dylib",
+   "sensitive": false
+  }
+ ]
+}

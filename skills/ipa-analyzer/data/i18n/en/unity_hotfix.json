@@ -1,0 +1,42 @@
+{
+  "unity.hotfix.framework": {
+    "title": "Hot-update framework",
+    "summary": "Detected: {frameworks}. {summary_text} {limits}",
+    "remediation": "If the main binary is FairPlay-encrypted, binary-based detection is limited; supply a decrypted IPA (this tool never decrypts)."
+  },
+  "unity.hotfix.lua": {
+    "title": "Lua hot-update scripts",
+    "summary": "Lua files inspected: {plain} plain, {bytecode} bytecode, {compressed} compressed, {encrypted_suspected} suspected encrypted ({total} in total; a sample, not the population).",
+    "remediation": ""
+  },
+  "unity.hotfix.lua_version": {
+    "title": "Lua version profile",
+    "summary": "Runtime version strings: {runtime}; consistent: {consistent}; custom Lua suspected: {custom_suspected}. {notes} A standard header does not rule out opcode re-mapping.",
+    "remediation": ""
+  },
+  "unity.hotfix.csharp_dll": {
+    "title": "C# hot-update assemblies",
+    "summary": "{total} assembly candidate(s): {hot} hot (e.g. {hot_names}), {aot_meta} AOT supplemental metadata; formats: {formats}. Report only, nothing is decrypted.",
+    "remediation": ""
+  },
+  "unity.hotfix.js": {
+    "title": "JavaScript hot-update scripts",
+    "summary": "JS files: {plain} plain, {binary_non_text} binary non-text, {encrypted_suspected} suspected encrypted ({total} in total); backends: {backends}.",
+    "remediation": ""
+  },
+  "unity.hotfix.resource_update": {
+    "title": "Resource hot-update",
+    "summary": "Resource-update frameworks: {frameworks}; {catalogs} catalog file(s), {manifests} manifest(s); CDN-like hosts (domain only): {hosts}. {layout}",
+    "remediation": ""
+  },
+  "unity.hotfix.script_protection": {
+    "title": "Hot-update script protection",
+    "summary": "Lua: {lua}; JS: {js}; C#: {csharp}. Plain or compiled scripts are not protected, compression is not encryption, high entropy is only suspected, a sample is not the population. Naming hints: {hints}.",
+    "remediation": "Containers that cannot be inspected (encrypted or block-encrypted bundles) yield unknown only; supply a decrypted IPA or user-side key material to confirm. This tool does not decrypt."
+  },
+  "unity_hotfix.kind.csharp": "C# hot update",
+  "unity_hotfix.kind.lua": "Lua",
+  "unity_hotfix.kind.js": "JavaScript",
+  "unity_hotfix.kind.resource": "Resource update",
+  "unity_hotfix.protection.hint": "Identifier naming hints below are not proof."
+}

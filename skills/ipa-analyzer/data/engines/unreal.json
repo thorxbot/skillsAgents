@@ -1,0 +1,111 @@
+{
+  "id": "unreal",
+  "name": "Unreal Engine",
+  "family": "unreal",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "dir",
+      "pattern": "/cookeddata",
+      "weight": 0.8,
+      "strong": true,
+      "note": "iOS staging: Saved/StagedBuilds/IOS/cookeddata is copied to .app/cookeddata"
+    },
+    {
+      "type": "file",
+      "pattern": "/cookeddata/**/*.pak",
+      "weight": 0.5,
+      "note": "cooked content paks"
+    },
+    {
+      "type": "file",
+      "pattern": "/uecommandline.txt",
+      "weight": 0.4,
+      "note": "staged command line file (UE forum thread)"
+    },
+    {
+      "type": "file",
+      "pattern": "/ue4commandline.txt",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.pak",
+      "weight": 0.25,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.uasset",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.uexp",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.ubulk",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.umap",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.utoc",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "UE5 IoStore"
+    },
+    {
+      "type": "file",
+      "pattern": "*.ucas",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "magic:uasset",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "IOSAppDelegate",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "UE iOS app delegate class"
+    },
+    {
+      "type": "string",
+      "pattern": "../../../Engine/",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "symbol",
+      "pattern": "_ZN11FEngineLoop*",
+      "weight": 0.4,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "Pak / IoStore container checks belong to the unreal engine checker (WP7b).",
+  "sources": [
+    "FETCHED (web search): Unreal forum / docs - build phase copies Saved/StagedBuilds/IOS/cookeddata/ into .app/cookeddata/; 'uecommandline.txt' staged next to it",
+    "MEMORY, not re-checked this session (signals flagged unverified): .utoc/.ucas, class IOSAppDelegate, FEngineLoop, ../../../Engine/ path prefix"
+  ]
+}

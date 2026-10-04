@@ -1,0 +1,64 @@
+{
+  "id": "godot",
+  "name": "Godot Engine",
+  "family": "godot",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "magic:gdpc",
+      "weight": 0.9,
+      "strong": true,
+      "note": "PACK_HEADER_MAGIC 0x43504447 'GDPC'"
+    },
+    {
+      "type": "file",
+      "pattern": "*.pck",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "re:Godot Engine v[0-9]",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "engine banner"
+    },
+    {
+      "type": "string",
+      "pattern": "godotengine.org",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "GodotView",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "GodotApplicalitionDelegate",
+      "weight": 0.3,
+      "unverified": true,
+      "note": "sic: upstream spelling"
+    },
+    {
+      "type": "string",
+      "pattern": "res://",
+      "weight": 0.15,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "cpp"
+  ],
+  "notes": "",
+  "sources": [
+    "FETCHED: https://raw.githubusercontent.com/godotengine/godot/master/core/io/file_access_pack.h - PACK_HEADER_MAGIC 0x43504447, PACK_FORMAT_VERSION_V4 (versions 2/3 also supported)",
+    "MEMORY, not re-checked this session (signals flagged unverified): *.pck naming, class names, banner string"
+  ],
+  "version_regex": "Godot Engine v([0-9]+\\.[0-9]+(?:\\.[0-9]+)?)"
+}

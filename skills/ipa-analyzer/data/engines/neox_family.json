@@ -1,0 +1,50 @@
+{
+  "id": "neox_family",
+  "name": "NeoX-style packages (file-format clue)",
+  "family": "neox",
+  "kind": "game_engine",
+  "confirm_threshold": 0.7,
+  "signals": [
+    {
+      "type": "file",
+      "pattern": "head:NXPK",
+      "weight": 0.4,
+      "unverified": true,
+      "note": "container header tag reported for NeoX 2 packages"
+    },
+    {
+      "type": "file",
+      "pattern": "*.npk",
+      "weight": 0.35,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "script.npk",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "redirect.nxs",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "file",
+      "pattern": "*.nxs",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "python",
+    "cpp"
+  ],
+  "notes": "Clue only: the file formats match; the vendor is not asserted.",
+  "sources": [
+    "docs/03-ENGINE-RESEARCH.md section 1 (B level): *.npk, NXPK packages, script.npk, redirect.nxs, embedded Python with scrambled opcodes; denpk2 README - NOT re-checked this session",
+    "Report wording must stay 'consistent with the file formats of NetEase NeoX-family engines', never a vendor claim"
+  ]
+}

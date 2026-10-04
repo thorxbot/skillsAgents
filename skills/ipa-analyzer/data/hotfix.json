@@ -1,0 +1,831 @@
+{
+  "version": 1,
+  "description": "Detection rules for Unity hot-update frameworks (WP5b). Every signal carries `sources`; signals whose facts could not be checked against an upstream source are flagged `unverified` and are down-weighted by the detector. Signal types: namespace (metadata/dump namespace, segment-wise prefix), type (exact metadata identifier), assembly (exact assembly file name in the metadata string pool), native_regex / native_literal (bytes searched in the unencrypted parts of Mach-O binaries), file (regex on the app-relative path, case-insensitive), pool_regex (case-insensitive regex on a metadata identifier).",
+  "unverified_weight_factor": 0.6,
+  "frameworks": [
+    {
+      "id": "hybridclr",
+      "name": "HybridCLR",
+      "kind": "csharp",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "HybridCLR",
+          "weight": 0.75,
+          "strong": true,
+          "sources": [
+            "hybridclr_unity Runtime/RuntimeApi.cs: namespace HybridCLR (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "HomologousImageMode",
+          "weight": 0.5,
+          "sources": [
+            "hybridclr_unity Runtime/HomologousImageMode.cs (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "LoadMetadataForAOTAssembly",
+          "weight": 0.6,
+          "sources": [
+            "hybridclr_unity Runtime/RuntimeApi.cs: RuntimeApi.LoadMetadataForAOTAssembly (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "assembly",
+          "value": "HybridCLR.Runtime.dll",
+          "weight": 0.6,
+          "sources": [
+            "hybridclr_unity Runtime/HybridCLR.Runtime.asmdef (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "native_regex",
+          "value": "N9hybridclr[0-9A-Za-z_]{0,40}",
+          "weight": 0.8,
+          "strong": true,
+          "sources": [
+            "Itanium C++ mangling of namespace hybridclr (9 characters); the namespace name itself is documented by the HybridCLR runtime sources"
+          ],
+          "unverified": true,
+          "note": "namespace name taken from the HybridCLR project; the mangling form is deterministic"
+        },
+        {
+          "type": "native_literal",
+          "value": "hybridclr::",
+          "weight": 0.5,
+          "sources": [
+            "HybridCLR C++ namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "file",
+          "value": "(^|/)[^/]*hybridclr[^/]*$",
+          "weight": 0.5,
+          "sources": [
+            "file naming convention"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "ilruntime",
+      "name": "ILRuntime",
+      "kind": "csharp",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "ILRuntime",
+          "weight": 0.75,
+          "strong": true,
+          "sources": [
+            "Ourpalm/ILRuntime ILRuntime/Runtime/Enviorment/AppDomain.cs: namespace ILRuntime.Runtime.Enviorment (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "CLRBindings",
+          "weight": 0.4,
+          "sources": [
+            "Ourpalm/ILRuntime ILRuntimeTestBase/AutoGenerate/CLRBindings.cs (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "assembly",
+          "value": "ILRuntime.dll",
+          "weight": 0.6,
+          "sources": [
+            "Ourpalm/ILRuntime ILRuntime/ILRuntime.csproj (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)ilruntime[^/]*$",
+          "weight": 0.4,
+          "sources": [
+            "file naming convention"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "ifix",
+      "name": "InjectFix (IFix)",
+      "kind": "csharp",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "IFix.Core",
+          "weight": 0.7,
+          "strong": true,
+          "sources": [
+            "Tencent/InjectFix Source/VSProj/Src/Core/VirtualMachine.cs: namespace IFix.Core (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "namespace",
+          "value": "IFix",
+          "weight": 0.5,
+          "sources": [
+            "Tencent/InjectFix namespace IFix.Core (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "WrappersManager",
+          "weight": 0.3,
+          "sources": [
+            "Tencent/InjectFix Source/VSProj/Src/Core/WrappersManager.cs (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "\\.patch(\\.bytes)?$",
+          "weight": 0.25,
+          "sources": [
+            "patch file extension could not be confirmed"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "xlua",
+      "name": "xLua",
+      "kind": "lua",
+      "runtime_hints": [
+        {
+          "flavor": "puc",
+          "version": "5.3",
+          "note": "xLua build/CMakeLists.txt defaults LUA_VERSION to 5.3.5; build trees for Lua 5.1.5, 5.3.x, 5.4.1 and LuaJIT 2.1.0-beta3 are shipped, so the embedded runtime must be measured",
+          "verified": true
+        },
+        {
+          "flavor": "luajit",
+          "version": "2.1",
+          "note": "optional LuaJIT 2.1.0-beta3 build (USING_LUAJIT)",
+          "verified": true
+        }
+      ],
+      "bytecode_header_variants": [
+        "xlua_compat_header"
+      ],
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "XLua",
+          "weight": 0.75,
+          "strong": true,
+          "sources": [
+            "Tencent/xLua Assets/XLua/Src/LuaEnv.cs: namespace XLua (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "namespace",
+          "value": "XLua.LuaDLL",
+          "weight": 0.8,
+          "strong": true,
+          "sources": [
+            "Tencent/xLua Assets/XLua/Src/LuaDLL.cs: namespace XLua.LuaDLL (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "SignatureLoader",
+          "weight": 0.3,
+          "sources": [
+            "Tencent/xLua Assets/XLua/Src/SignatureLoader.cs (fetched 2026-10-04); a loader that verifies script signatures"
+          ],
+          "tag": "script_signature"
+        },
+        {
+          "type": "native_regex",
+          "value": "_?xlua_[a-z_]{3,40}",
+          "weight": 0.8,
+          "strong": true,
+          "sources": [
+            "Tencent/xLua build/xlua.c: xlua_tocsobj_safe, xlua_pushcsobj, xlua_get_lib_version ... (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "native_regex",
+          "value": "_?luaopen_(?:xlua|i64lib)",
+          "weight": 0.8,
+          "strong": true,
+          "sources": [
+            "Tencent/xLua Assets/XLua/Src/LuaEnv.cs calls LuaAPI.luaopen_xlua / luaopen_i64lib (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)[^/]*xlua[^/]*$",
+          "weight": 0.4,
+          "sources": [
+            "file naming convention"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "tolua",
+      "name": "ToLua / tolua#",
+      "kind": "lua",
+      "runtime_hints": [
+        {
+          "flavor": "luajit",
+          "version": "2.1",
+          "note": "tolua# README: iOS, Android and Windows use LuaJIT 2.1-beta3; macOS (Unity 5.x) uses Lua 5.1.5",
+          "verified": true
+        }
+      ],
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "LuaInterface",
+          "weight": 0.5,
+          "sources": [
+            "topameng/tolua Assets/ToLua/Core/LuaState.cs: namespace LuaInterface (fetched 2026-10-04); the namespace is also used by other Lua bindings"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "LuaFileUtils",
+          "weight": 0.45,
+          "sources": [
+            "topameng/tolua Assets/ToLua/Core/LuaFileUtils.cs (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "LuaState",
+          "weight": 0.2,
+          "sources": [
+            "topameng/tolua Assets/ToLua/Core/LuaState.cs (fetched 2026-10-04); generic name"
+          ]
+        },
+        {
+          "type": "namespace",
+          "value": "LuaFramework",
+          "weight": 0.4,
+          "sources": [
+            "LuaFramework_UGUI style projects"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "native_regex",
+          "value": "_?tolua_[a-z_]{3,40}",
+          "weight": 0.5,
+          "sources": [
+            "tolua native entry points"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "file",
+          "value": "(^|/)lua\\.unity3d$",
+          "weight": 0.4,
+          "sources": [
+            "topameng/tolua Assets/ToLua/Core/LuaFileUtils.cs references the asset bundle 'lua.unity3d' (fetched 2026-10-04)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slua",
+      "name": "SLua",
+      "kind": "lua",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "SLua",
+          "weight": 0.6,
+          "sources": [
+            "SLua namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "native_regex",
+          "value": "_?slua_[a-z_]{3,40}",
+          "weight": 0.5,
+          "sources": [
+            "SLua native entry points"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "moonsharp",
+      "name": "MoonSharp",
+      "kind": "lua",
+      "runtime_hints": [
+        {
+          "flavor": "puc",
+          "version": "5.2",
+          "note": "MoonSharp is a managed Lua implementation (no native Lua library); targeted dialect Lua 5.2",
+          "verified": false
+        }
+      ],
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "MoonSharp.Interpreter",
+          "weight": 0.85,
+          "strong": true,
+          "sources": [
+            "MoonSharp.Interpreter namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "nlua",
+      "name": "NLua / KeraLua",
+      "kind": "lua",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "NLua",
+          "weight": 0.6,
+          "sources": [
+            "NLua namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "namespace",
+          "value": "KeraLua",
+          "weight": 0.6,
+          "sources": [
+            "KeraLua namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "kopilua",
+      "name": "KopiLua / UniLua (managed Lua)",
+      "kind": "lua",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "KopiLua",
+          "weight": 0.6,
+          "sources": [
+            "KopiLua namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "namespace",
+          "value": "UniLua",
+          "weight": 0.5,
+          "sources": [
+            "UniLua namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "puerts",
+      "name": "puerts",
+      "kind": "js",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "Puerts",
+          "weight": 0.75,
+          "strong": true,
+          "sources": [
+            "Tencent/puerts unity/upms/core/Runtime/Src/Backend.cs, Loader.cs: namespace Puerts (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "JsEnv",
+          "weight": 0.35,
+          "sources": [
+            "Tencent/puerts unity/upms/core/Runtime/Src/JsEnv.cs (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "BackendV8",
+          "weight": 0.6,
+          "tag": "backend:v8",
+          "sources": [
+            "puerts README (ScriptEnv(new BackendV8())) (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "BackendQuickJS",
+          "weight": 0.6,
+          "tag": "backend:quickjs",
+          "sources": [
+            "class name inferred from the BackendV8 pattern and the upms/quickjs package"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "type",
+          "value": "BackendNodeJS",
+          "weight": 0.6,
+          "tag": "backend:nodejs",
+          "sources": [
+            "class name inferred from the BackendV8 pattern and the upms/nodejs package"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "type",
+          "value": "BackendLua",
+          "weight": 0.6,
+          "tag": "backend:lua",
+          "sources": [
+            "puerts README (ScriptEnv(new BackendLua())) (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "BackendPython",
+          "weight": 0.6,
+          "tag": "backend:python",
+          "sources": [
+            "puerts README (ScriptEnv(new BackendPython())) (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)[^/]*puerts[^/]*$",
+          "weight": 0.4,
+          "sources": [
+            "file naming convention"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "jint",
+      "name": "Jint / ClearScript / ReactUnity (managed JS hosts)",
+      "kind": "js",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "Jint",
+          "weight": 0.6,
+          "sources": [
+            "Jint namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "namespace",
+          "value": "Microsoft.ClearScript",
+          "weight": 0.6,
+          "sources": [
+            "ClearScript namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "namespace",
+          "value": "ReactUnity",
+          "weight": 0.6,
+          "sources": [
+            "ReactUnity namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "addressables",
+      "name": "Unity Addressables",
+      "kind": "resource",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "UnityEngine.AddressableAssets",
+          "weight": 0.5,
+          "sources": [
+            "Unity Addressables package namespace; present whenever the package is compiled in, it does not prove remote updates"
+          ]
+        },
+        {
+          "type": "namespace",
+          "value": "UnityEngine.ResourceManagement",
+          "weight": 0.3,
+          "sources": [
+            "Unity ResourceManagement package namespace"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)Data/Raw/aa/settings\\.json$",
+          "weight": 0.85,
+          "strong": true,
+          "sources": [
+            "observed in a real Addressables IPA 2026-10-04 (aa/settings.json with ContentCatalogProvider)"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)aa/catalog[^/]*\\.(json|bin|hash)$",
+          "weight": 0.8,
+          "strong": true,
+          "sources": [
+            "observed in a real Addressables IPA 2026-10-04 (aa/catalog.bin, catalog.hash)"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)AddressablesLink/link\\.xml$",
+          "weight": 0.5,
+          "sources": [
+            "observed in a real Addressables IPA 2026-10-04"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)catalog_[A-Za-z0-9._-]+\\.(json|bin|hash)$",
+          "weight": 0.5,
+          "sources": [
+            "observed remote catalog naming catalog_<version>.bin/.hash 2026-10-04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "yooasset",
+      "name": "YooAsset",
+      "kind": "resource",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "YooAsset",
+          "weight": 0.75,
+          "strong": true,
+          "sources": [
+            "tuyoogame/YooAsset Assets/YooAsset/Runtime/ResourcePackage/PackageManifestConsts.cs: namespace YooAsset (fetched 2026-10-04)"
+          ]
+        },
+        {
+          "type": "type",
+          "value": "YooAssets",
+          "weight": 0.4,
+          "sources": [
+            "YooAsset public static class YooAssets"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "type",
+          "value": "EPlayMode",
+          "weight": 0.3,
+          "sources": [
+            "YooAsset play-mode enum"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "file",
+          "value": "(^|/)Data/Raw/yoo/",
+          "weight": 0.6,
+          "sources": [
+            "tuyoogame/YooAsset Runtime/Settings/YooAssetSettings.cs: default YooFolderName = \"yoo\" (fetched 2026-10-04); configurable"
+          ]
+        },
+        {
+          "type": "file",
+          "value": "(^|/)PackageManifest_[^/]+\\.(bytes|json|hash)$",
+          "weight": 0.5,
+          "sources": [
+            "manifest file naming could not be confirmed"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "xasset",
+      "name": "XAsset",
+      "kind": "resource",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "libx",
+          "weight": 0.45,
+          "sources": [
+            "XAsset namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "namespace",
+          "value": "xasset",
+          "weight": 0.45,
+          "sources": [
+            "XAsset namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "gameframework",
+      "name": "GameFramework",
+      "kind": "resource",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "GameFramework",
+          "weight": 0.6,
+          "strong": false,
+          "sources": [
+            "GameFramework namespace"
+          ],
+          "unverified": true
+        },
+        {
+          "type": "namespace",
+          "value": "UnityGameFramework.Runtime",
+          "weight": 0.7,
+          "sources": [
+            "UnityGameFramework namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "qframework",
+      "name": "QFramework",
+      "kind": "resource",
+      "signals": [
+        {
+          "type": "namespace",
+          "value": "QFramework",
+          "weight": 0.6,
+          "sources": [
+            "QFramework namespace"
+          ],
+          "unverified": true
+        }
+      ]
+    },
+    {
+      "id": "custom_hotupdate",
+      "name": "Custom hot-update logic (identifier naming hints)",
+      "kind": "resource",
+      "max_confidence": 0.45,
+      "signals": [
+        {
+          "type": "pool_regex",
+          "value": "(?:^|[._<])(?:hot[_]?(?:fix|update|patch)|res(?:ource)?[_]?update|patch(?:er|ing)?[_]?(?:manager|bundle))",
+          "weight": 0.3,
+          "sources": [
+            "identifier naming heuristic; no upstream source"
+          ],
+          "unverified": true,
+          "max_matches": 12
+        }
+      ]
+    }
+  ],
+  "protection_hints": [
+    {
+      "id": "bundle_crypto",
+      "regex": "(?:encrypt|decrypt|crypto)\\w*(?:bundle|asset)|(?:bundle|asset)\\w*(?:encrypt|decrypt|crypto)",
+      "target": "bundle",
+      "sources": [
+        "identifier naming heuristic, observed 2026-10-04: EncryptedAssetBundleProvider, BundleCrypto"
+      ],
+      "unverified": true
+    },
+    {
+      "id": "script_crypto",
+      "regex": "(?:lua|script|dll|assembly)\\w*(?:encrypt|decrypt|xxtea)|xxtea",
+      "target": "script",
+      "sources": [
+        "identifier naming heuristic"
+      ],
+      "unverified": true
+    },
+    {
+      "id": "script_signature",
+      "regex": "^SignatureLoader$",
+      "target": "script",
+      "sources": [
+        "Tencent/xLua Assets/XLua/Src/SignatureLoader.cs (fetched 2026-10-04)"
+      ],
+      "unverified": false
+    }
+  ],
+  "storage": {
+    "lua_ext": [
+      ".lua",
+      ".luac",
+      ".luab",
+      ".luajit",
+      ".lua.bytes",
+      ".lua.txt",
+      ".luac.bytes",
+      ".lub"
+    ],
+    "dll_ext": [
+      ".dll",
+      ".dll.bytes",
+      ".dll.txt"
+    ],
+    "js_ext": [
+      ".js",
+      ".mjs",
+      ".cjs",
+      ".js.txt",
+      ".mjs.txt",
+      ".cjs.txt",
+      ".js.bytes",
+      ".jsc"
+    ],
+    "bytes_ext": [
+      ".bytes"
+    ],
+    "lua_dir_regex": "(^|/)(lua|luas|lua_?scripts?|luacode|tolua|xlua|lua\\w*)/",
+    "bundle_ext": [
+      ".bundle",
+      ".ab",
+      ".unity3d",
+      ".assetbundle",
+      ".b",
+      ".u3d"
+    ],
+    "exclude_path_regex": "(\\.framework/|\\.appex/|\\.lproj/|(^|/)SC_Info/|(^|/)_CodeSignature/|\\.xcassets/|\\.bundle/)",
+    "game_data_regex": "(^|/)Data/",
+    "serialized_regex": "(^|/)Data/(resources\\.assets|sharedassets\\d+\\.assets|level\\d+|globalgamemanagers(\\.assets)?|mainData)$",
+    "managed_dir_regex": "(^|/)Data/Managed/",
+    "native_lib_name_regex": "(?:^|/)(?:lib)?(?:lua|luajit|xlua|tolua|slua|puerts|wee8|v8|quickjs|node|hybridclr)[^/]*$"
+  },
+  "hot_dll": {
+    "aot_name_regex": [
+      "^mscorlib$",
+      "^System(\\..+)?$",
+      "^netstandard$",
+      "^UnityEngine(\\..+)?$",
+      "^Unity\\..+$",
+      "^Mono\\..+$",
+      "^Assembly-CSharp(-firstpass)?$"
+    ],
+    "hot_name_regex": [
+      "(?i)hot[_.-]?(update|fix)",
+      "(?i)^hotfix",
+      "(?i)^hot[_.-]?update",
+      "(?i)^logic$",
+      "(?i)hotcode"
+    ],
+    "sources": [
+      "HybridCLR documentation describes AOT supplemental metadata (mscorlib, System, System.Core, UnityEngine.*) vs hot-update assemblies; name lists are heuristics"
+    ],
+    "unverified": true
+  },
+  "js_backends": [
+    {
+      "id": "quickjs",
+      "regex": "_?JS_(?:NewRuntime|NewContext|WriteObject|ReadObject)(?![A-Za-z0-9_])",
+      "weight": 0.85,
+      "sources": [
+        "bellard/quickjs quickjs.h: JS_NewRuntime, JS_NewContext, JS_WriteObject, JS_ReadObject (fetched 2026-10-04)"
+      ]
+    },
+    {
+      "id": "v8",
+      "regex": "_?_ZN2v87Isolate[0-9A-Za-z_]{0,30}",
+      "weight": 0.8,
+      "sources": [
+        "Itanium C++ mangling of v8::Isolate (namespace v8 = 2 chars, class Isolate = 7 chars)"
+      ],
+      "unverified": true
+    },
+    {
+      "id": "nodejs",
+      "regex": "_?_ZN4node[0-9A-Za-z_]{0,30}",
+      "weight": 0.5,
+      "sources": [
+        "Itanium C++ mangling of namespace node; Node.js embedding also contains V8"
+      ],
+      "unverified": true
+    }
+  ]
+}

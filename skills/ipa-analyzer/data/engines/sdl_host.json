@@ -1,0 +1,41 @@
+{
+  "id": "sdl_host",
+  "name": "SDL (host framework)",
+  "family": "sdl",
+  "kind": "open_source_lib",
+  "confirm_threshold": 0.5,
+  "signals": [
+    {
+      "type": "objc_prefix",
+      "pattern": "SDLUIKitDelegate",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "objc_prefix",
+      "pattern": "SDL_uikit",
+      "weight": 0.4,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "SDL_VIDEODRIVER",
+      "weight": 0.3,
+      "unverified": true
+    },
+    {
+      "type": "string",
+      "pattern": "SDL_HINT_",
+      "weight": 0.2,
+      "unverified": true
+    }
+  ],
+  "exclusive_with": [],
+  "language_hints": [
+    "c"
+  ],
+  "notes": "Library: games built on SDL usually bring another engine or are custom.",
+  "sources": [
+    "MEMORY, not re-checked this session (signals flagged unverified): SDL iOS UIKit delegate / view controller class names and SDL environment strings"
+  ]
+}
