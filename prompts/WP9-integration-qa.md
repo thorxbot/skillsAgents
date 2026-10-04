@@ -14,7 +14,7 @@
 
 ## 已知待修(必做)
 - `tests/unit/il2cpp/test_runner.py::test_supervisor_merges_stderr_and_keeps_tail_bounded` 在 CPU 负载下偶发失败(单独跑通过):找出时序假设(固定 sleep / 过紧超时)并改为基于事件/同步的确定性写法,不要只加大超时。
-- SeaWorld 实测纠正:Cocos Creator 3.x 项目里的 NHPK/NHPT/NHPO 文件是自定义资源打包,不是自研引擎;集成夹具里的 `custom_engine.ipa` 与 `cocos_creator3.ipa` 要保持这两种情形可区分(自研 = 无已知引擎 + 画像;Cocos 内自定义封装 = 已知引擎 + 容器画像)。
+- 集成夹具要保持两种情形可区分:自研引擎 = 无已知引擎 + 画像;已知引擎内的自定义资源封装 = 已知引擎 + 容器画像。
 
 ## 要做的事
 1. **合成整包夹具**(用各 WP 的 builder 组合):
@@ -36,7 +36,7 @@
 5. **性能与健壮性**:生成 ≈1 GB 稀疏 / 低成本构造的 IPA(例如大量 stored 的零填充文件,注意磁盘与 CI 时间,标 `slow`),断言耗时 / 内存目标(`01` §4);异常输入模糊测试(随机截断 / 位翻转若干夹具,断言不崩溃不卡死,超时保护)。
 6. **SKILL.md 定稿**(`02-ARCHITECTURE.md` §9):frontmatter(`name: ipa-analyzer`,`description` 含触发词);正文流程精炼(≤150 行):doctor → analyze → 读摘要 → unknown 库查证回写 → FairPlay 提示 → 脱敏提醒 → 常用命令速查 → 按需读 `references/`。**写给 Agent 看的指令要可执行、无歧义**(明确哪些情况必须问用户:下载工具 / 安装 .NET)。
 7. **README.md**(中文):简介、能力矩阵、安装(skill 方式 + pip 方式)、示例命令与示例报告片段(来自合成夹具)、环境要求(三平台)、常见问题(FairPlay、dotnet、离线、metadata 版本不支持)、合规声明、局限。
-8. **真实样本 e2e:默认不做**。总监决定不再用真实 IPA 做实操验证(token 成本高、目标是交付 skill 本身)。只保留一个**默认跳过**的可选测试 `tests/integration/test_real_samples.py`(需设置 `IPA_SAMPLES_DIR` 才运行,不设置即 skip),供用户日后自行在本机验证;你**不要**运行它,也不要读取任何真实 IPA。`docs/ACCEPTANCE.md` 里真实样本一节写'未验证(按需由用户本机运行)',并引用 `docs/05-REAL-SAMPLES-AND-HTP.md` 里已有的前期实测记录。
+8. **真实样本 e2e:默认不做**。总监决定不做真实 IPA 实操验证。只保留一个**默认跳过**的可选测试(需设置 `IPA_SAMPLES_DIR` 才运行),供用户日后自行在本机验证;你不要运行它,也不要读取任何真实 IPA。`docs/ACCEPTANCE.md` 里真实样本一节写\'未验证(按需由用户本机运行)\'。案例留待实际使用中积累。
 9. **验收记录 `docs/ACCEPTANCE.md`**:对照 `01-REQUIREMENTS.md` §5 的 7 条 DoD 与 §2 每个 F-* 条目的 P0 项,逐条 ✅ / ⚠️ / ❌ + 证据(测试名 / 命令输出);汇总 UNVERIFIED;列出已知局限与建议的下一步(P1/P2)。
 
 ## 验收标准

@@ -25,10 +25,10 @@
 | 2 | Unity IL2CPP:识别 Unity / IL2CPP;metadata 正常 / 改 magic / XOR 三种判定正确;AssetBundle 标准 / 偏移 / XOR / 高熵四种判定正确 | ✅ | `tests/integration/test_e2e_unity.py::test_plain_il2cpp_is_recognised_and_ready_to_dump`、`::test_metadata_variants[normal/wrong_magic/xor_strings/xor_header/random/truncated]`(normal → `no`,其余 → `yes/suspected`,且 precheck 拦截 `E_METADATA_ENCRYPTED`)、`::test_assetbundle_variants[standard/standard_lzma/standard_none/standard_lz4hc/offset_prefix/xor_single/xor_repeating/high_entropy]`(标准 → `no`,偏移 → `suspected`,XOR / 高熵 → `yes`);单元:`tests/unit/unity/test_metadata.py`、`test_bundles.py`。**保留**:改 magic / XOR 的 metadata 按设计报 `suspected`(不报 `yes`),随机数据报 `yes` |
 | 3 | `cryptid=1`:`protect.fairplay = yes`,dump 被跳过且给出 `E_BINARY_FAIRPLAY` 与建议 | ✅ | `test_e2e_unity.py::test_fairplay_encrypted_binary_blocks_the_dump`(即使传入可用的假 dumper 也不运行:`dump.artifacts` 为空);单元 `tests/unit/il2cpp/test_runner.py::test_fairplay_binary_is_refused` |
 | 4 | 假 dumper 的运行器:成功 / 失败 / 超时 / 交互提示卡住 4 种行为正确 | ✅ | 单元 `tests/unit/il2cpp/test_runner.py`:成功 `test_success_collects_artifacts_and_rewrites_config`、失败 `test_nonzero_exit_is_unknown_with_tail`、超时 `test_idle_timeout_when_tool_is_silent` + `test_global_timeout_kills_the_whole_process_tree`、提示卡住 `test_interactive_press_any_key_stall` / `test_registration_prompt_is_detected_and_killed` / `test_fat_prompt_partial_line_detected`;整包层 `test_e2e_unity.py::test_fake_dumper_produces_a_dump_summary`(成功路径:artifacts + 摘要 + 报告章节) |
-| 5 | 自研引擎夹具:`engine.custom` yes/suspected、画像各维度正确、不被误判为已知引擎;Cocos 家族(C++/Lua 明文、Lua xxtea、JS jsc、Creator 3.x)主引擎与脚本保护判定正确 | ✅ | `tests/integration/test_e2e_engines.py::test_custom_engine_is_custom_and_not_any_known_engine`、`::test_custom_engine_profile_dimensions`(Metal / Lua / Box2D / `data.pak` custom_format + `blob.dat` encrypted_suspected / 薄 UIKit 壳)、`::test_cocos_family[*]`、`::test_cocos_lua_plain_vs_xxtea_scripts`、`::test_egret_and_laya`。**SeaWorld 纠正**:`::test_wrapped_cocos_resources_do_not_turn_a_known_engine_into_a_custom_one`(Creator 3.x + 自定义 4 字节头封装 → 主引擎仍是 `cocos_creator_3x`、`engine.custom=no`、Cocos checker 报 `custom_wrapper_header_on_scripts` + `suspected`;与 `custom_engine`(无已知引擎 + 画像,`engine.custom=yes`)可区分) |
+| 5 | 自研引擎夹具:`engine.custom` yes/suspected、画像各维度正确、不被误判为已知引擎;Cocos 家族(C++/Lua 明文、Lua xxtea、JS jsc、Creator 3.x)主引擎与脚本保护判定正确 | ✅ | `tests/integration/test_e2e_engines.py::test_custom_engine_is_custom_and_not_any_known_engine`、`::test_custom_engine_profile_dimensions`(Metal / Lua / Box2D / `data.pak` custom_format + `blob.dat` encrypted_suspected / 薄 UIKit 壳)、`::test_cocos_family[*]`、`::test_cocos_lua_plain_vs_xxtea_scripts`、`::test_egret_and_laya`。**已知引擎内的自定义封装 vs 自研引擎**:`::test_wrapped_cocos_resources_do_not_turn_a_known_engine_into_a_custom_one`(Creator 3.x + 自定义 4 字节头封装 → 主引擎仍是 `cocos_creator_3x`、`engine.custom=no`、Cocos checker 报 `custom_wrapper_header_on_scripts` + `suspected`;与 `custom_engine`(无已知引擎 + 画像,`engine.custom=yes`)可区分) |
 | 6 | 无 dotnet、无网络:`doctor` 与分析可运行,il2cpp 阶段跳过并给出可操作补救说明 | ⚠️ 行为 ✅ / 措辞有差异 | `tests/integration/test_no_dotnet_offline.py`(过滤 PATH、清空 `DOTNET_ROOT`、临时 HOME、`--offline`):`doctor` 退出 0 且 dotnet 为 WARN;分析完整,其余 12 个阶段无一失败;dump 失败为 `E_TOOL_DOWNLOAD_FAILED`(未装工具)/ `E_DOTNET_MISSING`(给了 .dll 但无运行时),`remediation` 指向 `--il2cpp-tool` / `tools install` / `--yes`。CI job `no-dotnet-no-network` 另会先卸载 runner 上的 .NET(依赖 CI)。**差异**:该阶段状态是 **`partial`**(`reason="il2cpp dump failed: E_…"`),不是字面上的 `skipped`——dump 在 `engine.unity` 内部执行,其他 Unity 结果仍要保留;`unity.il2cpp.dump` 的 verdict 为 `no`(= "没跑成功")。我认为这符合意图,但与 DoD 字面不同,请总监确认 |
 | 7 | Unity 热更夹具(HybridCLR / ILRuntime / xLua / ToLua(LuaJIT) / puerts / Addressables):框架、脚本位置与格式、Lua 版本分布、一致性告警、篡改嫌疑 | ✅ | `test_e2e_unity.py::test_hybridclr`(热更 DLL 在 bundle、AOT 补充元数据 DLL 区分)、`::test_ilruntime`、`::test_xlua_with_lua53_bytecode_in_a_bundle`(5.3 × 2、64-bit、运行时 5.3.6、一致)、`::test_tolua_with_luajit_bytecode`(luajit_2.1、已剥离)、`::test_mixed_lua_versions_raise_a_consistency_warning`(5.1 + 5.4 vs 运行时 5.3 → `consistency.ok=false`,`lua_version` 置信度 ≤ 0.6)、`::test_tampered_lua_headers_are_reported_as_suspected`、`::test_puerts_with_quickjs`、`::test_addressables_remote_catalog`(CDN 域名只留域名)、`::test_encrypted_hot_dlls_are_suspected_not_decrypted`(XOR 密钥仅作假设,"nothing is decrypted")。整个 hot-update 阶段的整包断言都基于 `engine.unity` 真实输出(不是手工注入的结果),见 §6 发现 5 |
-| 8 | 真实样本:≥1 个已解密 Unity IL2CPP 端到端产出 dump;1 个 App Store 加密包正确报 FairPlay | ❌ dump 成功路径未验证 / ⚠️ FairPlay 仅有前期实测 | 总监决定不再用真实样本做实操验证(`docs/05`)。前期(WP3 / WP5,2026-10-04)已记录:4 个真实 App Store 包主程序均 `cryptid=1`,FairPlay 判定经 `otool -l` / `codesign` 交叉核对一致(见 `docs/05-REAL-SAMPLES-AND-HTP.md` §1、`docs/review/R1-wave1.md` §0);**WP9 没有运行也没有读取任何真实 IPA**。已解密 Unity IL2CPP 包不存在,Il2CppDumper / Cpp2IL / Redux 的真实成功路径**未验证**(只有假 dumper)。可选测试 `tests/integration/test_real_samples.py`(设 `IPA_SAMPLES_DIR` 才运行,默认 skip)供用户本机使用 |
+| 8 | 真实样本:≥1 个已解密 Unity IL2CPP 端到端产出 dump;1 个 App Store 加密包正确报 FairPlay | ❌ dump 成功路径未验证 / ⚠️ FairPlay 仅有前期实测 | 总监决定不做真实样本实操验证;案例与结论留待用户在实际使用中积累。|
 | 9 | `docs/ACCEPTANCE.md` 逐条记录验收结果与未验证项 | ✅ | 本文 |
 
 ## 2. 功能清单(01-REQUIREMENTS §2)P0 逐条
@@ -95,9 +95,9 @@
 | Unity 版本多来源交叉(冲突列出) | ✅ | `unity/test_version.py`;E2E `unity.version`。`UNITY_VERSION_RE` 未在真实播放器二进制上验证(UNVERIFIED) |
 | IL2CPP vs Mono | ✅ | `unity/test_stage.py`;E2E `test_mono_backend_and_encrypted_dll` |
 | IL2CPP 检查:metadata 存在 / magic / 版本 / 头部 / 熵 / 字符串区;承载二进制与其 FairPlay | ✅ | `unity/test_metadata.py`、`unity/test_precheck.py`;E2E `test_metadata_variants[*]` |
-| AssetBundle 检查:发现 / 分类 / 深度校验 / 整体判定 | ✅ | `unity/test_bundles.py`;E2E `test_assetbundle_variants[*]`、`test_xor_metadata_and_high_entropy_bundles`。块级加密(`block_encrypted_suspected`)在合成数据上验证(`unity/test_bundles.py`),真实样本上的现象见 `docs/05` §3 |
+| AssetBundle 检查:发现 / 分类 / 深度校验 / 整体判定 | ✅ | `unity/test_bundles.py`;E2E `test_assetbundle_variants[*]`、`test_xor_metadata_and_high_entropy_bundles`。块级加密(`block_encrypted_suspected`)在合成数据上验证(`unity/test_bundles.py`),真实样本上的现象 |
 | Mono:PE + CLI(`BSJB`)校验,混淆器特征 | ⚠️ | `unity/test_mono.py`;混淆器特征表为记忆性内容(UNVERIFIED,`unity/mono.py`) |
-| 热更新专项(框架 / 存放位置与格式 / Lua 版本 / 一致性 / 篡改 / 热更 DLL 画像 / 三态保护;只报告不解密) | ✅ | 同 DoD 7;`unity_hotfix/*`(157 个单元测试)。真实 bundle 内容扫描只在合成数据上验证(真实样本的 bundle 全部块级加密,见 `docs/05` §3) |
+| 热更新专项(框架 / 存放位置与格式 / Lua 版本 / 一致性 / 篡改 / 热更 DLL 画像 / 三态保护;只报告不解密) | ✅ | 同 DoD 7;`unity_hotfix/*`(157 个单元测试)。bundle 内容扫描只在合成数据上验证 |
 | 自动 Il2CppDumper | ⚠️ | 见 F-IL2CPP |
 
 ### F-IL2CPP 自动 il2cpp dump
@@ -145,7 +145,7 @@
 | 项 | 状态 | 说明 |
 |---|---|---|
 | 跨平台 macOS / Linux / Windows,Python ≥ 3.9,仅标准库 | ⚠️ | macOS ✅(3.14.3 与 3.9.6 均实跑全量);Linux / Windows 依赖 CI;路径 / 保留名 / 编码用 `PureWindowsPath` 与参数化纯函数测试覆盖(`test_paths_encoding.py`,在 macOS 上也跑) |
-| 性能:1 GB IPA ≤ 60 s、峰值内存 ≤ 500 MB | ❌ 未验证 | 按总监约束不做 1 GB 夹具。仅有小规模回归 `test_perf_slow.py`(slow,64 MiB 存储型 zip,< 30 s、RSS 增量 < 300 MiB)。真实样本前期数据(`docs/05`):4 个包 ingest 0.16-0.51 s、inventory 0.22-3.58 s、峰值 RSS 41-57 MB(1.0 GB 的包在内) |
+| 性能:1 GB IPA ≤ 60 s、峰值内存 ≤ 500 MB | ❌ 未验证 | 按总监约束不做 1 GB 夹具。仅有小规模回归 `test_perf_slow.py`(slow,64 MiB 存储型 zip,< 30 s、RSS 增量 < 300 MiB)。真实样本前期数据():4 个包 ingest 0.16-0.51 s、inventory 0.22-3.58 s、峰值 RSS 41-57 MB(1.0 GB 的包在内) |
 | 健壮性:阶段隔离;畸形 / 截断输入不崩溃不死循环 | ✅ | `test_robustness.py`;`tests/unit/test_registry_pipeline.py` |
 | 安全:永不执行 IPA 内容;`shell=False` + 超时;下载 SHA256;输出不越界 | ✅ | R1 §4 D;E2E `test_zip_slip_entries_are_reported_and_never_written`;`il2cpp/test_network.py` |
 | 隐私:默认脱敏 | ✅ | `test_purchaser_fields_are_redacted_everywhere`;R1 的 Major(脱敏误伤、ReDoS)与多数 Minor 已由 R1 修复提交 `14e1de9` 处理 |
@@ -177,7 +177,7 @@
 
 ## 5. 真实样本
 
-**未验证(按需由用户本机运行)。** 总监决定不再用真实 IPA 做实操验证,WP9 没有运行也没有读取任何真实 IPA(包括 `ipa-gsa-probe/download/ipa`)。前期(WP1 / WP3 / WP5,2026-10-04)的真实样本观察见 `docs/05-REAL-SAMPLES-AND-HTP.md`:4 个 App Store 包的 FairPlay 状态、Unity 版本 / metadata 版本(v31、v39)、`block_encrypted_suspected` 现象、`.ccz` / `NHPK|NHPT|NHPO` 现象。用户自行验证的方法:
+**未验证(按需由用户本机运行)。** 总监决定不再用真实 IPA 做实操验证,WP9 没有运行也没有读取任何真实 IPA。案例与真实观察留待实际使用中补充。用户自行验证的方法:
 
 ```bash
 IPA_SAMPLES_DIR=/path/to/ipas python -m pytest tests/integration/test_real_samples.py -v     # 默认 skip
@@ -197,7 +197,7 @@ python scripts/ipa_analyze.py analyze /path/to/app.ipa -o out --offline
 | 7 | **业务代码 / Python 3.9 兼容**(在真实 3.9.6 解释器上跑全量测试时发现,28 个测试失败):`Path.write_text(..., newline="\n")` 的 `newline` 参数 3.10 才有 → **3.9 上整条 il2cpp 成功路径(写 `config.json` 的 `ForceDump`、安装标记、缓存标记)抛 `TypeError`**,CI 矩阵里有 3.9,本机 3.14 看不出来 | `il2cpp/backends.py`、`il2cpp/tools.py`、`il2cpp/runner.py` 改用 `open(..., newline="\n")`;测试里同类用法(`test_golden.py`、`unit/report/test_render_json.py`)一并改;新增静态守卫 `tests/integration/test_python39_compat.py`(AST 检查 `write_text/read_text(newline=)`、`zip(strict=)`、`dataclass(slots/kw_only)`、`pairwise` 等 3.10+ 用法,以及 `feature_version=(3,9)` 语法解析) |
 | 8 | **业务代码**:热更阶段对 SerializedFile(如 `globalgamemanagers`)逐块读取时,条目损坏抛出的 `CorruptEntry`(`OSError`)不被 `storage._guard` 捕获 → `engine.unity.hotfix` 整个阶段 `failed`(大规模模糊测试发现) | `unity/hotfix/storage.py::_guard` 同时记录 `OSError`(状态 `partial` / `io_error`,原因写入 `detail`)。回归:`test_robustness.py::test_damaged_entry_is_skipped_not_fatal[*]`(5 个条目)与 `::test_larger_fuzz_campaign`(slow) |
 
-## 7. UNVERIFIED 汇总(去重;来源:代码 / 数据中的 `UNVERIFIED` 标注 + `docs/review/R1-wave1.md` §7 + `docs/05`;逐条细节见各位置)
+## 7. UNVERIFIED 汇总(去重;来源:代码 / 数据中的 `UNVERIFIED` 标注 + `docs/review/R1-wave1.md` §7;逐条细节见各位置)
 
 代码中共 88 处标注(`grep -rn UNVERIFIED src data`),其中数据文件里的 `unverified: true` 信号:引擎签名 198 个(41 / 43 份文件)、`fingerprint.json` 128 个、`hotfix.json` 35 个——加载器对它们强制 `strong=false` 并把权重封顶 0.4。分组:
 
@@ -207,19 +207,19 @@ python scripts/ipa_analyze.py analyze /path/to/app.ipa -o out --offline
 | meta | `UIDeviceFamily` 6 / 7;`Extensions/*.appex` 位置;CodeResources 规则平局与大小写;`iTunesMetadata` 的 `dsid/email` 变体;iOS 14+/17+ 新权限键含义 | `meta/infoplist.py`、`analyzers/meta.py`、`meta/coderesources.py`、`meta/itunes_meta.py`、`data/permissions.json` |
 | Mach-O | `MAX_FAT_ARCHS=30` 阈值、ARC 符号集完整性、剥离阈值、`UNITY_VERSION_RE` 未在真实播放器二进制验证 | `macho/constants.py`、`unity/version.py` |
 | formats | UnityFS flag ≥0x100 与版本分界(仅 UnityPy)、format version 5-8;LuaJIT 2.1 早期 beta 的 dump 版本;Lua 5.5;`sizeof` 常见集合;LZMA 无魔数的嗅探;PE portable-PDB 表;DOS stub 文本 | `formats/unityfs.py`、`lua_bytecode.py`、`lua_source.py`、`compress_sniff.py`、`pe_cli.py`、`magic_scan.py` |
-| Unity | 国内版 `cN` 后缀仅作提示;metadata 评分权重只在 2 个真实样本上校准;Mono 混淆器特征表;`e_lfanew=0x80` 假设;资源热更清单字节序假设;TextAsset 布局 | `unity/version.py`、`unity/metadata.py`、`unity/mono.py`、`unity/hotfix/csharp.py`、`resource_update.py`、`storage.py`、`native_signals.py` |
+| Unity | 国内版 `cN` 后缀仅作提示;metadata 评分权重为经验阈值;Mono 混淆器特征表;`e_lfanew=0x80` 假设;资源热更清单字节序假设;TextAsset 布局 | `unity/version.py`、`unity/metadata.py`、`unity/mono.py`、`unity/hotfix/csharp.py`、`resource_update.py`、`storage.py`、`native_signals.py` |
 | il2cpp | Windows self-contained Il2CppDumper 的可运行性;Cpp2IL / Redux 的 fat 支持;Redux 输出名与 .NET 10 roll-forward;内置命名空间表(Puerts / LuaInterface / Photon / Mirror / DOTween / Firebase / AppLovin / Addressables / UnityAds);混淆度权重;**下载 SHA256 钉值无法独立复核**(Il2CppDumper release API 无 digest) | `il2cpp/backends.py`、`il2cpp/summarize.py`、`data/il2cpp_backends.json` |
 | 引擎指纹 / checker | Cocos Creator 2.x 布局、cocos2d-iphone 名称、`settings.json` 的 `CocosEngine` 键、压缩版 `ENGINE_VERSION`;Egret / Laya 文件名;Flutter AOT 符号;Defold `.arci` / `game.dmanifest`;GameMaker FORM 布局;Solar2D / LÖVE 容器;React Native Metro 标记;UE pak 页脚与索引加密位;Hermes 旧版本头;xxtea 与 xxtea-c 的逐字节一致性;`jsc` 字节布局;Godot 4.0 / 4.1 pck 格式;Rust / Go 构建信息;`LUAJIT_VERSION` 串格式 | `engines/checkers/*.py`、`engines/formats/*.py`、`engines/scoring.py`、`engines/fingerprint.py`、`engines/signatures.py`、`data/engines/*.json`、`data/fingerprint.json`、`data/hotfix.json`、`references/{cocos-family,egret-laya,il2cpp-troubleshooting}.md` |
 | 分类 | `data/classify.json` 打分权重未对照真实分布 | `classify/scorer.py`、`data/classify.json` |
 | 真实世界行为 | Windows 实机:`taskkill` 进程树、`which_safe` 规避当前目录搜索、长路径、PowerShell 安装脚本、`os.link` 回退、mmap 释放后删除;Linux 实机;.NET 安装脚本真实执行;Il2CppDumper / Cpp2IL / Redux 真实成功路径 | R1 §8;本文 §1 / §3 |
-| Htp 块加密 | marker 字节与块结构、密钥来源(`HtpDecryptor.cs` 未提供)——`block_encrypted_suspected` 无法升级为"确认";网络检索到的 "0x10020 分块 / AES-256-GCM" 为单一来源,未写入规则 | `docs/05` §2、`unity/bundles.py` |
+| Htp 块加密 | marker 字节与块结构、密钥来源(`HtpDecryptor.cs` 未提供)——`block_encrypted_suspected` 无法升级为"确认";网络检索到的 "0x10020 分块 / AES-256-GCM" 为单一来源,未写入规则 |、`unity/bundles.py` |
 
 ## 8. 已知局限
 
 - 真实世界验证缺口:无已解密 Unity IL2CPP 包 → 第三方 dumper 的成功路径只由假 dumper 验证;真实 1 GB 样本的性能目标未实测;Windows / Linux 实机行为依赖 CI(CI 尚未运行)。
 - 自研引擎 / 容器 / 脚本判定全为启发式,结论上限 `suspected`;Messiah、QuickSilver、Angelica 等无公开 iOS 特征,走通用指纹。
 - `engine.other` 会对低置信度的候选引擎也派发 checker:自研引擎夹具里 Cocos(0.10)/ Unreal(0.25)的 checker 各产出一条 `unknown`("Cocos variant not determined"、"Unreal pak encryption unknown"),对读者是噪音。建议 P1:仅对 `confirmed` 或 ≥ 阈值的候选派发。
-- 已知引擎里 `engine.container.unknown` 只分析"大文件 + 未知 magic / 可疑扩展名"的容器;SeaWorld 类"大量小文件带自定义头"由 Cocos checker 的 `custom_header` 统计报告,不进 `fingerprint.containers`。
+- 已知引擎里 `engine.container.unknown` 只分析"大文件 + 未知 magic / 可疑扩展名"的容器;"大量小文件带自定义头"由 Cocos checker 的 `custom_header` 统计报告,不进 `fingerprint.containers`。
 - 失败的 `ingest`(退出码 2)时 `report.md` 页眉的"输入"字段为 `-`。
 - `unity.il2cpp.dump` 的 `no` 既表示"被前置检查拦截"也表示"工具缺失 / 运行失败",区分靠 `params.error_code`(摘要里 `dump.state` 区分 `blocked` / `failed`)。
 - 商业壳 / 混淆器识别(`protect.packer` 恒 `n/a`)、Assets.car 渲染项、`.xcarchive` 输入、Bitcode 残留未做。
@@ -230,7 +230,7 @@ python scripts/ipa_analyze.py analyze /path/to/app.ipa -o out --offline
 
 | # | 需要 | 用途 |
 |---|---|---|
-| a | `HtpDecryptor.cs`(marker 字节与块结构) | 把 `block_encrypted_suspected` 升级为确认(`docs/05` §2) |
+| a | `HtpDecryptor.cs`(marker 字节与块结构) | 把 `block_encrypted_suspected` 升级为确认 |
 | b | 一个**已解密**的 Unity IL2CPP IPA | 验证真实 dump 成功路径(Il2CppDumper / Cpp2IL / Redux、fat、`Done!` 判定、产物搬运、混淆度摘要) |
 | c | Messiah / 日韩厂商等自研引擎样本(或其名称与可核实特征) | 固化到 `data/engines/`,并检验 `engine.custom` 的真实表现 |
 

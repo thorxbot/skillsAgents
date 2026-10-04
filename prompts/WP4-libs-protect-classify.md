@@ -52,5 +52,6 @@
 ## 备注
 - 种子库的质量决定产品口碑:**准确 > 数量**。回报里列出你"有把握"与"来自单一来源"的条目比例。
 
-## 重要:真实样本的二进制全部被 FairPlay 加密
-先读 `docs/05-REAL-SAMPLES-AND-HTP.md` 中"已实测"一节。凡依赖 Mach-O 字符串 / ObjC 类名 / 符号的检测,在 `slice.encrypted=True` 时必须用 `skip_encrypted=True` 并**降级**到文件、目录、metadata 字符串等不依赖加密区间的证据;报告里要有"二进制已加密,基于二进制的检测受限"的说明(`remediation`:提供已解密 IPA)。验收里增加"加密二进制夹具下不产生噪声误报"。
+## 加密二进制的降级(通用原则)
+凡依赖 Mach-O 字符串 / ObjC 类名 / 符号的检测,在 `slice.encrypted=True` 时必须用 `skip_encrypted=True` 并**降级**到文件、目录、metadata 字符串等不依赖加密区间的证据;输出里要说明"二进制已加密,基于二进制的检测受限"(`remediation`:提供已解密 IPA)。验收里增加"加密二进制夹具下不产生噪声误报"。
+

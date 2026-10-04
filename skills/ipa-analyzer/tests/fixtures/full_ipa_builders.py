@@ -344,7 +344,7 @@ _SPECS: List[FixtureSpec] = [
     FixtureSpec("cocos_lua_xxtea", "cocos2d-x Lua with xxtea-looking scripts", _cocos_lua_xxtea),
     FixtureSpec("cocos_js_jsc", "cocos2d-x JS with .jsc", _cocos_js_jsc),
     FixtureSpec("cocos_creator3", "Cocos Creator 3.x, plain scripts", _cocos_creator3),
-    FixtureSpec("cocos_creator3_wrapped", "Cocos Creator 3.x with custom-wrapped resource files (SeaWorld-like)", _cocos_creator3_wrapped),
+    FixtureSpec("cocos_creator3_wrapped", "Cocos Creator 3.x with custom-wrapped resource files", _cocos_creator3_wrapped),
     FixtureSpec("egret_app", "Egret native runtime", _egret_app),
     FixtureSpec("laya_app", "LayaAir native runtime", _laya_app),
     FixtureSpec("flutter_app", "Flutter AOT app", _flutter_app),

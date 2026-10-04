@@ -68,7 +68,7 @@ def layout_scores(idx: FileIndex, cfg: Dict[str, Any]) -> Tuple[Dict[str, float]
         s[variant] += weight
         sig[variant].append(what)
 
-    # Cocos Creator 3.x -- verified on a real sample (SeaWorld) and cocos-engine v3.8 sources.
+    # Cocos Creator 3.x -- layout per cocos-engine v3.8 sources.
     if idx.exists("application.js"):
         hit("cocos_creator_3x", 2, "application.js")
     for rel in ("src/import-map.json", "src/system.bundle.js", "src/system.bundle.jsc", "src/settings.json"):

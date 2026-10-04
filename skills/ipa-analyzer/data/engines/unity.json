@@ -10,14 +10,14 @@
       "pattern": "/Frameworks/UnityFramework.framework",
       "weight": 0.9,
       "strong": true,
-      "note": "Unity 2019.3+ iOS player framework (real samples)"
+      "note": "Unity 2019.3+ iOS player framework"
     },
     {
       "type": "file",
       "pattern": "/Data/Managed/Metadata/global-metadata.dat",
       "weight": 0.9,
       "strong": true,
-      "note": "IL2CPP metadata (real samples; architecture 4.3)"
+      "note": "IL2CPP metadata"
     },
     {
       "type": "file",
@@ -137,7 +137,6 @@
   ],
   "notes": "Both IL2CPP and Mono players; the il2cpp/mono backend is decided by the engine.unity stage.",
   "sources": [
-    "REAL-SAMPLE: JiangNan.app and GoodCoffee.app (user supplied IPAs, read-only, 2026-10-04): Frameworks/UnityFramework.framework, Data/Managed/Metadata/global-metadata.dat, Data/globalgamemanagers, Data/unity default resources, Data/Resources/unity_builtin_extra, Data/boot.config, Data/RuntimeInitializeOnLoads.json, Data/ScriptingAssemblies.json, Data/sharedassets*.assets, Data/Raw/",
     "docs/02-ARCHITECTURE.md 4.3 (Unity minimal signature)",
     "formats/unityfs + util/magic (WP1/WP3b) UnityFS signatures",
     "MEMORY, not re-checked this session (signals flagged unverified): UnityAppController, il2cpp_init, Data/data.unity3d, Data/level0, Data/Managed/*.dll"

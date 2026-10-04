@@ -50,16 +50,15 @@
 - ✅ 版本多来源冲突有单测。
 - ✅ 单测通过。
 
-## 补充(metadata 版本与 WP6 的实测结论)
-- 真实样本实测:江南 metadata **v31**,GoodCoffee **v39**(WP6 实测)。Il2CppDumper 读不了 v35 及以上;Cpp2IL 接受约 23–108,Il2CppInspectorRedux 声称到 v110(见 `data/il2cpp_backends.json`,以该文件为准)。**因此"版本超出 Il2CppDumper 范围" ≠ "metadata 被加密"**:合法性判断必须用 `il2cpp_backends.json` 的 `metadata_versions` 并集(含各后端),版本号落在已知后端范围内且头部自洽就是正常;只有版本号不在任何后端范围内(例如 >110 或 <16)时才算可疑。`precheck` 要把"版本被哪些后端支持"写进证据,以便 WP6 的 `select_backends` 选择后备后端。
+## 补充(metadata 版本与产物路径,通用原则)
+- metadata 版本合法性必须取 `data/il2cpp_backends.json` 中 `metadata_versions` 各后端范围的**并集**:**版本超出某一个后端(如 Il2CppDumper)的范围 ≠ metadata 被加密**。只有版本号不在任何后端范围内(过大或过小)时才算可疑。`precheck` 把"版本被哪些后端支持"写进证据,供 `select_backends` 选择后备后端。
 - `Il2CppRunResult.artifacts` 的值相对 `req.out_dir`,写入 `dump.artifacts` 时要转换为相对 `ctx.out_dir`。
-- 四个真实样本的 `UnityFramework` 都被 FairPlay 加密,dump 将被前置检查拦截(`E_BINARY_FAIRPLAY`),这是预期。
+- 二进制 FairPlay 加密时 dump 由前置检查拦截(`E_BINARY_FAIRPLAY`),这是预期行为。
 
-## 补充(Htp 块级加密 + 真实样本)
-先读 `docs/05-REAL-SAMPLES-AND-HTP.md`。
-- AssetBundle 分类新增 **`block_encrypted_suspected`**(头部标准 + BlocksInfo 可解 + 第一个 LZ4/LZ4HC 数据块解压失败),证据里记录块前 256 字节内跨块重复出现的固定字节序列(疑似 marker)。`by_class` 同步加此键(契约新增可选键,允许;请在 `references/unity-assetbundle.md` 写明)。**不实现解密。**
-- 用 `unity_builder` 补一个夹具:UnityFS 头 + 可解 BlocksInfo + 数据块是"前 256 字节内含固定 marker + 其后高熵"的 LZ4 块,断言归类为 `block_encrypted_suspected`;同时保证"正常 LZ4 块"不会被误判。
-- 真实样本(只读,见该文档):`GoodCoffee`(2368 个 bundle)与 `JiangNan`(Unity,metadata 在)是 Unity 真实样本。完成后请对它们的 metadata 与采样 bundle 各跑一次判定并在回报中给出结果(版本号、metadata 版本、判定、bundle 分类计数)。不要把样本内容复制进仓库。
+## 补充(块级加密分类,通用概念)
+- AssetBundle 分类包含 **`block_encrypted_suspected`**:头部标准 + BlocksInfo 可解 + 第一个 LZ4/LZ4HC 数据块解压失败;证据里记录块前 256 字节内跨块重复出现的固定字节序列(疑似 marker,仅作证据,不猜测含义)。`by_class` 同步加此键并在 `references/unity-assetbundle.md` 写明。**不实现解密。**
+- 用 `unity_builder` 补夹具:可解 BlocksInfo + 数据块为"前 256 字节内含固定 marker + 其后高熵"的 LZ4 块 ⇒ 归类 `block_encrypted_suspected`;正常 LZ4 块不得误判。
+- 具体案例与特征留待实际使用中积累,不要预置到规则里。
 
 ## 诚信要求
 - 本阶段所有"加密"结论都是**启发式**:报告措辞与置信度必须体现;没把握的绝不输出 `no`。

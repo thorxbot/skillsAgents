@@ -77,7 +77,6 @@
   "notes": "",
   "sources": [
     "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)",
-    "REAL-SAMPLE: ISBN.app (user supplied IPA, read-only, 2026-10-04): 5,663 files with CCZp header under HD/",
     "FETCHED: https://raw.githubusercontent.com/cocos2d/cocos2d-x/v3/cocos/scripting/lua-bindings/manual/CCLuaEngine.h - class LuaEngine inside the cocos2d namespace (NS_CC_BEGIN)",
     "MEMORY, not re-checked this session (signals flagged unverified): version string, ShaderPositionTextureColor, .csb/.c3b/.c3t extensions"
   ],

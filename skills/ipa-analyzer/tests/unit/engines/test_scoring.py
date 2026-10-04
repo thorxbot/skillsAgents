@@ -54,9 +54,9 @@ def test_file_min_count_magic_and_head():
     fl += [FileRec(path=APP + "p/a.bin", rel="p/a.bin", magic="unknown", ext=".bin")]
     b = EvidenceBundle(fl, heads={APP + "p/a.bin": b"NXPK\x01\x02"})
     assert m(b, "file", "magic:ccz") and m(b, "file", "magic:ccz#5") and not m(b, "file", "magic:ccz#6")
-    assert m(b, "file", "head:NXPK") and not m(b, "file", "head:NHPK")
-    lazy = EvidenceBundle(fl, head_loader=lambda: {APP + "p/a.bin": b"NHPK"})
-    assert m(lazy, "file", "head:NHPK")                                           # loaded on demand
+    assert m(b, "file", "head:NXPK") and not m(b, "file", "head:PKA1")
+    lazy = EvidenceBundle(fl, head_loader=lambda: {APP + "p/a.bin": b"PKA1"})
+    assert m(lazy, "file", "head:PKA1")                                           # loaded on demand
 
 
 def test_dir_matching():

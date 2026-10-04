@@ -10,7 +10,7 @@
 | 全量测试 | `python -m pytest -q`(Python 3.14.3,macOS arm64):**1319 passed, 9 skipped, 0 failed**(31 s)。9 个跳过全部是有门控的:network×2、slow×5、`IPA_SAMPLES_DIR`×1、缺 `jsonschema`×1。 |
 | 其他解释器 | 3.12.10 / 3.10.13 上 `-W error` 导入全部子包无警告,3.10 上端到端跑通合成 IPA;全部源码与测试通过 `ast.parse(feature_version=(3,9))`。无 3.9 解释器,**3.9 运行时行为未实测**。 |
 | 变异检查 | 14 个,13 个被测试杀死,1 个存活(M12,见 E-1)。所有被改文件均先备份到 scratchpad,检查后从备份还原并 `diff`/`filecmp` 确认逐字节一致。 |
-| 真实样本(4 个,FairPlay 加密) | ingest 0.28–0.54 s,inventory 0.23–0.67 s,峰值 RSS ≤ 57 MB;macho 的 cryptid / cryptsize / team id / cdhash 经 `otool -l` 与 `codesign -dvvv` 对 SeaWorld 主程序**逐项吻合**;4 个样本的购买者字段(apple-id / userName 的值)在 report.json / report.md 中**均未泄漏**。 |
+| 真实样本(4 个,FairPlay 加密) | ingest 0.28–0.54 s,inventory 0.23–0.67 s,峰值 RSS ≤ 57 MB;macho 的 cryptid / cryptsize / team id / cdhash 经 `otool -l` 与 `codesign -dvvv` 对 某样本 主程序**逐项吻合**;4 个样本的购买者字段(apple-id / userName 的值)在 report.json / report.md 中**均未泄漏**。 |
 | Blocker | **0** |
 | Major | **3**(1 条 WP8 脱敏误伤、1 条 WP8 路径误伤、1 条 WP2 ReDoS) |
 
@@ -21,7 +21,7 @@
 ## 1. Major
 
 **[Major][WP8][src/ipa_analyzer/report/redact.py:32] 40 位十六进制被一律当作"旧式 UDID"脱敏,真实分析数据被抹掉**
-→ 影响:`macho.binaries[].slices[].signature.cdhash / cdhashes.sha1 / cdhashes.sha256`(代码目录哈希,取前 20 字节 = 40 hex)全部变成 `[REDACTED-UDID]`。真实样本上命中数:JiangNan 15、ISBN 48、SeaWorld 6、GoodCoffee 57,**全部是 cdhash,没有一个是 UDID**。同时 `redaction.fields` 里出现虚假的 `udid`,误导读者以为包里有设备标识。任何以 SHA-1(git 提交号、文件哈希)形式出现的字段都会被误伤。我对 SeaWorld 主程序用 `codesign -dvvv` 核对过,被抹掉的值正是正确的 CDHash。
+→ 影响:`macho.binaries[].slices[].signature.cdhash / cdhashes.sha1 / cdhashes.sha256`(代码目录哈希,取前 20 字节 = 40 hex)全部变成 `[REDACTED-UDID]`。真实样本上命中数:样本 15、样本 48、某样本 6、样本 57,**全部是 cdhash,没有一个是 UDID**。同时 `redaction.fields` 里出现虚假的 `udid`,误导读者以为包里有设备标识。任何以 SHA-1(git 提交号、文件哈希)形式出现的字段都会被误伤。我对 某样本 主程序用 `codesign -dvvv` 核对过,被抹掉的值正是正确的 CDHash。
 → 建议:不要对任意字符串做 40-hex 扫描。只在键名/上下文显示为设备标识时脱敏(`ProvisionedDevices`、`udid`、`device` 等键,或紧跟 `UDID` 字样);cdhash/sha1/sha256/hash 类键加白名单;新式 `XXXXXXXX-XXXXXXXXXXXXXXXX` 模式较特异,可保留。补测试:cdhash、SHA-1 字符串不得被改。(`meta` 阶段本身已经只输出设备哈希前缀,不会产出明文 UDID,所以兜底扫描收窄后风险不增。)
 
 **[Major][WP8][src/ipa_analyzer/report/redact.py:34] `(/Users|/home)/<name>` 规则会改写 App 包内的正常路径与 URL**
@@ -51,11 +51,11 @@
   → 建议:`true` 需要同时校验 numTables(offset 4 的 u16 在 4..64)且后续不是可打印文本;对 3~4 字节纯 ASCII 魔数把置信度压到 <0.6(弱信号不覆盖扩展名)或要求第二个字段验证。
 
 - **[Minor][WP1][src/ipa_analyzer/util/magic.py:236] UTF-16LE 文本(BOM `FF FE`)被 `_mpeg_audio` 判成 `mp3`(0.5)**
-  → 影响:真实数据上已出现:SeaWorld 的 2 个 `.strings` 文件 `magic=mp3`。置信度 0.5 < 0.6 所以类别仍按路径规则正确归为 localization,但 `files[].magic` 是错的,依赖 magic 的下游(统计"音频文件"、WP7 容器分析)会被污染。
+  → 影响:真实数据上已出现:某样本的 2 个 `.strings` 文件 `magic=mp3`。置信度 0.5 < 0.6 所以类别仍按路径规则正确归为 localization,但 `files[].magic` 是错的,依赖 magic 的下游(统计"音频文件"、WP7 容器分析)会被污染。
   → 建议:在 `sniff` 里把 BOM 检查(`FF FE`、`FE FF`、`EF BB BF`)放到 `_mpeg_audio` 之前,或 `_mpeg_audio` 要求连续两个帧头。
 
 - **[Minor][WP1][data/filetypes.json + src/ipa_analyzer/util/filetypes.py:~95] magic 为 unknown 时按扩展名定类,会把"扩展名与内容不符"的自定义封装计入标准类别**
-  → 影响:SeaWorld 约 5,400 个 `NHPK/NHPT/NHPO` 头的文件里,4,654 个 `.json` 被计为 config、768 个 `.astc` + 26 个 `.png` 被计为 image(image 占体积 70%)、392 个 `.js` 计为 script,而 `magic` 都是 `unknown`。`05-REAL-SAMPLES` 已指出这是 `engine.custom` 的关键线索,但 inventory 里没有任何字段标出"ext 暗示格式 X 而内容不是 X"。报告第 5 章的占比因此偏乐观地"像是标准资源"。ISBN 上 `.ccz`(`CCZp`)按 magic 正确归 image,不受影响。
+  → 影响:某样本 5,400 个 `自定义 4 字节头` 头的文件里,4,654 个 `.json` 被计为 config、768 个 `.astc` + 26 个 `.png` 被计为 image(image 占体积 70%)、392 个 `.js` 计为 script,而 `magic` 都是 `unknown`。`05-REAL-SAMPLES` 已指出这是 `engine.custom` 的关键线索,但 inventory 里没有任何字段标出"ext 暗示格式 X 而内容不是 X"。报告第 5 章的占比因此偏乐观地"像是标准资源"。样本 上 `.ccz`(`CCZp`)按 magic 正确归 image,不受影响。
   → 建议:在 `files[]`(或 `extra.ext_magic_mismatch`)里为"已知结构化扩展名(png/jpg/json/js/astc/ogg/mp3/…)但 magic=unknown 且头部不是文本"的文件加标记并汇总计数,供 WP7 与 WP8 使用;类别可保持按扩展名,但报告要显示"N 个文件头部与扩展名不符"。
 
 - **[Minor][WP1][src/ipa_analyzer/ingest/safe_extract.py:303] 提取用 `tempfile.mkstemp`/`is_file()` 等调用不带 `to_long_path`**
@@ -154,7 +154,7 @@
 
 **B 正确性**
 3. 记忆性事实抽查(每个 WP ≥5 处):
-   - WP3:`LC_ENCRYPTION_INFO(0x21)/_64(0x2C)` 字段顺序、`cryptid!=0 and cryptsize>0`、CodeDirectory 偏移(`teamOffset@48`、`execSegFlags@80`)、`CSMAGIC_*` 与 slot 值、`CS_HASHTYPE_*`、`MH_*`/`LC_*`/`PLATFORM_*`/`CPU_*` 常量均与 Apple/xnu 头文件一致(对照记忆与 SeaWorld 实测:`otool -l` cryptoff=147456、cryptsize=20447232、cryptid=1、minos 13.0、sdk 26.2、UUID 一致;`codesign` 的 TeamIdentifier、Identifier、CDHash=`199082ca…` 与 `sha1` CandidateCDHash 都与 `cdhashes` 完全相同)。
+   - WP3:`LC_ENCRYPTION_INFO(0x21)/_64(0x2C)` 字段顺序、`cryptid!=0 and cryptsize>0`、CodeDirectory 偏移(`teamOffset@48`、`execSegFlags@80`)、`CSMAGIC_*` 与 slot 值、`CS_HASHTYPE_*`、`MH_*`/`LC_*`/`PLATFORM_*`/`CPU_*` 常量均与 Apple/xnu 头文件一致(对照记忆与 某样本 实测:`otool -l` cryptoff=147456、cryptsize=20447232、cryptid=1、minos 13.0、sdk 26.2、UUID 一致;`codesign` 的 TeamIdentifier、Identifier、CDHash=`199082ca…` 与 `sha1` CandidateCDHash 都与 `cdhashes` 完全相同)。
    - WP3b:LZ4 block 语法与边界、UnityFS 头/BlocksInfo 布局与 flag 位(与 AssetStudio/UnityPy 描述一致)、Lua 5.1–5.4 头布局与 `LUAC_DATA/INT/NUM`、LuaJIT `BCDUMP_VERSION`/flag(**经 WebFetch 读取 LuaJIT v2.1 `lj_bcdump.h` 核对**:`HEAD=1B 4C 4A`、`VERSION=2`、`BE/STRIP/FFI/FR2/BITOP=0x01/02/04/08/10` 正确,另有 `DETERMINISTIC=0x80000000` 漏列,见 Minor)、PE/CLI 表 schema(逐表核对 ECMA-335 II.22:Module…GenericParamConstraint 的列宽、coded index 标签位与目标表顺序全部正确)。
    - WP1 magic:PNG/JPEG/GIF/KTX/KTX2/PVR3/DDS/ASTC(0x5CA1AB13 LE)/CCZ(`CCZ!`/`CCZp`,与 cocos-engine 一致)/xz/7z/zstd/LZ4 frame/Lua/Hermes(0x1F1903C103BC1FC6 LE)/UE `uasset`(0xC1832A9E)/ASF GUID/il2cpp metadata(AF 1B B1 FA)均正确;上述中 PVR/ASTC/ASF/UE/Live2D/FMOD/Wwise 已在代码里标 UNVERIFIED。`true` 作为 ttf 的判定过弱(Minor)。
    - WP6:Il2CppDumper 命令行 `<exe> <metadata> <outdir>`、config 字段名、`Done!` 标记、metadata 版本区间 16–31、退出码恒 0 的描述与记忆一致;三个 Il2CppDumper 资产的**大小**与 GitHub release API 返回一致(406027 / 408192 / 11215992);该 release 的 API `digest` 为 null,所以 **SHA256 钉值无法独立复核**(WP6 称其为本地下载计算)。Cpp2IL/Redux 的 sha256 来自 API digest,我没有复核。
@@ -197,7 +197,7 @@
 | M14 | 重定向目标复核关闭 | 杀死(il2cpp) |
 
 **F 可用性**
-13. 错误信息可操作(每个 `E_*` 都有英文兜底 + zh/en 文案 + 补救步骤;`InvalidInput` 文案指出文件名与原因);跳过/失败原因在报告执行摘要与附录阶段表中可见("未成功阶段 8 个:engine.fingerprint (已跳过)…")。未发现 `None` / `{}` / `[]` 泄漏进 Markdown(对 SeaWorld 报告 grep 验证)。小问题:SDK 行的字典串(Nit)。
+13. 错误信息可操作(每个 `E_*` 都有英文兜底 + zh/en 文案 + 补救步骤;`InvalidInput` 文案指出文件名与原因);跳过/失败原因在报告执行摘要与附录阶段表中可见("未成功阶段 8 个:engine.fingerprint (已跳过)…")。未发现 `None` / `{}` / `[]` 泄漏进 Markdown(对 某样本 报告 grep 验证)。小问题:SDK 行的字典串(Nit)。
 
 ---
 

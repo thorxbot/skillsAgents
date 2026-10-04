@@ -1,6 +1,6 @@
 """OPTIONAL end-to-end run on real IPAs. Skipped unless ``IPA_SAMPLES_DIR`` points at a directory with ``*.ipa`` files.
 
-By project decision (docs/05) no real sample is used by the automated work; run this yourself when you have samples::
+By project decision no real sample is used by the automated work; run this yourself when you have samples::
 
     IPA_SAMPLES_DIR=/path/to/ipas python -m pytest tests/integration/test_real_samples.py -v
 

@@ -377,9 +377,9 @@ def test_directory_input_through_stages(tmp_path, sample_ipa):
 def _custom_container_files(n=60):
     files = {"Info.plist": b"bplist00" + b"\0" * 40, "Foo": MACHO}
     for i in range(n):
-        files["res/a%03d.json" % i] = b"NHPK" + os.urandom(40)          # extension says json, content is not
+        files["res/a%03d.json" % i] = b"PKA1" + os.urandom(40)          # extension says json, content is not
     for i in range(n // 2):
-        files["res/t%03d.png" % i] = b"NHPT" + os.urandom(40)
+        files["res/t%03d.png" % i] = b"PKA2" + os.urandom(40)
     for i in range(55):
         files["res/b%03d.png" % i] = b"\x89PNG\r\n\x1a\n" + b"\0" * 20  # genuine PNGs: not a mismatch
     files["res/odd.json"] = b"QQQQ" + b"\0" * 8                         # a lone odd header stays below the threshold
@@ -392,11 +392,11 @@ def test_header_clusters_report_extension_content_mismatch(tmp_path):
     src = ZipSource(ipa)
     inv = build_inventory(src, "Payload/Foo.app/", root_name="Foo.app")
     hc = inv["header_clusters"]
-    assert hc[0]["head_hex"] == b"NHPK".hex() and hc[0]["head_ascii"] == "NHPK" and hc[0]["count"] == 60
+    assert hc[0]["head_hex"] == b"PKA1".hex() and hc[0]["head_ascii"] == "PKA1" and hc[0]["count"] == 60
     assert hc[0]["exts"] == {".json": 60} and 0 < len(hc[0]["examples"]) <= 5
     assert hc[0]["examples"] == sorted(hc[0]["examples"]) and hc[0]["size"] == 60 * 44
     assert all(e.startswith("Payload/Foo.app/res/a") for e in hc[0]["examples"])
-    assert len(hc) == 1                                   # 30 NHPT files / 1 odd file are below the threshold of 50
+    assert len(hc) == 1                                   # 30 PKA2 files / 1 odd file are below the threshold of 50
     assert inv["ext_magic_mismatch"]["files"] == 60 + 30 + 1
     src.close()
 
@@ -405,7 +405,7 @@ def test_header_cluster_threshold_is_configurable(tmp_path):
     ipa = build_ipa(tmp_path / "c.ipa", _custom_container_files(), app_name="Foo")
     src = ZipSource(ipa)
     inv = build_inventory(src, "Payload/Foo.app/", header_cluster_min=10)
-    assert [(c["head_ascii"], c["count"]) for c in inv["header_clusters"]] == [("NHPK", 60), ("NHPT", 30)]
+    assert [(c["head_ascii"], c["count"]) for c in inv["header_clusters"]] == [("PKA1", 60), ("PKA2", 30)]
     assert inv["header_clusters"][1]["exts"] == {".png": 30}
     src.close()
 

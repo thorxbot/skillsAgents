@@ -104,8 +104,8 @@ def cocos_creator3x_files(*, encrypted_js: bool = False, jsc: bool = False, wrap
         for i in range(12):
             body = rand(600 + i, 50 + i)
             size = 16 + len(body)
-            f["assets/w%d/import/aa/f%d.json" % (i, i)] = b"NHPK" + struct.pack("<II", size, 7) + b"\x14\x89\x13\xc1" + body
-            f["assets/w%d/index.js" % i] = b"NHPK" + struct.pack("<II", size, 9) + b"\x14\x89\x13\xc1" + body
+            f["assets/w%d/import/aa/f%d.json" % (i, i)] = b"PKA1" + struct.pack("<II", size, 7) + b"\x14\x89\x13\xc1" + body
+            f["assets/w%d/index.js" % i] = b"PKA1" + struct.pack("<II", size, 9) + b"\x14\x89\x13\xc1" + body
     return f
 
 

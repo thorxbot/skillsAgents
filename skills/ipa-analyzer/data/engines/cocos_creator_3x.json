@@ -65,8 +65,7 @@
   ],
   "notes": "",
   "sources": [
-    "REAL-SAMPLE: SeaWorld.app (user supplied IPA, read-only, 2026-10-04): src/cocos-js/cc.js, src/system.bundle.js, src/chunks/bundle.js, application.js, jsb-adapter/{engine,web}-adapter.js, src/import-map.json, src/settings.json, assets/<bundle>/index.js",
-    "single real sample: layout may differ between 3.0 ... 3.8"
+    "UNVERIFIED: layout derived from observed Cocos Creator 3.x build output, not from engine sources; confirm against cocos-engine in practice"
   ],
   "open_source_base": "cocos-engine",
   "layout_expected": true

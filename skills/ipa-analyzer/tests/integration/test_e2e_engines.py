@@ -1,6 +1,6 @@
 """Engine layer end to end (DoD 5): in-house engine, Cocos family, Egret / Laya, Flutter, native, media.
 
-The two cases that must stay distinguishable (SeaWorld correction, docs/05):
+The two cases that must stay distinguishable (known engine with custom-wrapped resources vs. in-house engine):
   * ``custom_engine``          - no known engine + capability profile  -> ``engine.custom`` yes
   * ``cocos_creator3_wrapped`` - known engine (Cocos Creator 3.x) whose resources carry a custom wrapper header
                                  -> ``engine.custom`` no, wrapper deviation reported by the Cocos checker
@@ -63,7 +63,7 @@ def test_wrapped_cocos_resources_do_not_turn_a_known_engine_into_a_custom_one(ru
     assert wrapped.verdict("engine.script.encrypted") == "suspected" and wrapped.verdict("engine.resource.encrypted") == "suspected"
     cocos = wrapped.details["cocos"]
     assert "custom_wrapper_header_on_scripts" in cocos["xxtea_hint"]["deviations"]
-    assert cocos["xxtea_hint"]["sign_prefix"]["ascii"] == "NHPK" and cocos["xxtea_hint"]["sign_prefix"]["is_template_default_sign"] is False
+    assert cocos["xxtea_hint"]["sign_prefix"]["ascii"] == "PKA1" and cocos["xxtea_hint"]["sign_prefix"]["is_template_default_sign"] is False
     assert cocos["resources"]["classified"]["counts"]["by_kind"]["custom_header"] == 12
     # the two situations produce opposite engine.custom / engine.primary answers
     assert (custom.verdict("engine.custom"), wrapped.verdict("engine.custom")) == ("yes", "no")

@@ -136,13 +136,13 @@ def test_ccz_mixed_and_stock_deviation(runner):
 def test_custom_wrapper_cluster_on_resources_and_scripts(runner):
     r = runner.run(B.cocos_creator3x_files(wrapped=True), detect=["cocos_creator_3x"])
     clusters = r.data["cocos"]["resources"]["wrapper_clusters"]
-    assert clusters and clusters[0]["tag"] == "NHPK" and clusters[0]["size_field_offset"] == 4
+    assert clusters and clusters[0]["tag"] == "PKA1" and clusters[0]["size_field_offset"] == 4
     assert clusters[0]["files"] >= 24
     assert r.verdict("engine.resource.encrypted", "cocos") == Verdict.SUSPECTED
     assert r.verdict("engine.script.encrypted", "cocos") == Verdict.SUSPECTED
     s = r.finding("engine.script.encrypted", "cocos")
     assert "custom_wrapper_header_on_scripts" in r.data["cocos"]["xxtea_hint"]["deviations"]
-    assert "NHPK" not in s.title                       # no vendor / engine claim from the tag
+    assert "PKA1" not in s.title                       # no vendor / engine claim from the tag
 
 
 def test_native_app_with_atlas_plist_does_not_trigger_cocos(runner):

@@ -10,7 +10,7 @@ from ipa_analyzer.models import Status
 
 
 def nhp_app(n_json=2000, n_astc=700, n_png=300) -> SynthApp:
-    """Thousands of small files whose extensions say json / astc / png but whose first 4 bytes are NHPK / NHPT / NHPO."""
+    """Thousands of small files whose extensions say json / astc / png but whose first 4 bytes are PKA1 / PKA2 / PKA3."""
     app = SynthApp()
 
     def add(path, tag, i):
@@ -18,11 +18,11 @@ def nhp_app(n_json=2000, n_astc=700, n_png=300) -> SynthApp:
         app.files[path] = tag + struct.pack("<I", 8 + len(body)) + body
 
     for i in range(n_json):
-        add("assets/b%d/native/%04d.json" % (i % 20, i), b"NHPK", i)
+        add("assets/b%d/native/%04d.json" % (i % 20, i), b"PKA1", i)
     for i in range(n_astc):
-        add("assets/b%d/native/%04d.astc" % (i % 20, i), b"NHPT", 10_000 + i)
+        add("assets/b%d/native/%04d.astc" % (i % 20, i), b"PKA2", 10_000 + i)
     for i in range(n_png):
-        add("assets/b%d/native/%04d.png" % (i % 20, i), b"NHPO", 20_000 + i)
+        add("assets/b%d/native/%04d.png" % (i % 20, i), b"PKA3", 20_000 + i)
     app.files["assets/ok.png"] = b"\x89PNG\r\n\x1a\n" + bytes(40)
     return app
 
@@ -76,15 +76,15 @@ def test_encrypted_binary_with_ccz_still_gives_the_family_and_explains_the_limit
     assert any("encrypted" in w for w in ctx.warnings)
 
 
-# --- b) thousands of NHPK / NHPT / NHPO files => container profile, no vendor claim ---------------------------------------------------
+# --- b) thousands of PKA1 / PKA2 / PKA3 files => container profile, no vendor claim ---------------------------------------------------
 def test_custom_header_families_are_profiled_from_the_inventory_clusters(tmp_path):
     ctx = run_stages(tmp_path, nhp_app())
     inv = ctx.results["inventory"]
-    assert {c["head_ascii"] for c in inv["header_clusters"]} >= {"NHPK", "NHPT", "NHPO"}
+    assert {c["head_ascii"] for c in inv["header_clusters"]} >= {"PKA1", "PKA2", "PKA3"}
     fp = ctx.results["engine.fingerprint"]
     clusters = {h["id"]: h for h in fp["containers"] if h["id"].startswith("header-cluster:")}
-    assert set(clusters) == {"header-cluster:NHPK", "header-cluster:NHPT", "header-cluster:NHPO"}
-    k = clusters["header-cluster:NHPK"]
+    assert set(clusters) == {"header-cluster:PKA1", "header-cluster:PKA2", "header-cluster:PKA3"}
+    k = clusters["header-cluster:PKA1"]
     assert k["extra"]["count"] == 2000 and k["extra"]["exts"] == {".json": 2000} and k["extra"]["ext_mismatch"] == {".json": 2000}
     assert k["extra"]["verdict"] == "custom_format" and k["confidence"] >= 0.65
     assert k["extra"]["payload"]["size_field"] == {"offset": 4, "fraction": 1.0, "probed": 5}
@@ -112,17 +112,17 @@ def test_own_clustering_is_used_when_the_inventory_has_no_cluster_field(tmp_path
     scoring._BUNDLE_CACHE.pop(ctx, None)
     res = EngineFingerprintStage().run(ctx)
     clusters = [h["id"] for h in res.data["containers"] if h["id"].startswith("header-cluster:")]
-    assert sorted(clusters) == ["header-cluster:NHPK", "header-cluster:NHPO", "header-cluster:NHPT"]
+    assert sorted(clusters) == ["header-cluster:PKA1", "header-cluster:PKA2", "header-cluster:PKA3"]
     assert res.data["extra"]["containers"]["cluster_source"] == "own"
     ctx.close()
 
 
 def test_cluster_members_are_not_listed_again_as_individual_containers(tmp_path):
     app = nhp_app(n_json=200, n_astc=0, n_png=0)
-    app.files["assets/big.json"] = b"NHPK" + struct.pack("<I", 4 + 1_200_000) + random_blob(1_200_000, seed=5)
+    app.files["assets/big.json"] = b"PKA1" + struct.pack("<I", 4 + 1_200_000) + random_blob(1_200_000, seed=5)
     ctx = run_stages(tmp_path, app)
     ids = [h["id"] for h in ctx.results["engine.fingerprint"]["containers"]]
-    assert ids == ["header-cluster:NHPK"] or all("big.json" not in i for i in ids)
+    assert ids == ["header-cluster:PKA1"] or all("big.json" not in i for i in ids)
 
 
 def test_plain_data_files_with_known_magic_create_no_cluster(tmp_path):

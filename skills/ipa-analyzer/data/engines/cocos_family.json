@@ -24,8 +24,7 @@
   ],
   "notes": "Used when only family-level evidence exists (e.g. encrypted main binary). Suppressed as soon as a specific Cocos variant is confirmed.",
   "sources": [
-    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)",
-    "REAL-SAMPLE: ISBN.app (user supplied IPA, read-only, 2026-10-04): 5,663 files with CCZp header under HD/"
+    "util/magic.py (WP1) cites cocos-engine ZipUtils.h/.cpp: CCZHeader.sig 'CCZ!' (plain) / 'CCZp' (encrypted)"
   ],
   "role": "family"
 }

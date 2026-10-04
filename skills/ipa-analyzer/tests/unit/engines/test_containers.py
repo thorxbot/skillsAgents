@@ -63,9 +63,9 @@ def test_high_entropy_stream_without_structure_stays_suspected_only():
 
 def test_ascii_tag_with_size_field_is_a_custom_container_even_if_payload_is_opaque():
     body = random_blob(50_000, seed=9)
-    data = b"NHPK" + struct.pack("<I", 8 + len(body)) + body
+    data = b"PKA1" + struct.pack("<I", 8 + len(body)) + body
     r = analyze(data, ext=".json")
-    assert r.verdict == "custom_format" and r.header["magic_ascii"] == "NHPK" and r.header["size_field"]["index"] == 1
+    assert r.verdict == "custom_format" and r.header["magic_ascii"] == "PKA1" and r.header["size_field"]["index"] == 1
     assert r.payload_hypothesis == "high_entropy_unknown"
 
 
@@ -190,7 +190,7 @@ def test_selection_spreads_over_directories_and_respects_limit():
 
 
 # --- header clusters --------------------------------------------------------------------------------------------------------------
-def cluster_files(n=30, header=b"NHPK"):
+def cluster_files(n=30, header=b"PKA1"):
     entries = {}
     for i in range(n):
         body = b'{"id": %d}' % i * 5
@@ -203,22 +203,22 @@ def test_cluster_with_size_field_and_standard_payload():
     ents = {}
     for i in range(25):
         body = b"\x89PNG\r\n\x1a\n" + bytes([i]) * 40
-        ents["g/%d.png" % i] = b"NHPT" + struct.pack("<I", 20 + len(body)) + b"\x00" * 4 + b"\x01\x02\x03\x04\x05\x06\x07\x08" + body
+        ents["g/%d.png" % i] = b"PKA2" + struct.pack("<I", 20 + len(body)) + b"\x00" * 4 + b"\x01\x02\x03\x04\x05\x06\x07\x08" + body
     rows = [(p, len(d), ".png", d[:16]) for p, d in ents.items()]
     cl = C.cluster_headers(rows, lambda p, n: ents[p][:n])
-    assert len(cl) == 1 and cl[0].header_ascii == "NHPT" and cl[0].count == 25
+    assert len(cl) == 1 and cl[0].header_ascii == "PKA2" and cl[0].count == 25
     assert cl[0].payload["standard_after_header"] == "png" and cl[0].payload["header_len"] == 20
     assert cl[0].payload["size_field"]["offset"] == 4 and cl[0].ext_mismatch == {".png": 25}
     assert cl[0].verdict == "custom_format" and 0.6 <= cl[0].confidence <= C.MAX_CONFIDENCE
     hit = cl[0].to_hit()
-    assert hit.id == "header-cluster:NHPT" and hit.extra["kind"] == "header_cluster" and hit.extra["count"] == 25
+    assert hit.id == "header-cluster:PKA2" and hit.extra["kind"] == "header_cluster" and hit.extra["count"] == 25
 
 
 def test_cluster_opaque_payload_and_thresholds():
     ents = cluster_files(30)
     rows = [(p, len(d), ".json", d[:16]) for p, d in ents.items()]
     cl = C.cluster_headers(rows, lambda p, n: ents[p][:n])
-    assert cl and cl[0].header_ascii == "NHPK" and cl[0].payload["size_field"]["fraction"] == 1.0
+    assert cl and cl[0].header_ascii == "PKA1" and cl[0].payload["size_field"]["fraction"] == 1.0
     assert C.cluster_headers(rows[:10], lambda p, n: ents[p][:n]) == []                  # below MIN_CLUSTER
     assert C.cluster_headers(rows, lambda p, n: ents[p][:n], min_count=40) == []
 

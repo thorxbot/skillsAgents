@@ -407,4 +407,4 @@ class MetaStage:
 2. **`libs.unknown` 等放置**:`libs.unknown / by_category / privacy_tags` 放在 `report.summary.libs`;`protect` 各键合入 `protection.*`;不新增顶层 `libraries_unknown`(顶层 `additionalProperties:false` 保持)。
 3. **`inventory.files` 可能被截断**(>20000 条):需要全表的阶段用 `filetypes.load_inventory_files(inv, ctx.out_dir)`。新增 Finding `inventory.summary`;`inventory` 新增可选字段 `total_size/entropy_info/read_errors/split`。
 4. **库子包导入**:阶段可 import `macho`、`formats`;`report_stage` 对 `pipeline` 做运行时延迟导入,允许。
-5. **加密二进制降级**:`slice.encrypted=True` 时,依赖二进制内容的检测必须用 `skip_encrypted=True` 并降级,见 `docs/05-REAL-SAMPLES-AND-HTP.md`。
+5. **加密二进制降级**:`slice.encrypted=True` 时,依赖二进制内容的检测必须用 `skip_encrypted=True` 并降级。

@@ -13,7 +13,7 @@ Classes (``by_class`` keys):
 ``high_entropy_unknown``     no known magic or compression container and head entropy >= 7.5 (7.0 below 4 KiB,
                              where the estimate is capped by the sample size)
 ``block_encrypted_suspected`` standard header, readable BlocksInfo, but the first LZ4/LZ4HC data block does not
-                             decompress (Htp-style block encryption; see docs/05-REAL-SAMPLES-AND-HTP.md)
+                             decompress (block-level encryption suspected)
 ``other``                    claims to be a bundle (extension / category) but is a known other format
 ``unknown``                  unrecognised and low entropy
 """
