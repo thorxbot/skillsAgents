@@ -86,4 +86,5 @@ Stage names: ingest inventory macho meta engine.fingerprint engine.detect engine
 ## References (read only when needed)
 `references/report-fields.md` (report layout) - `macho-fairplay.md` - `faq.md` - `il2cpp-troubleshooting.md` - `unity-il2cpp-metadata.md` -
 `unity-assetbundle.md` - `unity-hotfix.md` - `engines-detection.md` - `custom-engine-playbook.md` - `cocos-family.md` - `egret-laya.md` -
-`engine-resource-protection.md` - `libs-kb-format.md`
+`engine-resource-protection.md` - `libs-kb-format.md` -
+`public-crypto-schemes.md` (what a public protection scheme is, what key material it needs, how to validate; knowledge only - the tool still does not decrypt or look for keys)

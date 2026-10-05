@@ -18,6 +18,8 @@ Common principles: bytecode is not encryption; compression is not encryption; hi
 | `web_hybrid` | web root `.html/.js/.css` | `engine.script.encrypted` | informational |
 | `generic_scripts` | script-like files, custom 4-byte header clusters | `engine.script.encrypted`, `engine.resource.encrypted` | heuristics; never names a vendor |
 
+Scheme background (algorithms, key material, validation, real-sample tests): `public-crypto-schemes.md`. Known limit shown by real `UnrealPak` output: a pak packed with `-encrypt` but not `-encryptindex` is reported `no` (only the index flag is read).
+
 Not implemented (not verifiable here): NeoX `.npk` index structure and Supercell `.sc` headers (the only sources were secondary blog / README summaries; see `docs/03-ENGINE-RESEARCH.md`, grade C).
 
 ## Custom wrapper clusters
