@@ -36,6 +36,7 @@
   ["engine.fingerprint", "ok", ""],
   ["engine.detect", "ok", ""],
   ["engine.other", "skipped", "no engine checker applies to the detected engine(s)"],
+  ["cocos.decrypt", "skipped", "disabled (enable with --cocos-decrypt)"],
   ["engine.unity", "skipped", "not a Unity app"],
   ["engine.unity.hotfix", "skipped", "dependency engine.unity skipped"],
   ["libs", "ok", ""],

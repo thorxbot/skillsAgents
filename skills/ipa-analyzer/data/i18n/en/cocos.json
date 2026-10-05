@@ -1,0 +1,7 @@
+{
+  "engine.cocos.decrypt": {
+    "title": "Cocos scripts decrypted",
+    "summary": "{candidates} candidate script(s); tried {tried} key(s); decrypted {decrypted}, failed {failed} (key source: {key_source}).",
+    "remediation": "For apps you own or are authorised to assess; the key is taken from the app's own binary and results are written to <out>/decrypted/."
+  }
+}

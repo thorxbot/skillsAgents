@@ -1,0 +1,7 @@
+{
+  "engine.cocos.decrypt": {
+    "title": "Cocos 脚本解密",
+    "summary": "候选脚本 {candidates} 个;尝试了 {tried} 个密钥;已解密 {decrypted} 个、失败 {failed} 个(密钥来源:{key_source})。",
+    "remediation": "仅用于你拥有或已获授权评估的应用;密钥取自应用自身的二进制,解密结果写入 <out>/decrypted/。"
+  }
+}

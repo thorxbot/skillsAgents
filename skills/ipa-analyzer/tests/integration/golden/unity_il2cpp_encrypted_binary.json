@@ -54,6 +54,7 @@
   ["engine.fingerprint", "partial", "binary encrypted: binary-based fingerprint limited"],
   ["engine.detect", "partial", "binary encrypted: binary-based detection limited"],
   ["engine.other", "skipped", "no engine checker applies to the detected engine(s)"],
+  ["cocos.decrypt", "skipped", "disabled (enable with --cocos-decrypt)"],
   ["engine.unity", "ok", ""],
   ["engine.unity.hotfix", "ok", ""],
   ["libs", "ok", ""],

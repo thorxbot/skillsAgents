@@ -54,6 +54,7 @@
   ["engine.fingerprint", "ok", ""],
   ["engine.detect", "ok", ""],
   ["engine.other", "skipped", "no engine checker applies to the detected engine(s)"],
+  ["cocos.decrypt", "skipped", "disabled (enable with --cocos-decrypt)"],
   ["engine.unity", "partial", "il2cpp dump failed: E_TOOL_DOWNLOAD_FAILED"],
   ["engine.unity.hotfix", "ok", ""],
   ["libs", "ok", ""],

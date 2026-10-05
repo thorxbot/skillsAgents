@@ -28,7 +28,7 @@ Skill 根 = `skills/ipa-analyzer/`;下文路径相对于它,除非写明 `docs/`
 | 状态语义 | `ok` 全部完成;`partial` 有部分失败但产出了可用结果(须在 `warnings`/`reason` 写明);`skipped` 前置不满足(必须写 `reason`,面向用户的英文兜底);`failed` 阶段自身出错(`error`)。**依赖被 `skipped` 的阶段也会被 skip**,所以"可选上游"必须声明为 `after`,不是 `requires`。 |
 | 唯一例外异常 | 阶段只有在输入根本无法分析时才抛 `errors.InvalidInput`(仅 `ingest`);pipeline 把它记为 `failed` 并使 CLI 退出码为 2。其他意外异常自动隔离为 `failed`,退出码 3。 |
 
-## 2. 阶段表(13 个,名字与依赖冻结)
+## 2. 阶段表(14 个,名字与依赖冻结)
 
 `requires` = 硬依赖(失败 / 跳过 ⇒ 本阶段 `skipped`,`reason="dependency X failed"` 或 `"dependency X skipped"`)。`after` = 软依赖(仅排序)。同层按阶段名字母序执行(确定性)。`report` 带 `always_run=True`:不受依赖失败影响、排在所有非 always_run 阶段之后。
 
@@ -41,12 +41,13 @@ Skill 根 = `skills/ipa-analyzer/`;下文路径相对于它,除非写明 `docs/`
 | `engine.fingerprint` | engine_fingerprint.py | WP7 | inventory | macho, meta |
 | `engine.detect` | engine_detect.py | WP7 | inventory | macho, meta, engine.fingerprint |
 | `engine.other` | engines_other.py | WP7b | engine.detect | – |
+| `cocos.decrypt` | cocos_decrypt.py | WP10 | inventory | macho, engine.other |
 | `engine.unity` | unity.py | WP5 | engine.detect, inventory | macho, meta |
 | `engine.unity.hotfix` | unity_hotfix.py | WP5b | engine.unity | inventory, macho |
 | `libs` | libs.py | WP4 | inventory | macho, engine.fingerprint, engine.unity, engine.unity.hotfix, engine.other |
 | `protect` | protect.py | WP4 | inventory | macho, engine.unity, engine.unity.hotfix, engine.other, libs |
 | `classify` | classify.py | WP4 | – | meta, engine.detect, engine.fingerprint, libs |
-| `report` | report_stage.py | WP8 | – | 以上全部 12 个(`always_run=True`) |
+| `report` | report_stage.py | WP8 | – | 以上全部 13 个(`always_run=True`) |
 
 替换桩时**原样保留 `@register(...)` 参数**(单测 `test_stub_stage_table_matches_contract` 会校验)。`classify` 无硬依赖,因此上游缺数据时必须自己降级为 `partial` / `unknown`,不得崩溃。
 
@@ -319,6 +320,7 @@ category id(冻结): game media lifestyle social utility finance education healt
 | engine.fingerprint | `engine.fingerprint` `engine.container.unknown`(无容器时 verdict `n/a`) |
 | engine.detect | `engine.primary` `engine.language` `engine.custom` `engine.wrapper` |
 | engine.other | `engine.pak.encrypted` `engine.script.encrypted` `engine.resource.encrypted` `engine.hermes` `engine.flutter_aot` `engine.cocos.variant`(同 ID 可由多个 checker 产出,用 `tags=["engine:<id>"]` 区分) |
+| cocos.decrypt | `engine.cocos.decrypt`(可选阶段,仅 `--cocos-decrypt` 时运行) |
 | engine.unity | `unity.detected` `unity.version` `unity.backend` `unity.metadata.present` `unity.metadata.encrypted` `unity.binary.fairplay` `unity.il2cpp.precheck` `unity.il2cpp.dump` `unity.il2cpp.names_obfuscated` `unity.assetbundle.encryption` `unity.mono.dll_encrypted` |
 | engine.unity.hotfix | `unity.hotfix.framework` `unity.hotfix.lua` `unity.hotfix.lua_version` `unity.hotfix.csharp_dll` `unity.hotfix.js` `unity.hotfix.resource_update` `unity.hotfix.script_protection`(取代旧 `unity.hotupdate`) |
 | libs | `libs.summary` `libs.unknown` |
