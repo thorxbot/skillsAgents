@@ -39,7 +39,18 @@ python3 scripts/install_skill.py --force    # 已存在时直接替换(默认会
 python3 scripts/install_skill.py --dry-run  # 只看会做什么
 ```
 
-目标是 `~/.claude/skills/ipa-analyzer`(`--target DIR` 可改)。安装后重启 Claude Code,对它说"分析一下这个 ipa"即可。Windows 下是复制:更新代码后重新运行脚本。
+目标是 `~/.claude/skills/ipa-analyzer`(`--target DIR` 可改)。安装后重启 Claude Code,对它说"分析一下这个 ipa"即可。
+
+### 更新
+
+```bash
+python3 scripts/update_skill.py                 # 立即更新:git pull --ff-only;Windows 会顺带刷新复制出来的那份
+python3 scripts/update_skill.py --enable-auto   # 开启自动更新:在 ~/.claude/settings.json 加一个 SessionStart hook
+python3 scripts/update_skill.py --disable-auto  # 关闭自动更新
+```
+
+macOS / Linux 的安装是指向仓库的软链接,所以拉取即更新。开启自动更新后,每次启动 Claude Code 会静默检查一次(同一仓库 12 小时内最多检查一次,联网超时不会卡住会话),有更新才打印一行。
+它不会动你的本地改动:有未提交修改、分支已分叉或没有上游分支时只提示、不更新。新版本在下一次启动(或下次调用该 skill)时生效。
 
 ### 作为命令行工具(pip)
 
