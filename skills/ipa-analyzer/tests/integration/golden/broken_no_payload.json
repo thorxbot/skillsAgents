@@ -13,6 +13,7 @@
   ["engine.fingerprint", "skipped", "dependency inventory skipped"],
   ["engine.detect", "skipped", "dependency inventory skipped"],
   ["engine.other", "skipped", "dependency engine.detect skipped"],
+  ["cocos.decrypt", "skipped", "dependency inventory skipped"],
   ["engine.unity", "skipped", "dependency engine.detect skipped"],
   ["engine.unity.hotfix", "skipped", "dependency engine.unity skipped"],
   ["libs", "skipped", "dependency inventory skipped"],

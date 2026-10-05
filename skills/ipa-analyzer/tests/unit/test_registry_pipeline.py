@@ -189,6 +189,7 @@ EXPECTED_STAGES = {
     "engine.fingerprint": (("inventory",), ("macho", "meta")),
     "engine.detect": (("inventory",), ("macho", "meta", "engine.fingerprint")),
     "engine.other": (("engine.detect",), ()),
+    "cocos.decrypt": (("inventory",), ("macho", "engine.other")),
     "engine.unity": (("engine.detect", "inventory"), ("macho", "meta")),
     "engine.unity.hotfix": (("engine.unity",), ("inventory", "macho")),
     "libs": (("inventory",), ("macho", "engine.fingerprint", "engine.unity", "engine.unity.hotfix", "engine.other")),
@@ -201,7 +202,7 @@ def test_stub_stage_table_matches_contract():
     reg = pipeline.ensure_analyzers_loaded()
     assert not reg.import_failures
     assert set(reg.names()) == set(EXPECTED_STAGES) | {"report"}
-    assert len(reg) == 13
+    assert len(reg) == 14
     for name, (req, aft) in EXPECTED_STAGES.items():
         spec = reg.get(name)
         assert (spec.requires, spec.after) == (req, aft), name

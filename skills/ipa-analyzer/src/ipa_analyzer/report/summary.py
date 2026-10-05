@@ -25,7 +25,7 @@ __all__ = [
 UNITY_STAGES = ("engine.unity", "engine.unity.hotfix")
 
 STAGE_ORDER = ("ingest", "inventory", "meta", "macho", "engine.fingerprint", "engine.detect", "engine.other",
-               "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify", "report")
+               "cocos.decrypt", "engine.unity", "engine.unity.hotfix", "libs", "protect", "classify", "report")
 
 # Report section -> stages whose data it needs (used for "not run" notices).
 SECTION_STAGES: Dict[str, Tuple[str, ...]] = {

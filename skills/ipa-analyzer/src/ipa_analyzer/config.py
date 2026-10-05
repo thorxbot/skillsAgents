@@ -47,6 +47,24 @@ class UnityConfig:
 
 
 @dataclass
+class CocosDecryptConfig:
+    """Opt-in Cocos XXTEA decryption (CLI ``--cocos-decrypt``); off by default.
+
+    For apps the operator owns or is authorised to assess: recovers the XXTEA key the app embeds in its own binary
+    (unless ``scan_binary_for_key`` is off) and decrypts Lua / Creator ``.jsc`` scripts to ``<out>/decrypted/``.
+    """
+    enabled: bool = False
+    keys: Tuple[str, ...] = ()           # operator-supplied candidate keys (tried before binary strings)
+    sign: str = "XXTEA"                  # Lua chunk sign prefix (cocos template default)
+    pvr_key: str = ""                    # CCZp/PVR texture key (4 u32; 32 hex or four values), operator-supplied
+    scan_binary_for_key: bool = True
+    max_files: int = 5000                # cap on how many scripts to decrypt
+    sample_files: int = 8                # scripts used to validate a candidate key
+    binary_candidate_cap: int = 20000    # cap on distinct binary strings tried as keys
+    max_file_bytes: int = 16 * MiB       # per-script read cap
+
+
+@dataclass
 class LimitsConfig:
     # Defaults: docs/02-ARCHITECTURE.md section 6 (8 GB / 2 GB / 200k / 200:1).
     max_total_extract: int = 8 * GiB
@@ -64,6 +82,7 @@ class Config:
     skip: Tuple[str, ...] = ()
     il2cpp: Il2cppConfig = field(default_factory=Il2cppConfig)
     unity: UnityConfig = field(default_factory=UnityConfig)
+    cocos: CocosDecryptConfig = field(default_factory=CocosDecryptConfig)
     limits: LimitsConfig = field(default_factory=LimitsConfig)
     libs_user_path: Optional[Path] = None
     engines_user_dir: Optional[Path] = None
@@ -98,10 +117,12 @@ class Config:
         out: Dict[str, Any] = {}
         for f in fields(self):
             v = getattr(self, f.name)
-            if f.name in ("il2cpp", "unity", "limits"):
+            if f.name in ("il2cpp", "unity", "cocos", "limits"):
                 v = {sf.name: getattr(v, sf.name) for sf in fields(v)}
                 if f.name == "il2cpp":
                     v["backend_order"] = list(v["backend_order"])
+                elif f.name == "cocos":
+                    v["keys"] = list(v["keys"])
             elif isinstance(v, Path):
                 v = str(v)
             elif isinstance(v, tuple):
@@ -120,6 +141,11 @@ class Config:
                 cfg.il2cpp = Il2cppConfig(**{k: v[k] for k in v if k in Il2cppConfig.__dataclass_fields__})
             elif f.name == "unity":
                 cfg.unity = UnityConfig(**{k: v[k] for k in v if k in UnityConfig.__dataclass_fields__})
+            elif f.name == "cocos":
+                cc = {k: v[k] for k in v if k in CocosDecryptConfig.__dataclass_fields__}
+                if "keys" in cc:
+                    cc["keys"] = tuple(cc["keys"])
+                cfg.cocos = CocosDecryptConfig(**cc)
             elif f.name == "limits":
                 cfg.limits = LimitsConfig(**{k: v[k] for k in v if k in LimitsConfig.__dataclass_fields__})
             elif f.name in ("output_dir", "libs_user_path", "engines_user_dir"):

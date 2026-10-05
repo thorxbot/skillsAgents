@@ -1206,6 +1206,17 @@
   },
   "config": {
     "assume_yes": false,
+    "cocos": {
+      "binary_candidate_cap": 20000,
+      "enabled": false,
+      "keys": [],
+      "max_file_bytes": 16777216,
+      "max_files": 5000,
+      "pvr_key": "",
+      "sample_files": 8,
+      "scan_binary_for_key": true,
+      "sign": "XXTEA"
+    },
     "engines_user_dir": null,
     "extract": [],
     "formats": [

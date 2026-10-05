@@ -1,7 +1,9 @@
 # Cocos family: variants, layouts and protection (WP7b checker `cocos`)
 
 Grade: **V** = verified against source / a real sample in this project, **U** = UNVERIFIED (memory or single secondary source).
-Detection only: the checker never decrypts, never extracts keys.
+Detection only: the `cocos` checker never decrypts, never extracts keys. Decryption is a separate, opt-in capability —
+see [Decryption and key recovery](#decryption-and-key-recovery-opt-in-cocosdecrypt-stage) — gated behind
+`--cocos-decrypt` for apps you own or are authorised to assess.
 
 ## Variants and the markers used (`engines/checkers/cocos.py`, `data/engines_checks.json` section `cocos`)
 
@@ -38,3 +40,61 @@ scripts: plain `.lua`/`.js` -> `no`; Lua bytecode -> `no` ("compiled", bytecode 
 * Whether a `suspected` script is really XXTEA (vs another cipher / obfuscation) without the key.
 * Creator 2.x layout details (U) and `cocos2d_iphone` names (U).
 * Binary-based hints (xxtea symbols, `setXXTEAKey` strings, Lua runtime version) on FairPlay-encrypted binaries: C strings are ciphertext; only the symbol table is read, and release builds are usually stripped. The result says so (`xxtea_hint.binary.status`).
+
+## Decryption and key recovery (opt-in, `cocos.decrypt` stage)
+
+For apps you own or are authorised to assess. Off by default; enabled with `--cocos-decrypt`. Implemented by
+`analyzers/cocos_decrypt.py` + `crypto/xxtea.py` + `crypto/cocos.py` + `crypto/ccz.py`; the detection `cocos` checker
+is unchanged.
+
+Cocos ships the XXTEA key inside its own binary so it can decrypt its own scripts at run time, so "decryption" here
+is key *recovery* plus the standard xxtea-c transform, not breaking cryptography:
+
+* **Key recovery** (`crypto/cocos.recover_key`): try, in order, any `--xxtea-key` you pass, the template default
+  `XXTEA`, then every printable-ASCII run (4..32 bytes) harvested from the main binary. A candidate is accepted only
+  if it decrypts a sample to valid script (Lua bytecode magic `\x1bLua` / mostly-printable source for Lua; UTF-8 /
+  gzip-then-UTF-8 for `.jsc`). On a FairPlay-encrypted binary the key strings are ciphertext, so recovery usually
+  fails — pass `--xxtea-key` from an authorised source, or analyse a decrypted IPA.
+* **Lua** (`decrypt_lua`): require the sign prefix (`--xxtea-sign`, default `XXTEA`), then `xxtea_decrypt` the rest.
+* **Creator `.jsc`** (`decrypt_jsc`): `xxtea_decrypt` the whole file, then gunzip when the plaintext is gzip.
+* **`CCZp` / PVR textures** (`crypto/ccz.py`, `decrypt_ccz`): the app sets a 128-bit key as four `unsigned int`
+  (`ZipUtils::setPvrEncryptionKey`). `decodeEncodedPvr` expands them into a 1024-word keystream (XXTEA encrypt of a
+  zeroed 1024-word block, 6 rounds) and XORs the file words from offset 12 — first 512 words consecutively, then
+  every 64th — after which the payload is plain zlib. Implemented byte-for-byte from `cocos/base/ZipUtils.cpp`.
+  The 4 parts are code constants, not a string, so they are **not** auto-recovered: pass them with `--pvr-key`
+  (32 hex chars, or four u32 values). A wrong key is rejected by a failed zlib inflate / length mismatch.
+* **XXTEA format** (`crypto/xxtea.py`): xxtea-c compatible — little-endian word packing, a trailing length word,
+  key zero-padded to 16 bytes, `DELTA=0x9E3779B9`, `rounds=6+52//n`. Verified byte-for-byte against the authoritative
+  `xxtea` reference library (pinned vectors in `tests/unit/crypto/test_xxtea.py`).
+
+Output: decrypted scripts under `<out>/decrypted/` (mirroring the in-app path), CCZp textures as `<rel>.ccz.bin`, and
+`decrypted/manifest.json` (recovered key, per-file result). Still detection-only: custom-wrapper resources whose
+scheme is not one of the above (use the `decrypt` subcommand below once you know the scheme and key).
+
+Flags: `--cocos-decrypt` (enable), `--xxtea-key KEY` (repeatable; tried first), `--xxtea-sign SIGN` (default `XXTEA`,
+`''` for none), `--no-xxtea-key-scan` (do not harvest candidates from the binary; use only `--xxtea-key`),
+`--pvr-key KEY` (CCZp textures).
+
+### `decrypt` subcommand (any engine, operator-supplied key)
+
+For files any detection stage flags as encrypted but whose scheme is custom, `ipa-analyze decrypt <file|dir>` applies
+an operator-supplied key directly (no recovery, no guessing), so the capability is not limited to Cocos:
+
+```
+ipa-analyze decrypt enc.luac --scheme xxtea --key mykey --sign XXTEA -o out.lua
+ipa-analyze decrypt hero.ccz --scheme ccz   --key "aabbccdd 11223344 55667788 99aabbcc" -o hero.raw
+ipa-analyze decrypt assets/  --scheme xor   --key hex:5a --glob "*.bin" -o assets-dec/
+```
+
+Schemes (`crypto/generic.py`): `xor` (repeating key, `hex:` / `str:` / plain), `xxtea` (optional `--sign`), `ccz`
+(PVR key). The decrypted bytes are auto-gunzipped / inflated unless `--no-decompress` is given.
+
+### `probe` subcommand (decryptability assessment)
+
+`ipa-analyze probe <ipa>` analyses the app and, for every artifact a detector flagged as encrypted, reports whether
+this tool can decrypt it now and — if not — the concrete next step (`crypto/probe.py`; written to
+`<out>/decryptability.json`). Feasibility is one of: `supported` (run `--cocos-decrypt`), `needs_key` (supply
+`--pvr-key` / `--xxtea-key` / a `decrypt` key), `blocked_fairplay` (the binary is FairPlay-encrypted — provide a
+decrypted IPA first), `unsupported` (recognised scheme, no built-in decryptor — the next step names the key location
+/ external tool, e.g. Unreal pak AES, Unity metadata XOR), or `unknown` (scheme undetermined — triage). It is
+read-only and needs no key.
