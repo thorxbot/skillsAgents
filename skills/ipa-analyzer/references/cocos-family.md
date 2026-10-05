@@ -44,7 +44,8 @@ scripts: plain `.lua`/`.js` -> `no`; Lua bytecode -> `no` ("compiled", bytecode 
 ## Decryption and key recovery (opt-in, `cocos.decrypt` stage)
 
 For apps you own or are authorised to assess. Off by default; enabled with `--cocos-decrypt`. Implemented by
-`analyzers/cocos_decrypt.py` + `crypto/xxtea.py` + `crypto/cocos.py`; the detection `cocos` checker is unchanged.
+`analyzers/cocos_decrypt.py` + `crypto/xxtea.py` + `crypto/cocos.py` + `crypto/ccz.py`; the detection `cocos` checker
+is unchanged.
 
 Cocos ships the XXTEA key inside its own binary so it can decrypt its own scripts at run time, so "decryption" here
 is key *recovery* plus the standard xxtea-c transform, not breaking cryptography:
@@ -56,13 +57,34 @@ is key *recovery* plus the standard xxtea-c transform, not breaking cryptography
   fails — pass `--xxtea-key` from an authorised source, or analyse a decrypted IPA.
 * **Lua** (`decrypt_lua`): require the sign prefix (`--xxtea-sign`, default `XXTEA`), then `xxtea_decrypt` the rest.
 * **Creator `.jsc`** (`decrypt_jsc`): `xxtea_decrypt` the whole file, then gunzip when the plaintext is gzip.
+* **`CCZp` / PVR textures** (`crypto/ccz.py`, `decrypt_ccz`): the app sets a 128-bit key as four `unsigned int`
+  (`ZipUtils::setPvrEncryptionKey`). `decodeEncodedPvr` expands them into a 1024-word keystream (XXTEA encrypt of a
+  zeroed 1024-word block, 6 rounds) and XORs the file words from offset 12 — first 512 words consecutively, then
+  every 64th — after which the payload is plain zlib. Implemented byte-for-byte from `cocos/base/ZipUtils.cpp`.
+  The 4 parts are code constants, not a string, so they are **not** auto-recovered: pass them with `--pvr-key`
+  (32 hex chars, or four u32 values). A wrong key is rejected by a failed zlib inflate / length mismatch.
 * **XXTEA format** (`crypto/xxtea.py`): xxtea-c compatible — little-endian word packing, a trailing length word,
   key zero-padded to 16 bytes, `DELTA=0x9E3779B9`, `rounds=6+52//n`. Verified byte-for-byte against the authoritative
   `xxtea` reference library (pinned vectors in `tests/unit/crypto/test_xxtea.py`).
 
-Output: decrypted scripts under `<out>/decrypted/` (mirroring the in-app path) and `decrypted/manifest.json`
-(recovered key, per-file result). Not yet covered: `CCZp` / PVR textures (`setPvrEncryptionKey`, a 4×u32 key passed
-in code, not a string) and custom-wrapper resources — these still report as detection only.
+Output: decrypted scripts under `<out>/decrypted/` (mirroring the in-app path), CCZp textures as `<rel>.ccz.bin`, and
+`decrypted/manifest.json` (recovered key, per-file result). Still detection-only: custom-wrapper resources whose
+scheme is not one of the above (use the `decrypt` subcommand below once you know the scheme and key).
 
 Flags: `--cocos-decrypt` (enable), `--xxtea-key KEY` (repeatable; tried first), `--xxtea-sign SIGN` (default `XXTEA`,
-`''` for none), `--no-xxtea-key-scan` (do not harvest candidates from the binary; use only `--xxtea-key`).
+`''` for none), `--no-xxtea-key-scan` (do not harvest candidates from the binary; use only `--xxtea-key`),
+`--pvr-key KEY` (CCZp textures).
+
+### `decrypt` subcommand (any engine, operator-supplied key)
+
+For files any detection stage flags as encrypted but whose scheme is custom, `ipa-analyze decrypt <file|dir>` applies
+an operator-supplied key directly (no recovery, no guessing), so the capability is not limited to Cocos:
+
+```
+ipa-analyze decrypt enc.luac --scheme xxtea --key mykey --sign XXTEA -o out.lua
+ipa-analyze decrypt hero.ccz --scheme ccz   --key "aabbccdd 11223344 55667788 99aabbcc" -o hero.raw
+ipa-analyze decrypt assets/  --scheme xor   --key hex:5a --glob "*.bin" -o assets-dec/
+```
+
+Schemes (`crypto/generic.py`): `xor` (repeating key, `hex:` / `str:` / plain), `xxtea` (optional `--sign`), `ccz`
+(PVR key). The decrypted bytes are auto-gunzipped / inflated unless `--no-decompress` is given.

@@ -42,7 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = _Parser(prog="ipa-analyze", description="Analyze an iOS IPA / .app: structure, resources, libs, "
                 "protection, engine (Unity IL2CPP dump). Analysis only; never executes app code.")
     p.add_argument("--version", action="version", version="%s %s" % (TOOL_NAME, __version__))
-    sub = p.add_subparsers(dest="command", metavar="{analyze,doctor,tools}", parser_class=_Parser)
+    sub = p.add_subparsers(dest="command", metavar="{analyze,doctor,tools,decrypt}", parser_class=_Parser)
 
     a = sub.add_parser("analyze", help="analyze an .ipa / .zip / .app directory")
     a.add_argument("input", help="path to .ipa, .zip, .app directory, Payload/ or extracted directory")
@@ -74,6 +74,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="candidate XXTEA key for --cocos-decrypt (repeatable); tried before binary strings")
     a.add_argument("--xxtea-sign", metavar="SIGN", default="XXTEA",
                    help="Cocos Lua chunk sign prefix (default: XXTEA); use '' for none")
+    a.add_argument("--pvr-key", metavar="KEY", default="",
+                   help="with --cocos-decrypt, decrypt CCZp/PVR textures with this key (32 hex, or four u32)")
     a.add_argument("--no-xxtea-key-scan", action="store_true",
                    help="with --cocos-decrypt, do not harvest key candidates from the app binary")
     a.add_argument("--keep-workdir", action="store_true", help="keep the scratch directory after the run")
@@ -106,6 +108,19 @@ def build_parser() -> argparse.ArgumentParser:
     tp.add_argument("-v", "--verbose", action="count", default=0)
     tp.set_defaults(func=cmd_tools_path_dispatch)
     t.set_defaults(func=lambda args: (t.print_help(sys.stderr), EXIT_USAGE)[1])
+
+    dec = sub.add_parser("decrypt", help="decrypt a file / directory with an operator-supplied key (apps you own "
+                                         "or are authorised to assess)")
+    dec.add_argument("input", help="a file, or a directory to recurse")
+    dec.add_argument("--scheme", required=True, choices=["xxtea", "xor", "ccz"], help="decryption scheme")
+    dec.add_argument("--key", required=True, metavar="KEY",
+                     help="key: text, 'str:...', 'hex:...'; for ccz, 32 hex chars or four u32 values")
+    dec.add_argument("--sign", metavar="SIGN", default="", help="xxtea: required chunk sign prefix, e.g. XXTEA")
+    dec.add_argument("--glob", metavar="PAT", default="*", help="directory mode: only files matching this glob")
+    dec.add_argument("--no-decompress", action="store_true", help="do not auto-gunzip/inflate the decrypted bytes")
+    dec.add_argument("-o", "--output", metavar="PATH", help="output file (file input) or directory (directory input)")
+    dec.add_argument("-v", "--verbose", action="count", default=0)
+    dec.set_defaults(func=cmd_decrypt)
     return p
 
 
@@ -133,6 +148,7 @@ def config_from_args(args: argparse.Namespace) -> Config:
     cfg.cocos.enabled = args.cocos_decrypt
     cfg.cocos.keys = tuple(args.xxtea_key) if args.xxtea_key else ()
     cfg.cocos.sign = args.xxtea_sign
+    cfg.cocos.pvr_key = args.pvr_key
     cfg.cocos.scan_binary_for_key = not args.no_xxtea_key_scan
     cfg.keep_workdir = args.keep_workdir
     cfg.verbose = args.verbose
@@ -339,6 +355,53 @@ def collect_doctor(args: argparse.Namespace) -> List[Dict[str, Any]]:
     except ImportError:
         checks.append({"name": "lief (optional)", "level": "skip", "detail": "not installed (not required)"})
     return checks
+
+
+def _decrypt_one(src: Path, dest: Path, scheme: str, key: str, sign: bytes, decompress: bool) -> Dict[str, Any]:
+    from .crypto import generic
+    try:
+        data = src.read_bytes()
+    except OSError as exc:
+        return {"input": str(src), "ok": False, "reason": "read failed: %s" % exc}
+    res = generic.decrypt(data, scheme, key_text=key, sign=sign, decompress=decompress)
+    if not res.ok or res.data is None:
+        return {"input": str(src), "ok": False, "reason": res.reason}
+    try:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(res.data)
+    except OSError as exc:
+        return {"input": str(src), "ok": False, "reason": "write failed: %s" % exc}
+    return {"input": str(src), "output": str(dest), "ok": True, "bytes": len(res.data), "post": res.post}
+
+
+def cmd_decrypt(args: argparse.Namespace) -> int:
+    _setup_logging(getattr(args, "verbose", 0))
+    inp = Path(args.input)
+    if not inp.exists():
+        print("error: input does not exist: %s" % inp, file=sys.stderr)
+        return EXIT_INVALID_INPUT
+    sign = args.sign.encode("utf-8") if args.sign else b""
+    results: List[Dict[str, Any]] = []
+    if inp.is_dir():
+        out_root = Path(args.output) if args.output else inp.parent / (inp.name + "-decrypted")
+        for src in sorted(p for p in inp.rglob(args.glob) if p.is_file()):
+            dest = out_root / src.relative_to(inp)
+            results.append(_decrypt_one(src, dest, args.scheme, args.key, sign, not args.no_decompress))
+    else:
+        dest = Path(args.output) if args.output else inp.with_name(inp.name + ".dec")
+        results.append(_decrypt_one(inp, dest, args.scheme, args.key, sign, not args.no_decompress))
+
+    ok = sum(1 for r in results if r["ok"])
+    for r in results:
+        if r["ok"]:
+            print("ok   %s -> %s (%d bytes%s)" % (r["input"], r["output"], r["bytes"],
+                                                  "; " + r["post"] if r["post"] else ""))
+        else:
+            print("fail %s: %s" % (r["input"], r["reason"]), file=sys.stderr)
+    print("decrypt: %d/%d file(s) decrypted (scheme=%s)" % (ok, len(results), args.scheme), file=sys.stderr)
+    if not results:
+        return EXIT_INVALID_INPUT
+    return EXIT_OK if ok == len(results) else EXIT_PARTIAL
 
 
 def cmd_doctor(args: argparse.Namespace) -> int:

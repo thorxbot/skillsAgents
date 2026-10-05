@@ -56,6 +56,7 @@ class CocosDecryptConfig:
     enabled: bool = False
     keys: Tuple[str, ...] = ()           # operator-supplied candidate keys (tried before binary strings)
     sign: str = "XXTEA"                  # Lua chunk sign prefix (cocos template default)
+    pvr_key: str = ""                    # CCZp/PVR texture key (4 u32; 32 hex or four values), operator-supplied
     scan_binary_for_key: bool = True
     max_files: int = 5000                # cap on how many scripts to decrypt
     sample_files: int = 8                # scripts used to validate a candidate key

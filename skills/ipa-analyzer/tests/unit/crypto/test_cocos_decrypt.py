@@ -7,11 +7,12 @@ import json
 from fixtures import engine_checker_builder as B
 from fixtures.macho_builder import build_macho
 from ipa_analyzer.analyzers.cocos_decrypt import CocosDecryptStage
-from ipa_analyzer.crypto import cocos, xxtea
+from ipa_analyzer.crypto import ccz, cocos, xxtea
 from ipa_analyzer.models import Status, Verdict
 
 KEY = b"mygamekey123"
 SIGN = b"XXTEA"
+PVR = (0xAABBCCDD, 0x11223344, 0x55667788, 0x99AABBCC)
 
 LUA_SRC = b"local M = {}\nfunction M.run(x) return x + 1 end\nreturn M\n" * 8
 JS_SRC = b'{"__type__":"cc.SceneAsset","_name":"menu","nodes":[1,2,3]}'
@@ -127,6 +128,41 @@ def test_stage_key_not_recovered_is_partial(tmp_path):
 def test_stage_skips_when_no_scripts(tmp_path):
     ctx, res = _run(tmp_path, {"assets/foo.png": B.rand(200)})
     assert res.status == Status.SKIPPED
+    ctx.close()
+
+
+def test_stage_decrypts_ccz_textures_with_pvr_key(tmp_path):
+    files = {"src/main.lua": enc_lua(), "res/hero.ccz": ccz.encrypt_ccz(b"PVRDATA" * 300, PVR)}
+    ctx, res = _run(tmp_path, files, pvr_key="aabbccdd 11223344 55667788 99aabbcc")
+    assert res.status == Status.OK
+    assert res.data["candidates"]["ccz"] == 1 and res.data["output"]["decrypted"] == 2
+    out = ctx.out_dir / "decrypted" / "res" / "hero.ccz.bin"
+    assert out.read_bytes() == b"PVRDATA" * 300
+    findings = [x for x in res.findings if x.id == "engine.cocos.decrypt"]
+    assert any(f.title.endswith("textures decrypted") and f.verdict == Verdict.YES for f in findings)
+    ctx.close()
+
+
+def test_stage_ccz_only_no_scripts(tmp_path):
+    files = {"res/a.ccz": ccz.encrypt_ccz(b"TEX" * 100, PVR)}
+    ctx, res = _run(tmp_path, files, pvr_key="aabbccdd 11223344 55667788 99aabbcc")
+    assert res.status == Status.OK
+    assert res.data["candidates"]["ccz"] == 1 and res.data["output"]["decrypted"] == 1
+    assert res.data["key_recovery"] is None                  # no scripts -> no script key recovery
+    ctx.close()
+
+
+def test_stage_ccz_without_pvr_key_is_skipped(tmp_path):
+    files = {"res/a.ccz": ccz.encrypt_ccz(b"TEX" * 100, PVR)}
+    ctx, res = _run(tmp_path, files)                           # no pvr_key
+    assert res.status == Status.SKIPPED and "pvr-key" in (res.reason or "")
+    ctx.close()
+
+
+def test_stage_wrong_pvr_key_fails_texture(tmp_path):
+    files = {"res/a.ccz": ccz.encrypt_ccz(b"TEX" * 100, PVR)}
+    ctx, res = _run(tmp_path, files, pvr_key="00000001 00000002 00000003 00000004")
+    assert res.status == Status.PARTIAL and res.data["output"]["failed"] == 1
     ctx.close()
 
 
