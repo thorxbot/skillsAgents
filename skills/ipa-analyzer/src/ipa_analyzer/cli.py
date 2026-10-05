@@ -42,7 +42,7 @@ def build_parser() -> argparse.ArgumentParser:
     p = _Parser(prog="ipa-analyze", description="Analyze an iOS IPA / .app: structure, resources, libs, "
                 "protection, engine (Unity IL2CPP dump). Analysis only; never executes app code.")
     p.add_argument("--version", action="version", version="%s %s" % (TOOL_NAME, __version__))
-    sub = p.add_subparsers(dest="command", metavar="{analyze,doctor,tools,decrypt}", parser_class=_Parser)
+    sub = p.add_subparsers(dest="command", metavar="{analyze,doctor,tools,decrypt,probe}", parser_class=_Parser)
 
     a = sub.add_parser("analyze", help="analyze an .ipa / .zip / .app directory")
     a.add_argument("input", help="path to .ipa, .zip, .app directory, Payload/ or extracted directory")
@@ -121,6 +121,16 @@ def build_parser() -> argparse.ArgumentParser:
     dec.add_argument("-o", "--output", metavar="PATH", help="output file (file input) or directory (directory input)")
     dec.add_argument("-v", "--verbose", action="count", default=0)
     dec.set_defaults(func=cmd_decrypt)
+
+    pr = sub.add_parser("probe", help="analyze, then report for each encrypted artifact whether it can be decrypted "
+                                      "now and, if not, the next step")
+    pr.add_argument("input", help="path to .ipa / .zip / .app directory / Payload/ / extracted directory")
+    pr.add_argument("-o", "--output", default="out", metavar="DIR", help="base output directory (default: ./out)")
+    pr.add_argument("--lang", choices=["zh", "en"], default="zh", help="report language (default: zh)")
+    pr.add_argument("--offline", action="store_true", help="never use the network")
+    pr.add_argument("--json", action="store_true", help="print the assessment as JSON to stdout")
+    pr.add_argument("-v", "--verbose", action="count", default=0)
+    pr.set_defaults(func=cmd_probe)
     return p
 
 
@@ -402,6 +412,91 @@ def cmd_decrypt(args: argparse.Namespace) -> int:
     if not results:
         return EXIT_INVALID_INPUT
     return EXIT_OK if ok == len(results) else EXIT_PARTIAL
+
+
+_PROBE_LABEL = {"supported": "DECRYPTABLE NOW", "needs_key": "NEEDS KEY", "blocked_fairplay": "BLOCKED (FairPlay)",
+                "unsupported": "NOT SUPPORTED YET", "unknown": "UNKNOWN SCHEME"}
+
+
+def cmd_probe(args: argparse.Namespace) -> int:
+    from . import pipeline
+    from .context import AnalysisContext
+    from .crypto import probe as _probe
+    from .util.hashing import sha256_stream
+
+    _setup_logging(getattr(args, "verbose", 0))
+    input_path = Path(args.input)
+    if not input_path.exists():
+        print("error: input does not exist: %s" % input_path, file=sys.stderr)
+        return EXIT_INVALID_INPUT
+
+    cfg = Config()
+    cfg.output_dir = Path(args.output)
+    cfg.lang = args.lang
+    cfg.offline = args.offline
+    cfg.il2cpp.enabled = False               # the probe only needs detection, not a dump
+    cfg.formats = ("json",)
+    cfg.verbose = args.verbose
+    import contextlib
+    import io
+
+    try:
+        reg = pipeline.ensure_analyzers_loaded()
+        ctx = AnalysisContext(cfg, input_path)
+        # the report stage prints a console summary; keep stdout clean in --json mode
+        sink = io.StringIO() if args.json else sys.stdout
+        try:
+            with contextlib.redirect_stdout(sink):
+                pipeline.run(ctx, reg)
+        finally:
+            ctx.close()
+        if not ctx.is_bound:
+            digest = "unhashed"
+            if input_path.is_file():
+                try:
+                    digest = sha256_stream(input_path)
+                except OSError:
+                    pass
+            ctx.bind_input(digest)
+        fairplay = _probe.fairplay_encrypted(ctx.findings)
+        rows = _probe.assess(ctx.findings, fairplay=fairplay)
+        report = {"tool": TOOL_NAME, "version": __version__, "input": str(input_path),
+                  "fairplay_encrypted": fairplay, "assessments": [a.to_dict() for a in rows]}
+        try:
+            path = ctx.artifact_path("decryptability.json")
+            with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                json.dump(report, fh, ensure_ascii=False, indent=2)
+                fh.write("\n")
+            ctx.register_artifact("decryptability.json", "decryptability.json")
+        except (OSError, ValueError):
+            path = None
+        if not cfg.keep_workdir:
+            _cleanup_workdir(ctx)
+    except (RegistryError, CycleError) as exc:
+        print("fatal: invalid stage registry: %s" % exc, file=sys.stderr)
+        return EXIT_FATAL
+    except Exception as exc:  # noqa: BLE001
+        log.debug("fatal", exc_info=True)
+        print("fatal: %s: %s" % (type(exc).__name__, exc), file=sys.stderr)
+        return EXIT_FATAL
+
+    if args.json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return EXIT_OK
+
+    print("decryptability probe -- %s" % input_path)
+    if fairplay:
+        print("  note: main binary is FairPlay-encrypted (binary-derived key recovery and il2cpp dump are blocked)")
+    if not rows:
+        print("  no encrypted scripts/resources were flagged (nothing to decrypt).")
+    for a in rows:
+        print("  [%s] %s -- %s" % (_PROBE_LABEL.get(a.feasibility, a.feasibility), a.artifact, a.scheme))
+        print("      next: %s" % a.next_step)
+        if a.evidence:
+            print("      e.g.: %s" % ", ".join(a.evidence))
+    if path is not None:
+        print("written: %s" % path)
+    return EXIT_OK
 
 
 def cmd_doctor(args: argparse.Namespace) -> int:

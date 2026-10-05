@@ -90,7 +90,7 @@ def test_cheat_sheet_commands_parse():
             if argv[:1] == ["IA"]:
                 argv = argv[1:]
             ns = parser.parse_args(argv)
-            assert ns.command in ("analyze", "tools", "doctor", "decrypt")
+            assert ns.command in ("analyze", "tools", "doctor", "decrypt", "probe")
             n += 1
     assert n >= 7
 

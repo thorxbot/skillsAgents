@@ -6,7 +6,7 @@ description: Analyze iOS IPA / .app files - 分析 ipa、ipa 结构、ipa 报告
 # ipa-analyzer
 
 Static, read-only analysis of an IPA. Output: `report.md` (Chinese by default) + `report.json` in `<out>/<name>-<sha12>/`.
-It never executes anything from the IPA and never defeats FairPlay or any platform DRM. The one exception to "no decryption" is optional, operator-enabled decryption of the app's own resource/script protection — Cocos XXTEA scripts and CCZp textures via `--cocos-decrypt`/`--pvr-key`, and any file via the `decrypt` subcommand with an operator-supplied key — off by default, for apps you own or are authorised to assess; see `references/cocos-family.md`.
+It never executes anything from the IPA and never defeats FairPlay or any platform DRM. The one exception to "no decryption" is optional, operator-enabled decryption of the app's own resource/script protection — Cocos XXTEA scripts and CCZp textures via `--cocos-decrypt`/`--pvr-key`, and any file via the `decrypt` subcommand with an operator-supplied key — off by default, for apps you own or are authorised to assess; see `references/cocos-family.md`. Use `IA probe <ipa>` to see, per encrypted artifact, whether it can be decrypted now and — if not — the next step.
 
 Below, `IA` means `python3 <SKILL_DIR>/scripts/ipa_analyze.py` (`<SKILL_DIR>` = the folder holding this file; Windows: `python` or `py -3`).
 If `ipa-analyze` is on PATH it is the same program. Python >= 3.9, no other packages needed.
@@ -79,6 +79,7 @@ IA analyze X.ipa -o out --offline --stages meta,libs   # only some stages (+ dep
 IA analyze X.ipa -o out --offline --extract metadata,bundles   # also copy those files to out/.../split/
 IA analyze X.ipa -o out --offline --cocos-decrypt   # own/authorised app: XXTEA scripts -> out/.../decrypted/ (add --pvr-key HEX for CCZp textures)
 IA decrypt enc.luac --scheme xxtea --key KEY --sign XXTEA   # decrypt any flagged file with an operator-supplied key (schemes: xxtea, xor, ccz)
+IA probe X.ipa -o out --offline   # for each encrypted artifact: can it be decrypted now, and if not, the next step -> out/.../decryptability.json
 IA analyze X.ipa -o out --offline --il2cpp-tool /path/Il2CppDumper.dll   # use a tool you already have
 IA analyze X.ipa -o out --offline --no-il2cpp      # never dump
 IA tools list --offline | IA tools path il2cppdumper --offline

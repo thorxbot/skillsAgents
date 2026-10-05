@@ -66,6 +66,7 @@ ipa-analyze analyze app.ipa -o out --lang en --format md,json,html
 ipa-analyze analyze app.ipa -o out --extract metadata,bundles   # 同时把这些文件提取到 out/.../split/
 ipa-analyze analyze app.ipa -o out --cocos-decrypt [--pvr-key HEX]  # 自有/授权应用:XXTEA 脚本(+ CCZp 贴图)解密到 out/.../decrypted/
 ipa-analyze decrypt 文件或目录 --scheme xxtea|xor|ccz --key KEY [--sign XXTEA]  # 用自备密钥解任意被判定为加密的文件
+ipa-analyze probe app.ipa -o out   # 探测:每个加密点现在能否解密/还原,不能则给出下一步(写入 out/.../decryptability.json)
 ipa-analyze analyze app.ipa -o out --stages meta,libs   # 只跑部分阶段(自动带上硬依赖)
 ipa-analyze analyze app.ipa -o out --il2cpp-tool /path/Il2CppDumper.dll --dotnet /path/dotnet
 ipa-analyze tools list | install il2cppdumper | install dotnet --yes | path il2cppdumper

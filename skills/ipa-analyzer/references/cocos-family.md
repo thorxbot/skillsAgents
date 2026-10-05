@@ -88,3 +88,13 @@ ipa-analyze decrypt assets/  --scheme xor   --key hex:5a --glob "*.bin" -o asset
 
 Schemes (`crypto/generic.py`): `xor` (repeating key, `hex:` / `str:` / plain), `xxtea` (optional `--sign`), `ccz`
 (PVR key). The decrypted bytes are auto-gunzipped / inflated unless `--no-decompress` is given.
+
+### `probe` subcommand (decryptability assessment)
+
+`ipa-analyze probe <ipa>` analyses the app and, for every artifact a detector flagged as encrypted, reports whether
+this tool can decrypt it now and — if not — the concrete next step (`crypto/probe.py`; written to
+`<out>/decryptability.json`). Feasibility is one of: `supported` (run `--cocos-decrypt`), `needs_key` (supply
+`--pvr-key` / `--xxtea-key` / a `decrypt` key), `blocked_fairplay` (the binary is FairPlay-encrypted — provide a
+decrypted IPA first), `unsupported` (recognised scheme, no built-in decryptor — the next step names the key location
+/ external tool, e.g. Unreal pak AES, Unity metadata XOR), or `unknown` (scheme undetermined — triage). It is
+read-only and needs no key.
