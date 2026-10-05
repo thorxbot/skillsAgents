@@ -51,10 +51,13 @@ jobs:
       - name: Same through the installed console script
         run: ipa-analyze analyze fixtures-out/custom_engine.ipa -o out2 --offline
       - name: Tests
-        run: python -m pytest -q -ra
+        run: python -m pytest -q -ra --tb=short 2>&1 | tee pytest.log
       - name: Slow tests (one leg only)
         if: matrix.os == 'ubuntu-latest' && matrix.python == '3.12'
         run: python -m pytest -q -ra --runslow tests/integration/test_perf_slow.py tests/integration/test_robustness.py
+      - name: Failed tests (compact; the log tail is otherwise buried under assertion diffs)
+        if: failure()
+        run: grep -E '^(FAILED|ERROR) ' pytest.log | cut -c1-220 || true
       - name: Show a failing run's reports
         if: failure()
         run: ls -R out 2>/dev/null | head -50 || true
@@ -103,7 +106,10 @@ jobs:
       - name: Offline / no-dotnet tests
         run: python -m pytest -q -ra tests/integration/test_no_dotnet_offline.py
       - name: Whole suite still green without .NET
-        run: python -m pytest -q -ra
+        run: python -m pytest -q -ra --tb=short 2>&1 | tee pytest.log
+      - name: Failed tests (compact)
+        if: failure()
+        run: grep -E '^(FAILED|ERROR) ' pytest.log | cut -c1-220 || true
 
   # ---------------------------------------------------------------------------------------------
   # Packaging: a non-editable wheel install in a clean virtualenv works from any directory (data / schemas /
