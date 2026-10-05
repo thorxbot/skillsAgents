@@ -106,3 +106,13 @@ def test_aes256_fips197_vector_and_unitycn_signature_relation():
     assert sig == u["signature_ascii"].encode() == b"#$unity3dchina!@"
     wrong = ecb_encrypt(b"fedcba9876543210", bytes.fromhex(u["key_sig_hex"]))
     assert bytes(a ^ b for a, b in zip(bytes.fromhex(u["data_sig_hex"]), wrong)) != b"#$unity3dchina!@"
+
+
+@pytest.mark.parametrize("vec", VECTORS["xxtea"], ids=lambda v: v["name"])
+def test_package_xxtea_matches_the_reference_vectors(vec):
+    """The shipped implementation (``crypto.xxtea``) against the xxtea-c reference output."""
+    from ipa_analyzer.crypto import xxtea as pkg
+
+    key, plain, cipher = vec["key"].encode(), bytes.fromhex(vec["plain_hex"]), bytes.fromhex(vec["cipher_hex"])
+    assert pkg.encrypt(plain, key) == cipher
+    assert pkg.decrypt(cipher, key) == plain

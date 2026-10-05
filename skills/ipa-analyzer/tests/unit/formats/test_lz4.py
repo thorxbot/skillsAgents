@@ -21,7 +21,9 @@ def _samples():
     yield b" ".join(rng.choice([b"lua", b"unity", b"bundle", b"x"]) for _ in range(4000))
 
 
-@pytest.mark.parametrize("data", list(_samples()))
+# explicit ids: pytest would otherwise embed the (up to 100 kB) bytes repr in the test id, which overflows the 32767
+# character limit of the PYTEST_CURRENT_TEST environment variable on Windows
+@pytest.mark.parametrize("data", list(_samples()), ids=lambda b: "len%d" % len(b))
 def test_roundtrip_with_expected_size(data):
     comp = lz4_compress_block(data)
     assert lz4.decompress_block(comp, expected_size=len(data)) == data

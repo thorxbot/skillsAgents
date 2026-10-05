@@ -171,7 +171,8 @@ def redact_text(text: str, *, home: Optional[Path] = None) -> str:
     except (RuntimeError, OSError):
         h = ""
     if h and len(h) > 3:
-        out = out.replace(h, "~")
+        for variant in (h, h.replace("\\", "/")):          # text may use / where the OS path uses \ (and vice versa)
+            out = out.replace(variant, "~")
     out = _USER_PATH_RE.sub(lambda m: m.group("prefix") + "<user>", out)
     user = os.environ.get("USERNAME") or os.environ.get("USER") or ""
     if user and len(user) >= 3:

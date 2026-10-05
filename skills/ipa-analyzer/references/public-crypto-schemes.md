@@ -5,8 +5,11 @@ it needs, what is and is not verifiable) and give implementers ground truth to t
 Scope and limits:
 * Only schemes whose algorithm is public (open-source implementations, official documentation). No vendor-private
   formats, no keys of real applications are listed or shipped.
-* The analyzer itself stays **detection only**: it does not decrypt, does not search for keys. Keys are operator
-  supplied (an app you own or are authorised to assess). FairPlay / App Store DRM is out of scope and not covered here.
+* Default analysis is **detection only**. Decryption exists only as the opt-in Cocos support (`--cocos-decrypt`,
+  the `decrypt` and `probe` subcommands; see `cocos-family.md`) and only for apps you own or are authorised to assess;
+  keys are operator supplied or recovered from the app's own binary by that stage. UnityCN, Unreal pak and Godot
+  have **no** decrypt implementation in this tool - they are described here so findings can be explained and
+  candidate keys validated. FairPlay / App Store DRM is out of scope and not covered here.
 * Grades: **V** = reproduced in this repo by a test against third-party ground truth; **S** = read in the cited source
   code, not reproduced; **D** = official documentation only; **U** = secondary description (blog / README / search
   result), treat as a lead.
@@ -45,11 +48,14 @@ Do not assume one from the other; try both and accept only output that validates
 * Key placement (U, several public write-ups): the key and sign are ordinary string constants handed to the engine's
   `setXXTEAKey...` call at start-up, so they live in the native binary - which is why a FairPlay-encrypted main binary
   blocks the whole line of analysis (see `macho-fairplay.md`).
-* Public key-recovery tooling exists (e.g. `zboralski/reverse`, static analysis of ARM64 builds). It is mentioned only
-  so you can tell the user the key is *recoverable by the app owner*; this skill does not run it.
+* Public key-recovery tooling exists (e.g. `zboralski/reverse`, static analysis of ARM64 builds); this skill does not
+  run it. The opt-in `--cocos-decrypt` stage recovers keys more simply (printable strings from the app binary, each
+  validated against sample scripts), which fails on a FairPlay-encrypted main binary.
 
 **Recognition in this tool.** `engine.script.encrypted` from the `cocos` checker (script heads without a valid
-Lua/JS header, `xxtea_*` symbols) - evidence only, `suspected` at most. See `cocos-family.md`.
+Lua/JS header, `xxtea_*` symbols) - evidence only, `suspected` at most. The package's own implementation
+(`ipa_analyzer.crypto.xxtea`) is checked against the vectors above by `tests/unit/test_public_vectors.py`.
+See `cocos-family.md`.
 
 ## 2. UnityCN AssetBundle encryption (S)
 
