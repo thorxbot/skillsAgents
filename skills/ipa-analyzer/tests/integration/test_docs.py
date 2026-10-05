@@ -73,7 +73,8 @@ def test_every_cli_flag_in_the_docs_exists():
                 for sp in a.choices.values():
                     known |= set(_flags(sp))
     used = set(re.findall(r"(?<![\w-])(--[a-z][a-z0-9-]+)", SKILL + README))
-    ignore = {"--target", "--force", "--copy", "--dry-run", "--uninstall", "--runslow"}      # install_skill.py / pytest
+    ignore = {"--target", "--force", "--copy", "--dry-run", "--uninstall", "--runslow",
+              "--enable-auto", "--disable-auto", "--throttle", "--quiet", "--settings", "--ff-only"}      # install_skill.py / update_skill.py / git / pytest
     assert not (used - known - ignore), sorted(used - known - ignore)
 
 
