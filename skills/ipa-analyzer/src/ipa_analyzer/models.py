@@ -44,6 +44,20 @@ class Status(str, Enum):
     FAILED = "failed"
 
 
+def _scrub_str(s: str) -> str:
+    """Make ``s`` encodable as UTF-8.
+
+    Under a non-UTF-8 locale (``LC_ALL=C`` without UTF-8 mode) ``os.fsdecode`` turns the non-ASCII bytes of a file name
+    into lone surrogates (``surrogateescape``); those cannot be written to ``report.json``. Re-encode them back to the
+    original bytes and decode as UTF-8, replacing whatever is not valid UTF-8 with U+FFFD.
+    """
+    try:
+        s.encode("utf-8")
+    except UnicodeEncodeError:
+        return s.encode("utf-8", "surrogateescape").decode("utf-8", "replace")
+    return s
+
+
 def to_jsonable(obj: Any, *, sort_keys: bool = False) -> Any:
     """Recursively convert ``obj`` to JSON-native types.
 
@@ -55,7 +69,7 @@ def to_jsonable(obj: Any, *, sort_keys: bool = False) -> Any:
     if obj is None or isinstance(obj, (bool, int, str)):
         if isinstance(obj, Enum):
             return obj.value
-        return obj
+        return _scrub_str(obj) if isinstance(obj, str) else obj
     if isinstance(obj, Enum):
         return to_jsonable(obj.value, sort_keys=sort_keys)
     if isinstance(obj, float):
@@ -73,7 +87,7 @@ def to_jsonable(obj: Any, *, sort_keys: bool = False) -> Any:
                 k = str(k)
             if not isinstance(k, str):
                 raise TypeError("non-string dict key of type %s" % type(k).__name__)
-            items.append((k, to_jsonable(v, sort_keys=sort_keys)))
+            items.append((_scrub_str(k), to_jsonable(v, sort_keys=sort_keys)))
         if sort_keys:
             items.sort(key=lambda kv: kv[0])
         return dict(items)
