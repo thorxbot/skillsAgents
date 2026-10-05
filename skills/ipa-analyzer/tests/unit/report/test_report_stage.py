@@ -97,7 +97,10 @@ def test_output_is_reproducible_apart_from_time(tmp_path):
         ctx, _ = _run("full_success", tmp_path / str(i), formats=("md", "json", "html"))
         md = (ctx.out_dir / "report.md").read_text(encoding="utf-8")
         js = (ctx.out_dir / "report.json").read_text(encoding="utf-8")
-        docs.append((re.sub(r"\d+\.\d+s", "0s", md), re.sub(r'"output_dir": "[^"]*"', "", js)))
+        stamp = r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ"     # generated_at has 1 s resolution: two runs may straddle a second
+        md = re.sub(stamp, "T", re.sub(r"\d+\.\d+s", "0s", md))
+        js = re.sub(r'"duration_s": [\d.]+', '"duration_s": 0', re.sub(stamp, "T", re.sub(r'"output_dir": "[^"]*"', "", js)))
+        docs.append((md, js))
     assert docs[0] == docs[1]
 
 
