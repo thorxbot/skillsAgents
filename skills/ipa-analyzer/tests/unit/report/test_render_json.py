@@ -106,6 +106,14 @@ def _normalise(d):
     d["tool"]["version"] = ""
     for s in d["stages"]:
         s["duration_s"] = 0
+    if "[user]" in d["config"]["output_dir"]:
+        # The temp dir sits under a real home (C:\\Users\\<name>\\AppData\\... on Windows runners), so redaction counted
+        # one extra home_path hit that the goldens (made elsewhere) do not have. Remove exactly that hit.
+        red = d["redaction"]
+        red["counts"]["home_path"] -= 1
+        if not red["counts"]["home_path"]:
+            del red["counts"]["home_path"]
+            red["fields"].remove("home_path")
     d["config"]["output_dir"] = ""
     return d
 

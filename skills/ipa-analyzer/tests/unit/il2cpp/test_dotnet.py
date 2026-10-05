@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from ipa_analyzer.il2cpp import Il2CppErrorCode as E
 from ipa_analyzer.il2cpp import dotnet as D
 from ipa_analyzer.il2cpp.errors import ToolDownloadError
@@ -13,6 +15,13 @@ Microsoft.NETCore.App 8.0.25 [/usr/local/share/dotnet/shared/Microsoft.NETCore.A
 Microsoft.NETCore.App 10.0.0-preview.7.25380.108 [C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App]
 garbage line
 """
+
+
+@pytest.fixture(autouse=True)
+def _no_host_dotnet(monkeypatch):
+    """Never discover the host's real dotnet through the well-known install locations (a Windows runner has one in
+    ``C:\\Program Files\\dotnet``); tests that want a dotnet create their own."""
+    monkeypatch.setattr(D, "_well_known", lambda system, env: [])
 
 
 def test_parse_runtimes():
@@ -55,9 +64,10 @@ def test_dotnet_exe_names():
 
 
 def test_build_install_command_posix():
-    cmd = D.build_install_command("Linux", Path("/c/dotnet-install.sh"), install_dir=Path("/c/dotnet"), channel="8.0")
-    assert cmd == ["bash", "/c/dotnet-install.sh", "--runtime", "dotnet", "--channel", "8.0",
-                   "--install-dir", "/c/dotnet", "--no-path"]
+    script, install_dir = Path("/c/dotnet-install.sh"), Path("/c/dotnet")      # str() is os-specific (\\ on Windows)
+    cmd = D.build_install_command("Linux", script, install_dir=install_dir, channel="8.0")
+    assert cmd == ["bash", str(script), "--runtime", "dotnet", "--channel", "8.0",
+                   "--install-dir", str(install_dir), "--no-path"]
 
 
 def test_build_install_command_windows_uses_arg_list_and_bypass_policy():
