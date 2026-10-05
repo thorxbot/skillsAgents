@@ -1,0 +1,70 @@
+{
+ "_comment": "Public / reference test vectors. XXTEA: generated with the xxtea-c reference implementation (github.com/xxtea/xxtea-c, MIT) and cross-checked against a second independent implementation; plain bytes are (i*7+3)&0xff for i<len except readme_example. AES: FIPS-197 C.3. UnityCN: synthetic key, relation from UnityPy ArchiveStorageManager.decrypt_key. No real application keys.",
+ "xxtea": [
+  {
+   "name": "len1_key10",
+   "key": "1234567890",
+   "plain_hex": "03",
+   "cipher_hex": "220c3a63d7e3f84f"
+  },
+  {
+   "name": "len4_key10",
+   "key": "1234567890",
+   "plain_hex": "030a1118",
+   "cipher_hex": "8a17cc77226da36f"
+  },
+  {
+   "name": "len5_key10",
+   "key": "1234567890",
+   "plain_hex": "030a11181f",
+   "cipher_hex": "1c204497d6f640e674718cea"
+  },
+  {
+   "name": "len8_key16",
+   "key": "0123456789abcdef",
+   "plain_hex": "030a11181f262d34",
+   "cipher_hex": "9d8fc7b4b3944346e41fd7af"
+  },
+  {
+   "name": "len16_key16",
+   "key": "0123456789abcdef",
+   "plain_hex": "030a11181f262d343b424950575e656c",
+   "cipher_hex": "84c7a3be0b295938b5c190ad33e3219516293255"
+  },
+  {
+   "name": "len17_key3",
+   "key": "abc",
+   "plain_hex": "030a11181f262d343b424950575e656c73",
+   "cipher_hex": "2b1b34a293bd9c529078f811c36ade383a1fb8bbe30fd296"
+  },
+  {
+   "name": "len100_key20_truncated",
+   "key": "0123456789abcdefGHIJ",
+   "plain_hex": "030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299a0a7aeb5bcc3cad1d8dfe6edf4fb020910171e252c333a41484f565d646b727980878e959ca3aab1b8",
+   "cipher_hex": "7669f738178d43ddc89115c8c05ea8de992e606fe1ab18cc3ddcf992f2b5a95abf5a97e55282500ff58d862898e920441759e2bc768eef0dabe100a59b6097a0f98a872907d418f165beeb4d90774a1d6e71491bb31a62c9922c3720d0c3a4800d47daff7b37ee5d"
+  },
+  {
+   "name": "len255_key16",
+   "key": "0123456789abcdef",
+   "plain_hex": "030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299a0a7aeb5bcc3cad1d8dfe6edf4fb020910171e252c333a41484f565d646b727980878e959ca3aab1b8bfc6cdd4dbe2e9f0f7fe050c131a21282f363d444b525960676e757c838a91989fa6adb4bbc2c9d0d7dee5ecf3fa01080f161d242b323940474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b828990979ea5acb3bac1c8cfd6dde4ebf2f900070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5",
+   "cipher_hex": "34209b62e3a5c62a6c6cf48e1629799fad1a6f4cfaaddb0762816be953498b9f84ec9d700d1528154e50fc54d46df62ab11f6fe9f45ffdaa47fd3219e7007f0c15ffe7c0feca09f2ae36f3251f2ff7cc54ed69b59e2e881830abdc4cfb9f2725f3315909340c8d5b1f5cd07590ba29c56d1cc9e6189fe81eb0d30c52112196386c887855078143440153bf6e33db04d30690dce0d2c493bc329fc4cbd1cd6133d67b15625e3de7901b98fa30f81cb74161eb310d28bb38af1537d3e03c5a5a265cae223563a391b1cd8da14b5a5ebdf965b8496cf855ea2f376bb86ad2cb5e92fc0a4db584306ece9d943ebf726664af69af49fe020d780ea6b8f698315815dd038f6854"
+  },
+  {
+   "name": "readme_example",
+   "key": "1234567890",
+   "plain_hex": "48656c6c6f20576f726c642120e4bda0e5a5bdefbc8ce4b8ade59bbdefbc81",
+   "cipher_hex": "427701d42d2b1d0a19d5e4623cce1db19b518bda4dae9eecaaf5fbe9c157bebac81d72fa"
+  }
+ ],
+ "aes256_ecb_fips197": {
+  "key_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "plain_hex": "00112233445566778899aabbccddeeff",
+  "cipher_hex": "8ea2b7ca516745bfeafc49904b496089"
+ },
+ "unitycn_signature_check": {
+  "signature_ascii": "#$unity3dchina!@",
+  "synthetic_key_ascii": "0123456789abcdef",
+  "key_sig_hex": "000102030405060708090a0b0c0d0e0f",
+  "data_sig_hex": "835dec9e8bcbc7259df6fb80eac568f7"
+ }
+}

@@ -30,7 +30,7 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=7", "jsonschema>=4"]
+dev = ["pytest>=7", "jsonschema>=4", "cryptography>=41"]
 full = ["lief"]
 
 [project.scripts]
